@@ -230,12 +230,12 @@ registrationProcess(
         getUserFromFirestore(userId: userId);
 
         appGet.dissmis;
-        Get.offAll(() => VerfiyEmail(name!));
+        Get.offAll(() => VerfiyEmail(name!,email));
         // Get.offAll(() => UserNavBar());
       } else {
         getPharmFromFirestore(userId: userId);
         appGet.dissmis;
-        Get.offAll(() => VerfiyEmail(name!));
+        Get.offAll(() => VerfiyEmail(name!, email));
         //    Get.offAll(() => AddAddress(name!));
         // Get.offAll(() => PharmNavBar());
       }
