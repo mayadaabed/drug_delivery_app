@@ -1,14 +1,19 @@
+import 'package:drug_delivery_application/screens/pharmacey/PharmNavBar/PharmNavBar.dart';
 import 'package:drug_delivery_application/screens/user/HomePage/HomePage.dart';
+import 'package:drug_delivery_application/screens/user/UserNavBar/UserNavBar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
 
 class AddAddress extends StatefulWidget {
   final String name;
-  const AddAddress(this.name, {Key? key}) : super(key: key);
+  final int isUser;
+  const AddAddress(this.name, this.isUser, {Key? key}) : super(key: key);
 
   @override
   State<AddAddress> createState() => _AddAddressState();
@@ -132,7 +137,26 @@ class _AddAddressState extends State<AddAddress> {
         ),
         GestureDetector(
           onTap: () {
-            Get.to(() => HomePage());
+            if (addresscontroller.text.toString().isEmpty) {
+              EasyLoading.showError('Please enter your Address');
+            } else {
+              EasyLoading.show(status: 'Adding Address...');
+              if (widget.isUser == 1) {
+                addAddress(addresscontroller.text).then((value) {
+                  if (value) {
+                    EasyLoading.dismiss();
+                    Get.offAll(() => UserNavBar());
+                  }
+                });
+              } else {
+                addPharmAddress(addresscontroller.text).then((value) {
+                  if (value) {
+                    EasyLoading.dismiss();
+                    Get.offAll(() => PharmNavBar());
+                  }
+                });
+              }
+            }
           },
           child: Padding(
             padding: EdgeInsets.only(left: 30.w, right: 30.w, top: 70.h),

@@ -64,7 +64,7 @@ Future<Map?> signInWithEmailAndPassword(
         map = await getUserFromFirestore(userId: userIds);
         appGet.userorpharm = 1;
       } else {
-        map = await getPharmacyFromFirestore(userId: userIds);
+        map = await getPharmFromFirestore(userId: userIds);
         appGet.userorpharm = 2;
       }
       if (appGet.logornot == 1) {
@@ -126,28 +126,11 @@ Future<Map<String, dynamic>> getPharmFromFirestore(
     appGet.logornot = 1;
     appGet.dissmis;
   } else {
-    savetoken(userIds, 1);
+    savetoken(userIds, 2);
   }
   appGet.PharmacyMap = response;
   print('this i map' + appGet.PharmacyMap.toString());
   return response;
-}
-
-Future<Map<String, dynamic>> getPharmacyFromFirestore(
-    {required String userId}) async {
-  print(userId);
-  DocumentSnapshot documentSnapshot =
-      await firestore.collection(pharmaciesCollectionName).doc(userId).get();
-  Map<String, dynamic> responce =
-      documentSnapshot.data() as Map<String, dynamic>;
-  if (responce == null) {
-    appGet.logornot = 1;
-    appGet.dissmis;
-  } else {
-    savetoken(userIds, 2);
-    appGet.setPharmacyMap(responce);
-  }
-  return responce;
 }
 
 var verfied;
@@ -227,15 +210,17 @@ registrationProcess(
       }
 
       if (isSuccess == true && isUser == true) {
+        print('userrrrrrrrrrr');
         getUserFromFirestore(userId: userId);
 
         appGet.dissmis;
-        Get.offAll(() => VerfiyEmail(name!,email));
+        Get.offAll(() => VerfiyEmail(name!, email, 1));
         // Get.offAll(() => UserNavBar());
-      } else {
+      } else if (isSuccess == true && isUser == false) {
+        print('pharmacyrrrrrrrrrr');
         getPharmFromFirestore(userId: userId);
         appGet.dissmis;
-        Get.offAll(() => VerfiyEmail(name!, email));
+        Get.offAll(() => VerfiyEmail(pharmName!, email, 2));
         //    Get.offAll(() => AddAddress(name!));
         // Get.offAll(() => PharmNavBar());
       }
@@ -313,7 +298,7 @@ Future<String?> uploadImage(File? file, String? userId) async {
   String downloadUrl = '';
   try {
     final Reference reference =
-        FirebaseStorage.instance.ref().child("profileImages/$msar.png");
+        FirebaseStorage.instance.ref().child("pharmaciesImages/$msar.png");
 
     await reference.putFile(file!);
 
@@ -325,7 +310,8 @@ Future<String?> uploadImage(File? file, String? userId) async {
         .update({
       "imageUrl": downloadUrl,
     });
-    getUserFromFirestore(userId: appGet.tokenuser);
+
+    getPharmFromFirestore(userId: appGet.tokenuser);
     return downloadUrl;
   } on Exception catch (e) {
     return null;
@@ -334,4 +320,29 @@ Future<String?> uploadImage(File? file, String? userId) async {
 
 Future sendPasswordResetEmail(String email) async {
   return auth.sendPasswordResetEmail(email: email);
+}
+
+Future addAddress(String location) async {
+  try {
+    firestore.collection(usersCollectionName).doc(appGet.tokenuser).update({
+      'address': location,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future addPharmAddress(String location) async {
+  try {
+    firestore
+        .collection(pharmaciesCollectionName)
+        .doc(appGet.tokenuser)
+        .update({
+      'address': location,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
 }

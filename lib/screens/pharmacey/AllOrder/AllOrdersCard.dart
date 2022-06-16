@@ -130,7 +130,7 @@ class _AllOederCardState extends State<AllOederCard> {
                                     color: bordergrey,
                                   )),
                               child: Image.asset(
-                                'assets/images/medic.png',
+                                'assets/images/Image 29.png',
                                 fit: BoxFit.fill,
                               ),
                             ),

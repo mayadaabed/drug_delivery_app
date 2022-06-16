@@ -14,14 +14,19 @@ class PastOrders extends StatefulWidget {
 class _PastOrdersState extends State<PastOrders> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: white,
-      appBar: AppBars('Past Orders', false, 93.h, true, 65.w),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (BuildContext context, int index) {
-          return PastOrderscard();
-        },
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: white,
+        appBar: AppBars('Past Orders', false, 93.h, true, 65.w),
+        body: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+              padding: EdgeInsets.only(left: 10.w, right: 10.w),
+              child: PastOrderscard(),
+            );
+          },
+        ),
       ),
     );
   }

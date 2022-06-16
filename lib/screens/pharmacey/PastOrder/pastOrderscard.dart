@@ -25,11 +25,11 @@ class _PastOrderscardState extends State<PastOrderscard> {
           height: 127.h,
           decoration: BoxDecoration(
             color: white,
-            border: Border.all(color: bordergrey),
+            border: Border.all(color: bordergrey, width: .5.w),
             borderRadius: BorderRadius.circular(13.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: Colors.grey.withOpacity(0.2),
                 spreadRadius: 0,
                 blurRadius: 2,
                 offset: Offset(0, 3),

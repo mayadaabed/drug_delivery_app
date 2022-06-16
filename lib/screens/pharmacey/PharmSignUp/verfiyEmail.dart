@@ -9,7 +9,8 @@ import '../../user/AddAddress/AddAddress.dart';
 class VerfiyEmail extends StatefulWidget {
   final String name;
   final String email;
-  VerfiyEmail(this.name, this.email, {Key? key}) : super(key: key);
+  final int isUser;
+  VerfiyEmail(this.name, this.email, this.isUser, {Key? key}) : super(key: key);
 
   @override
   State<VerfiyEmail> createState() => _VerfiyEmailState();
@@ -53,7 +54,7 @@ class _VerfiyEmailState extends State<VerfiyEmail> {
     await user.reload();
     if (user.emailVerified) {
       timer.cancel();
-      Get.offAll(() => AddAddress(widget.name));
+      Get.offAll(() => AddAddress(widget.name, widget.isUser));
     }
   }
 }
