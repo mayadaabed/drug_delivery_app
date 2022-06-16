@@ -1,0 +1,51 @@
+import 'package:drug_delivery_application/helpers/theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'onboarding/onboarding2.dart';
+
+class Splash extends StatefulWidget {
+  const Splash({Key? key}) : super(key: key);
+
+  @override
+  State<Splash> createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+  rout() async {
+    await Future.delayed(const Duration(seconds: 3));
+    Get.offAll(() => const Onboarding2());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    rout();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset('assets/images/medicines.svg'),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              'Drug Delivery',
+              style: TextStyle(
+                  color: mainColor,
+                  fontFamily: montserratBold,
+                  fontSize: 41.sp,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
