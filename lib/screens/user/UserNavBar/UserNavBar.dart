@@ -27,82 +27,64 @@ class _UserNavBarState extends State<UserNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: listScreens[_pageIndex],
-      bottomNavigationBar: Container(
-        height: 60.h,
-        decoration: BoxDecoration(
-          color: white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.15),
-              spreadRadius: 5,
-              blurRadius: 20,
-              offset: Offset(0, 0),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _pageIndex,
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
-          elevation: 10,
-          items: [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/images/home.svg',
-                height: 22.h,
+    return SafeArea(
+      child: Scaffold(
+        body: listScreens[_pageIndex],
+        bottomNavigationBar: Container(
+          height: 60.h,
+          decoration: BoxDecoration(
+            color: white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.15),
+                spreadRadius: 5,
+                blurRadius: 20,
+                offset: Offset(0, 0),
               ),
-              // Icon(
-              //   Icons.,
-              //   color: HexColor('#838181'),
-              //   size: 22,
-              // ),
-              label: 'HOME',
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/images/shoppingcart.svg'),
-              // Icon(
-              //   Icons.,
-              //   color: HexColor('#838181'),
-              //   size: 22,
-              // ),
-              label: 'Shopping cart',
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/images/textmessage.svg'),
-              // Icon(
-              //   Icons.,
-              //   color: HexColor('#838181'),
-              //   size: 22,
-              // ),
-              label: 'Chat',
-            ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset('assets/images/person.svg'),
-              // Icon(
-              //   Icons.,
-              //   color: HexColor('#838181'),
-              //   size: 22,
-              // ),
-              label: 'My Account',
-            ),
-          ],
-          selectedItemColor: mainColor,
-          unselectedItemColor: HexColor('#838181'),
-          selectedLabelStyle: TextStyle(
-              fontSize: 10.sp,
-              fontFamily: poppins,
-              fontWeight: FontWeight.w800),
-          unselectedLabelStyle: TextStyle(
-              fontSize: 10.sp,
-              fontFamily: poppins,
-              fontWeight: FontWeight.w800),
-          onTap: (index) {
-            setState(() {
-              _pageIndex = index;
-            });
-          },
+            ],
+          ),
+          child: BottomNavigationBar(
+            currentIndex: _pageIndex,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.white,
+            elevation: 10,
+            items: [
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/images/home.svg',
+                  height: 22.h,
+                ),
+                label: 'HOME',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset('assets/images/shoppingcart.svg'),
+                label: 'Shopping cart',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset('assets/images/textmessage.svg'),
+                label: 'Chat',
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset('assets/images/person.svg'),
+                label: 'My Account',
+              ),
+            ],
+            selectedItemColor: mainColor,
+            unselectedItemColor: HexColor('#838181'),
+            selectedLabelStyle: TextStyle(
+                fontSize: 10.sp,
+                fontFamily: poppins,
+                fontWeight: FontWeight.w800),
+            unselectedLabelStyle: TextStyle(
+                fontSize: 10.sp,
+                fontFamily: poppins,
+                fontWeight: FontWeight.w800),
+            onTap: (index) {
+              setState(() {
+                _pageIndex = index;
+              });
+            },
+          ),
         ),
       ),
     );

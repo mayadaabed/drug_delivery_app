@@ -4,6 +4,7 @@ import 'package:drug_delivery_application/screens/user/CustomAppbar/CustomAppbar
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
 
 class AllPharmacey extends StatefulWidget {
@@ -24,29 +25,67 @@ class _AllPharmaceyState extends State<AllPharmacey> {
             body: ListView(
           padding: EdgeInsets.only(bottom: 50.h),
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 37.h, left: 21.w, right: 21.w),
-              child: Text(
-                'Showing 3 pharmacies',
-                style: TextStyle(
-                    fontSize: 12.sp,
-                    color: lightGrey,
-                    fontFamily: montserratBold,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                    onTap: () {
-                      Get.to(() => PharmaceyDetails());
-                    },
-                    child: AllPharmceycard());
-              },
-            )
+            StreamBuilder(
+                stream: getAllPharmacies(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return snapshot.hasData
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 37.h, left: 21.w, right: 21.w),
+                              child: Text(
+                                'Showing ${snapshot.data!.size} pharmacies',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: lightGrey,
+                                    fontFamily: montserratBold,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.size,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => PharmaceyDetails(
+                                        snapshot.data!.docs[index]['userId'].toString(),
+                                snapshot.data!.docs[index]['pharmName']
+                                    .toString(),
+                                snapshot.data!.docs[index]['imageUrl']
+                                    .toString(),
+                                snapshot.data!.docs[index]['address']
+                                    .toString(),
+                                snapshot.data!.docs[index]['phoneNumber']
+                                    .toString(),
+                                snapshot.data!.docs[index]['openHours']
+                                    .toString(),
+                                      ));
+                                    },
+                                    child: AllPharmceycard(
+                                      snapshot.data!.docs[index]['userId']
+                                          .toString(),
+                                      snapshot.data!.docs[index]['pharmName']
+                                          .toString(),
+                                      snapshot.data!.docs[index]['imageUrl']
+                                          .toString(),
+                                      snapshot.data!.docs[index]['address']
+                                          .toString(),
+                                      snapshot.data!.docs[index]['phoneNumber']
+                                          .toString(),
+                                      snapshot.data!.docs[index]['openHours']
+                                          .toString(),
+                                    ));
+                              },
+                            )
+                          ],
+                        )
+                      : Text('');
+                }),
           ],
         )),
       ),

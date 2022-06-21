@@ -1,4 +1,5 @@
 import 'package:drug_delivery_application/helpers/theme.dart';
+import 'package:drug_delivery_application/screens/chooseAccount/chooseAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,7 +29,7 @@ class _LoginState extends State<Login> {
           children: [
             InkWell(
               onTap: () {
-                Get.back();
+                Get.offAll(() => ChooseAccount());
               },
               child: Padding(
                 padding: EdgeInsets.only(left: 30.w, right: 30.w, top: 20.h),
@@ -115,10 +116,14 @@ class _LoginState extends State<Login> {
                 } else if (passwordcontroller.text.toString().isEmpty) {
                   EasyLoading.showError('Please enter your password');
                 } else {
+                  EasyLoading.show(status: 'Loading...');
                   signInWithEmailAndPassword(
-                      email: emailcontroller.text.toString(),
-                      password: passwordcontroller.text.toString(),
-                      userOrPhram: widget.isUser);
+                          email: emailcontroller.text.toString(),
+                          password: passwordcontroller.text.toString(),
+                          userOrPhram: widget.isUser)
+                      .then((value) {
+                    EasyLoading.dismiss();
+                  });
                 }
               },
               child: Padding(

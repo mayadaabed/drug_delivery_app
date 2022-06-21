@@ -2,6 +2,7 @@ import 'package:drug_delivery_application/screens/user/CustomAppbar/CustomAppbar
 import 'package:drug_delivery_application/screens/user/HomePage/cards/categoriesCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
 
 class Categories extends StatefulWidget {
@@ -32,23 +33,38 @@ class _CategoriesState extends State<Categories> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 15.h),
-                child: GridView.builder(
-                  padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.1,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 50),
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                        onTap: () {}, child: CategoriesCard());
-                  },
-                ),
-              )
+                  padding: EdgeInsets.only(top: 15.h),
+                  child: StreamBuilder(
+                      stream: getAllCategories(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return snapshot.hasData
+                            ? GridView.builder(
+                                padding:
+                                    EdgeInsets.only(left: 20.w, right: 20.w),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 1.1,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 50),
+                                itemCount: snapshot.data!.size,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                      onTap: () {},
+                                      child: CategoriesCard(
+                                        snapshot.data!.docs[index]['catId']
+                                            .toString(),
+                                        snapshot.data!.docs[index]['catName']
+                                            .toString(),
+                                        snapshot.data!.docs[index]['catImage']
+                                            .toString(),
+                                      ));
+                                },
+                              )
+                            : Text('');
+                      }))
             ],
           )),
     );

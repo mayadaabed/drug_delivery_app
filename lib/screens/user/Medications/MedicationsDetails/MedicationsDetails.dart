@@ -5,10 +5,31 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../helpers/Counter.dart';
 import '../../../../helpers/helper.dart';
 import '../../../../helpers/theme.dart';
+import '../../../../helpers/utile.dart';
 import '../appBar/AppBars.dart';
 
 class MedicationsDetails extends StatefulWidget {
-  const MedicationsDetails({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String image;
+  final String price;
+  final String description;
+  final String categoryId;
+  final String avalibilty;
+  final String howToUse;
+  final String pharmId;
+  const MedicationsDetails(
+      this.id,
+      this.name,
+      this.image,
+      this.price,
+      this.description,
+      this.categoryId,
+      this.avalibilty,
+      this.howToUse,
+      this.pharmId,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<MedicationsDetails> createState() => _MedicationsDetailsState();
@@ -45,6 +66,13 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
               ),
               child: Stack(
                 children: [
+                  Center(
+                    child: WidgetRelease.getInstance().cashed(
+                      widget.image,
+                      266,
+                      360,
+                    ),
+                  ),
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
@@ -61,13 +89,12 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                               size: 15, color: HexColor('#F03A16'))),
                     ),
                   ),
-                  Center(child: Image.asset('assets/images/strepsils.png')),
                 ],
               )),
           Padding(
             padding: EdgeInsets.only(top: 24.h, left: 20.w, right: 20.w),
             child: Text(
-              'Strespsils',
+              widget.name,
               style: TextStyle(
                   fontSize: 24.sp,
                   color: HexColor('#393939'),
@@ -78,7 +105,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 13.h, left: 20.w, right: 20.w),
             child: Text(
-              '₪10',
+              '₪${widget.price}',
               style: TextStyle(
                   color: HexColor('#196737'),
                   fontSize: 19.sp,
@@ -98,7 +125,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                       fontFamily: montserratBold),
                 ),
                 Text(
-                  'In stock',
+                  widget.avalibilty == '1' ? 'In Stock' : 'Out of Stock',
                   style: TextStyle(
                       color: HexColor('#196737'),
                       fontSize: 16.sp,
@@ -235,7 +262,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 11.h, left: 20.w, right: 20.w),
             child: Text(
-              '''Strepsils Lemon Sugar Free lozenge contains ingredients for the symptomtic relief of mouth and throat infections These ingredients also help lubricate and soothe painful areas. ''',
+              '''${widget.description}''',
               style: TextStyle(
                   fontSize: 12.sp,
                   color: HexColor('#626262'),
@@ -256,7 +283,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 11.h, left: 20.w, right: 20.w),
             child: Text(
-              '''Strepsils Lemon Sugar Free lozenge contains ingredients for the symptomtic relief of mouth and throat infections These ingredients also help lubricate and soothe painful areas. ''',
+              '''${widget.howToUse}''',
               style: TextStyle(
                   fontSize: 12.sp,
                   color: HexColor('#626262'),

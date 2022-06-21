@@ -8,10 +8,16 @@ class AppGet {
   var tokenuser = '';
   var tokentype = '';
 
+  String catId = '';
+  String catName = '';
+
+  List catIds = [];
+  List catNames = [];
+
   Map<String, dynamic> userMap = {};
-  Map<String, dynamic> PharmacyMap = {};
+  Map<String, dynamic> pharmacyMap = {};
 
   setPharmacyMap(Map<String, dynamic> map) {
-    this.PharmacyMap = map;
+    this.pharmacyMap = map;
   }
 }

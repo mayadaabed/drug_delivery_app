@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
 
 class Medications extends StatefulWidget {
-  Medications({Key? key}) : super(key: key);
+  final String cateid;
+  Medications(this.cateid, {Key? key}) : super(key: key);
 
   @override
   State<Medications> createState() => _MedicationsState();
@@ -24,38 +26,113 @@ class _MedicationsState extends State<Medications> {
         body: ListView(
           padding: EdgeInsets.only(bottom: 50.h),
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: 33.h, left: 26.w, right: 26.w),
-              child: Text(
-                'Showing items 8',
-                style: TextStyle(
-                    fontSize: 12.sp,
-                    color: lightGrey,
-                    fontFamily: montserratBold,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 15.h),
-              child: GridView.builder(
-                padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.1,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 22),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                      onTap: () {
-                        Get.to(() => MedicationsDetails());
-                      },
-                      child: MedicationsCard());
-                },
-              ),
-            )
+            StreamBuilder(
+                stream: getAllCategoriesMedications(widget.cateid),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return snapshot.hasData
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 33.h, left: 26.w, right: 26.w),
+                              child: Text(
+                                'Showing items ${snapshot.data!.size}',
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: lightGrey,
+                                    fontFamily: montserratBold,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 15.h),
+                              child: GridView.builder(
+                                padding: EdgeInsets.only(
+                                    left: 20.w, right: 20.w, bottom: 50.h),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        childAspectRatio: 1.1,
+                                        crossAxisSpacing: 10,
+                                        mainAxisSpacing: 22),
+                                itemCount: snapshot.data!.size,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => MedicationsDetails(
+                                              snapshot.data!
+                                                  .docs[index]['medicineId']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['medicineName']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['medicineImage']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['medicinePrice']
+                                                  .toString(),
+                                              snapshot
+                                                  .data!
+                                                  .docs[index]
+                                                      ['medicineDescription']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['categoryId']
+                                                  .toString(),
+                                              snapshot
+                                                  .data!
+                                                  .docs[index]
+                                                      ['medicineAvailability']
+                                                  .toString(),
+                                              snapshot
+                                                  .data!
+                                                  .docs[index]
+                                                      ['medicineHowToUse']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['pharmaceyId']
+                                                  .toString(),
+                                            ));
+                                      },
+                                      child: MedicationsCard(
+                                        snapshot.data!.docs[index]['medicineId']
+                                            .toString(),
+                                        snapshot
+                                            .data!.docs[index]['medicineName']
+                                            .toString(),
+                                        snapshot
+                                            .data!.docs[index]['medicineImage']
+                                            .toString(),
+                                        snapshot
+                                            .data!.docs[index]['medicinePrice']
+                                            .toString(),
+                                        snapshot.data!
+                                            .docs[index]['medicineDescription']
+                                            .toString(),
+                                        snapshot.data!.docs[index]['categoryId']
+                                            .toString(),
+                                        snapshot.data!
+                                            .docs[index]['medicineAvailability']
+                                            .toString(),
+                                        snapshot.data!
+                                            .docs[index]['medicineHowToUse']
+                                            .toString(),
+                                        snapshot
+                                            .data!.docs[index]['pharmaceyId']
+                                            .toString(),
+                                      ));
+                                },
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+                          ],
+                        )
+                      : Text('');
+                })
           ],
         ),
       ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../backend/firebase.dart';
+import '../helpers/utile.dart';
 import 'onboarding/onboarding2.dart';
 
 class Splash extends StatefulWidget {
@@ -22,10 +24,12 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     rout();
+    getCategories();
   }
 
   @override
   Widget build(BuildContext context) {
+    WidgetRelease().init(context);
     return Scaffold(
       body: Center(
         child: Column(

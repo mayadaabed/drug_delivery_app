@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:drug_delivery_application/backend/firebase.dart';
 import 'package:drug_delivery_application/screens/user/FilterScreen/FilterScreen.dart';
 import 'package:drug_delivery_application/screens/user/HomePage/cards/pharmaciesCard.dart';
 import 'package:drug_delivery_application/screens/user/Medications/Medications.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../helpers/theme.dart';
 import '../AllPharmacey/AllPharmacey.dart';
+import '../AllPharmacey/PharmaceyDetails/PharmaceyDetails.dart';
 import '../Categories/Categories.dart';
 import '../UserProfile/ProfileScreens/Notifications/Notifications.dart';
 import 'cards/categoriesCard.dart';
@@ -71,7 +73,6 @@ class _HomePageState extends State<HomePage> {
                       cursorColor: mainColor,
                       decoration: InputDecoration(
                         hintText: 'Search medicine available.',
-                        isDense: true,
                         filled: true,
                         fillColor: white,
                         enabledBorder: OutlineInputBorder(
@@ -130,17 +131,32 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(
             height: 200.h,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                    onTap: () {
-                      Get.to(() => Medications());
-                    },
-                    child: CategoriesCard());
-              },
-            ),
+            child: StreamBuilder(
+                stream: getAllCategories(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return snapshot.hasData
+                      ? ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data!.size,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                                onTap: () {
+                                  Get.to(() => Medications(snapshot
+                                      .data!.docs[index]['catId']
+                                      .toString()));
+                                },
+                                child: CategoriesCard(
+                                  snapshot.data!.docs[index]['catId']
+                                      .toString(),
+                                  snapshot.data!.docs[index]['catName']
+                                      .toString(),
+                                  snapshot.data!.docs[index]['catImage']
+                                      .toString(),
+                                ));
+                          },
+                        )
+                      : Text('');
+                }),
           ),
           Padding(
             padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 35.h),
@@ -175,15 +191,52 @@ class _HomePageState extends State<HomePage> {
             height: 15.h,
           ),
           SizedBox(
-            height: 200.h,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return PharmaciesCard();
-              },
-            ),
-          ),
+              height: 200.h,
+              child: StreamBuilder(
+                  stream: getAllPharmacies(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    return snapshot.hasData
+                        ? ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.size,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.to(() => PharmaceyDetails(
+                                        snapshot.data!.docs[index]['userId']
+                                            .toString(),
+                                        snapshot.data!.docs[index]['pharmName']
+                                            .toString(),
+                                        snapshot.data!.docs[index]['imageUrl']
+                                            .toString(),
+                                        snapshot.data!.docs[index]['address']
+                                            .toString(),
+                                        snapshot
+                                            .data!.docs[index]['phoneNumber']
+                                            .toString(),
+                                        snapshot.data!.docs[index]['openHours']
+                                            .toString(),
+                                      ));
+                                },
+                                child: PharmaciesCard(
+                                  snapshot.data!.docs[index]['userId']
+                                      .toString(),
+                                  snapshot.data!.docs[index]['pharmName']
+                                      .toString(),
+                                  snapshot.data!.docs[index]['imageUrl']
+                                      .toString(),
+                                  snapshot.data!.docs[index]['address']
+                                      .toString(),
+                                  snapshot.data!.docs[index]['phoneNumber']
+                                      .toString(),
+                                  snapshot.data!.docs[index]['openHours']
+                                      .toString(),
+                                ),
+                              );
+                            },
+                          )
+                        : Text('');
+                  })),
           SizedBox(
             height: 50.h,
           )

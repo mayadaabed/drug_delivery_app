@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../helpers/theme.dart';
+import '../../Login/Login.dart';
 import '../../user/UserProfile/ProfileScreens/MyOrders/MyOrders.dart';
 
 class PharmProfile extends StatefulWidget {
@@ -173,21 +174,26 @@ class _PharmProfileState extends State<PharmProfile> {
           )
         ],
       ),
-      Padding(
-        padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
-        child: Row(
-          children: [
-            SvgPicture.asset('assets/images/logout (1).svg'),
-            SizedBox(width: 16.w),
-            Text(
-              'Log Out',
-              style: TextStyle(
-                  color: HexColor('#393939'),
-                  fontSize: 14.sp,
-                  fontFamily: poppins,
-                  fontWeight: FontWeight.w600),
-            )
-          ],
+      InkWell(
+        onTap: () {
+          Get.offAll(() => Login(2));
+        },
+        child: Padding(
+          padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
+          child: Row(
+            children: [
+              SvgPicture.asset('assets/images/logout (1).svg'),
+              SizedBox(width: 16.w),
+              Text(
+                'Log Out',
+                style: TextStyle(
+                    color: HexColor('#393939'),
+                    fontSize: 14.sp,
+                    fontFamily: poppins,
+                    fontWeight: FontWeight.w600),
+              )
+            ],
+          ),
         ),
       ),
     ])));

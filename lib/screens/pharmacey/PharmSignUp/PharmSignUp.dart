@@ -26,6 +26,8 @@ class _PharmSignUpState extends State<PharmSignUp> {
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController phonecontroller = TextEditingController();
 
+  String phonee = "+970";
+
   bool visible = true;
 
   XFile? pickedImages;
@@ -83,6 +85,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
     return SafeArea(
       child: Scaffold(
         body: ListView(
+          padding: EdgeInsets.only(bottom: 50.h),
           children: [
             InkWell(
               onTap: () {
@@ -248,28 +251,77 @@ class _PharmSignUpState extends State<PharmSignUp> {
               padding: EdgeInsets.only(left: 30.w, right: 30.w, top: 20.h),
               child: Align(
                   alignment: Alignment.topLeft,
-                  child: TextField(
-                    controller: phonecontroller,
-                    cursorColor: mainColor,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: lightGrey2),
+                  child: Row(
+                    children: [
+                      Container(
+                          width: 100.w,
+                          padding: EdgeInsets.only(
+                              left: 17.w, right: 17.w, top: 20.h),
+                          child: Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                value: phonee,
+                                hint: Text(
+                                  phonee,
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      fontFamily: montserratBold,
+                                      color: black),
+                                ),
+                                items: appGet.catNames.isNotEmpty
+                                    ? (["+970", "+972"]).map((value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontFamily: montserratBold,
+                                                color: black),
+                                          ),
+                                        );
+                                      }).toList()
+                                    : null,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    phonee = newValue!;
+                                    print(phonee);
+                                  });
+                                },
+                              ),
+                            ),
+                          )),
+                      SizedBox(
+                        width: 180.w,
+                        child: TextField(
+                          controller: phonecontroller,
+                          cursorColor: mainColor,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            labelText: 'Phone Number',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: lightGrey2),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: lightGrey2),
+                            ),
+                            labelStyle: TextStyle(
+                                color: lightGrey,
+                                fontSize: 14.sp,
+                                fontFamily: montserratBold),
+                          ),
+                        ),
                       ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: lightGrey2),
-                      ),
-                      labelStyle: TextStyle(
-                          color: lightGrey,
-                          fontSize: 14.sp,
-                          fontFamily: montserratBold),
-                    ),
+                    ],
                   )),
             ),
             GestureDetector(
               onTap: () {
-                if (namecontroller.text.toString().isEmpty) {
+                if (pickedImages == null) {
+                  EasyLoading.showError('Please add pharmacy photo');
+                } else if (namecontroller.text.toString().isEmpty) {
                   EasyLoading.showError('Please enter your name');
                 } else if (emailcontroller.text.toString().isEmpty) {
                   EasyLoading.showError('Please enter your email');
@@ -282,7 +334,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                     pharmName: namecontroller.text.toString(),
                     email: emailcontroller.text.toString(),
                     password: passwordcontroller.text.toString(),
-                    mobile: phonecontroller.text.toString(),
+                    mobile: phonee + phonecontroller.text.toString(),
                     address: '',
                     isUser: false,
                     openHours: openHourscontroller.text.toString(),

@@ -2,8 +2,13 @@ import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../helpers/utile.dart';
+
 class CategoriesCard extends StatefulWidget {
-  CategoriesCard({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String image;
+  CategoriesCard(this.id, this.name, this.image, {Key? key}) : super(key: key);
 
   @override
   State<CategoriesCard> createState() => _CategoriesCardState();
@@ -21,7 +26,11 @@ class _CategoriesCardState extends State<CategoriesCard> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Image.asset('assets/images/medicines.png'),
+          WidgetRelease.getInstance().cashed(
+            widget.image,
+            120,
+            120,
+          ),
           SizedBox(height: 20.h),
           Container(
             height: 40.h,
@@ -32,7 +41,7 @@ class _CategoriesCardState extends State<CategoriesCard> {
                     fit: BoxFit.fill)),
             child: Center(
               child: Text(
-                'Medication',
+                widget.name,
                 style: TextStyle(
                     color: white, fontSize: 15.sp, fontFamily: montserratBold),
               ),

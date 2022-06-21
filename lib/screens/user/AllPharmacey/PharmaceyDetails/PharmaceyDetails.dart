@@ -3,6 +3,7 @@ import 'package:drug_delivery_application/screens/user/HomePage/cards/categories
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../../backend/firebase.dart';
 import '../../../../helpers/theme.dart';
 import '../../CustomAppbar/CustomAppbar.dart';
 import '../../Medications/Card/RelatedProductsCard.dart';
@@ -10,7 +11,16 @@ import 'DetailsCard.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class PharmaceyDetails extends StatefulWidget {
-  PharmaceyDetails({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String image;
+  final String address;
+  final String phone;
+  final String openHours;
+  PharmaceyDetails(
+      this.id, this.name, this.image, this.address, this.phone, this.openHours,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<PharmaceyDetails> createState() => _PharmaceyDetailsState();
@@ -32,14 +42,19 @@ class _PharmaceyDetailsState extends State<PharmaceyDetails> {
         backgroundColor: white,
         appBar: const CustomAppbar(true),
         body: ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
-          DetailsCard(),
+          DetailsCard(
+            widget.name,
+            widget.image,
+            widget.address,
+            widget.phone,
+          ),
           Padding(
             padding: EdgeInsets.only(top: 22.h, left: 29.w, right: 19.w),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Musallam pharamcy',
+                  widget.name,
                   style: TextStyle(
                       fontSize: 16.sp,
                       color: mainGreen,
@@ -102,7 +117,7 @@ class _PharmaceyDetailsState extends State<PharmaceyDetails> {
                         fontWeight: FontWeight.w500,
                         color: HexColor('#666769'))),
                 SizedBox(width: 2.w),
-                Text('Al-Wahda Street',
+                Text(widget.address,
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontFamily: montserratBold,
@@ -121,7 +136,7 @@ class _PharmaceyDetailsState extends State<PharmaceyDetails> {
                         fontWeight: FontWeight.w500,
                         color: HexColor('#666769'))),
                 SizedBox(width: 2.w),
-                Text('Open 24 hours',
+                Text(widget.openHours,
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontFamily: montserratBold,
@@ -184,16 +199,27 @@ class _PharmaceyDetailsState extends State<PharmaceyDetails> {
           ),
           SizedBox(height: 20.h),
           SizedBox(
-            height: 180.h,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return CategoriesCard();
-              },
-            ),
-          ),
+              height: 180.h,
+              child: StreamBuilder(
+                  stream: getAllCategories(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    return snapshot.hasData
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.size,
+                            itemBuilder: (context, index) {
+                              return CategoriesCard(
+                                snapshot.data!.docs[index]['catId'].toString(),
+                                snapshot.data!.docs[index]['catName']
+                                    .toString(),
+                                snapshot.data!.docs[index]['catImage']
+                                    .toString(),
+                              );
+                            },
+                          )
+                        : Text('');
+                  })),
         ]),
       ),
     );

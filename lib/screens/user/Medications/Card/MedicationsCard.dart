@@ -3,9 +3,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../helpers/theme.dart';
+import '../../../../helpers/utile.dart';
 
 class MedicationsCard extends StatefulWidget {
-  MedicationsCard({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String image;
+  final String price;
+  final String description;
+  final String categoryId;
+  final String avalibilty;
+  final String howToUse;
+  final String pharmId;
+
+  MedicationsCard(this.id, this.name, this.image, this.price, this.description,
+      this.categoryId, this.avalibilty, this.howToUse, this.pharmId,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<MedicationsCard> createState() => _MedicationsCardState();
@@ -31,11 +45,17 @@ class _MedicationsCardState extends State<MedicationsCard> {
           color: HexColor('#FAFBFB')),
       child: Column(
         children: [
-          SizedBox(height: 10.h),
-          Image.asset('assets/images/medicines.png'),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: WidgetRelease.getInstance().cashed(
+              widget.image,
+              120,
+              141,
+            ),
+          ),
           SizedBox(height: 10.h),
           Text(
-            'Pandol cold & Flu',
+            widget.name,
             style: TextStyle(
                 color: HexColor('#666769'),
                 fontSize: 11.sp,
@@ -43,7 +63,7 @@ class _MedicationsCardState extends State<MedicationsCard> {
           ),
           SizedBox(height: 10.h),
           Text(
-            '₪12.00',
+            '₪${widget.price}',
             style: TextStyle(
                 color: HexColor('#196737'),
                 fontSize: 11.sp,

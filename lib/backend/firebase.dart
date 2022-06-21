@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drug_delivery_application/backend/AppGet.dart';
-import 'package:drug_delivery_application/screens/VerfiyAccount/VerfiyAccount.dart';
 import 'package:drug_delivery_application/screens/pharmacey/PharmNavBar/PharmNavBar.dart';
 import 'package:drug_delivery_application/screens/user/UserNavBar/UserNavBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,15 +11,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-
 import '../screens/pharmacey/PharmSignUp/verfiyEmail.dart';
-import '../screens/user/AddAddress/AddAddress.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 DatabaseReference dbRef =
     FirebaseDatabase.instance.reference().child("userNames");
+FieldValue timestamp = FieldValue.serverTimestamp();
 
 final AppGet appGet = Get.put(AppGet());
 
@@ -31,6 +29,8 @@ String userIds = "";
 
 String usersCollectionName = 'Users';
 String pharmaciesCollectionName = 'Pharmacies';
+String pharmaciesProductsCollectionName = 'Products';
+String categoriesCollectionName = 'categories';
 
 savetoken(String token, int type) async {
   final prefs = await SharedPreferences.getInstance();
@@ -52,7 +52,6 @@ Future<Map?> signInWithEmailAndPassword(
     {required String email,
     required String password,
     required int userOrPhram}) async {
-  EasyLoading.show(status: 'Loading...');
   try {
     UserCredential userCredential =
         await auth.signInWithEmailAndPassword(email: email, password: password);
@@ -69,10 +68,10 @@ Future<Map?> signInWithEmailAndPassword(
       }
       if (appGet.logornot == 1) {
       } else {
-        appGet.dissmis;
         userOrPhram == 1
             ? Get.offAll(() => const UserNavBar())
             : Get.offAll(() => const PharmNavBar());
+        appGet.dissmis;
       }
       return map;
     } else {
@@ -105,7 +104,6 @@ Future<Map<String, dynamic>> getUserFromFirestore(
   print('this i need' + response.toString());
   if (response == null) {
     appGet.logornot = 1;
-    appGet.dissmis;
   } else {
     savetoken(userIds, 1);
   }
@@ -124,12 +122,11 @@ Future<Map<String, dynamic>> getPharmFromFirestore(
   print('this i need' + response.toString());
   if (response == null) {
     appGet.logornot = 1;
-    appGet.dissmis;
   } else {
     savetoken(userIds, 2);
   }
-  appGet.PharmacyMap = response;
-  print('this i map' + appGet.PharmacyMap.toString());
+  appGet.pharmacyMap = response;
+  print('this i map' + appGet.pharmacyMap.toString());
   return response;
 }
 
@@ -241,8 +238,6 @@ Future<bool> saveUserInFirestore(
     required String mobile,
     required String address,
     required String userId}) async {
-  FieldValue timestamp = FieldValue.serverTimestamp();
-
   try {
     await firestore.collection(usersCollectionName).doc(userId).set({
       'userName': name,
@@ -267,8 +262,6 @@ Future<bool> savePharmacyInFirestore(
     required String userId,
     required String pharmName,
     required String openHours}) async {
-  FieldValue timestamp = FieldValue.serverTimestamp();
-
   try {
     await firestore.collection(pharmaciesCollectionName).doc(userId).set({
       'email': email,
@@ -344,5 +337,100 @@ Future addPharmAddress(String location) async {
     return true;
   } on Exception catch (e) {
     return false;
+  }
+}
+
+Future addMedicine(
+    File image,
+    String name,
+    String price,
+    String? availability,
+    String? description,
+    String? howToUse,
+    String cateid,
+    String cateName) async {
+  try {
+    String msar = Uuid().v1();
+    String id = Uuid().v4();
+    print('msar' + msar);
+    print('msaruser' + appGet.tokenuser.toString());
+    String downloadUrl = '';
+
+    final Reference reference =
+        FirebaseStorage.instance.ref().child("medicinesImages/$msar.png");
+
+    await reference.putFile(image);
+
+    downloadUrl = await reference.getDownloadURL();
+
+    await firestore.collection(pharmaciesProductsCollectionName).doc().set({
+      'medicineImage': downloadUrl,
+      'medicineName': name,
+      'medicinePrice': price,
+      'medicineAvailability': availability,
+      'medicineDescription': description,
+      'medicineHowToUse': howToUse,
+      'pharmaceyId': appGet.tokenuser,
+      'createdDate': timestamp,
+      'medicineId': id,
+      'categoryId': cateid,
+      'categoryName': cateName,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future getCategories() async {
+  appGet.catNames.clear();
+  appGet.catIds.clear();
+  var documentSnapshot =
+      await firestore.collection(categoriesCollectionName).get();
+  documentSnapshot.docs.forEach((document) {
+    if (document['catId'] != null) {
+      print(document['catId'].toString());
+      appGet.catId = document['catId'].toString();
+      appGet.catIds.add(appGet.catId);
+    }
+    if (document['catName'] != null) {
+      print(document['catName'].toString());
+      appGet.catName = document['catName'].toString();
+      appGet.catNames.add(appGet.catName);
+    }
+  });
+  print(appGet.catNames.toString());
+  return true;
+}
+
+Stream<QuerySnapshot>? getAllCategories() {
+  try {
+    Stream<QuerySnapshot> stream =
+        firestore.collection(categoriesCollectionName).snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Stream<QuerySnapshot>? getAllPharmacies() {
+  try {
+    Stream<QuerySnapshot> stream =
+        firestore.collection(pharmaciesCollectionName).snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Stream<QuerySnapshot>? getAllCategoriesMedications(String categoryId) {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(pharmaciesProductsCollectionName)
+        .where('categoryId', isEqualTo: categoryId)
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
   }
 }
