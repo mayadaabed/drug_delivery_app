@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../helpers/theme.dart';
+import '../../../../helpers/utile.dart';
 
 class OrderCard extends StatefulWidget {
-  OrderCard({Key? key}) : super(key: key);
+  final String image;
+  final String price;
+  final String qty;
+  final String name;
+
+  OrderCard(this.image, this.price, this.qty, this.name, {Key? key})
+      : super(key: key);
 
   @override
   State<OrderCard> createState() => _OrderCardState();
@@ -26,18 +33,25 @@ class _OrderCardState extends State<OrderCard> {
               borderRadius: BorderRadius.circular(12.w),
             ),
             child: Center(
-              child: Image.asset('assets/images/med.png'),
+              child: WidgetRelease.getInstance().cashed(
+                widget.image,
+                74,
+                74,
+              ),
             ),
           ),
+          SizedBox(
+            width: 10.w,
+          ),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('Strepsils',
+            Text(widget.name,
                 style: TextStyle(
                     fontSize: 14.sp,
                     color: black1,
                     fontFamily: montserratBold,
                     fontWeight: FontWeight.w600)),
             SizedBox(height: 5.h),
-            Text('10₪',
+            Text('${widget.price}₪',
                 style: TextStyle(
                     fontSize: 16.sp,
                     color: mainGreen,
@@ -52,7 +66,7 @@ class _OrderCardState extends State<OrderCard> {
                   border: Border.all(color: lightGrey2, width: 1.w),
                 ),
                 child: Center(
-                    child: Text('1',
+                    child: Text(widget.qty,
                         style: TextStyle(
                             fontSize: 10.sp,
                             color: black1,

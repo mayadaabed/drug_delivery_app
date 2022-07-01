@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../Medications/appBar/AppBars.dart';
 import 'MyOrdersCard.dart';
@@ -16,7 +17,7 @@ class _MyOrdersState extends State<MyOrders> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBars('My Orders', false, 93, true, 98),
+        appBar: AppBars('myorders'.tr, false, 93, true, 98),
         body: ListView.builder(
           padding: EdgeInsets.only(bottom: 50.h),
           itemCount: 4,

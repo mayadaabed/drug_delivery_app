@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:hexcolor/hexcolor.dart';
-
+import '../../../../backend/firebase.dart';
 import '../../../../helpers/theme.dart';
 
 class AppBars extends StatefulWidget implements PreferredSizeWidget {
@@ -49,6 +48,8 @@ class _AppBarsState extends State<AppBars> {
                     child: GestureDetector(
                         onTap: () {
                           Get.back();
+                          appGet.cartItemId = '';
+                          appGet.qty = 0;
                         },
                         child: SvgPicture.asset(
                           'assets/images/Shape.svg',
@@ -70,45 +71,48 @@ class _AppBarsState extends State<AppBars> {
                   ),
                 ],
               ),
-              Visibility(
-                visible: widget.visible,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
-                  child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Material(
-                        borderRadius: BorderRadius.circular(10),
-                        elevation: 3.0,
-                        shadowColor: black,
-                        child: TextField(
-                          cursorColor: mainColor,
-                          decoration: InputDecoration(
-                            hintText: 'Search medicine available.',
-                            isDense: true,
-                            filled: true,
-                            fillColor: white,
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: grey2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            suffixIcon: Icon(
-                              Icons.tune_rounded,
-                              color: HexColor('#196737'),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            hintStyle: TextStyle(
-                                color: HexColor('#196737'),
-                                fontSize: 14.sp,
-                                fontFamily: montserratBold),
-                          ),
-                        ),
-                      )),
-                ),
-              ),
+              // Visibility(
+              //   visible: widget.visible,
+              //   child: Padding(
+              //     padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
+              //     child: Align(
+              //         alignment: Alignment.topLeft,
+              //         child: Material(
+              //           borderRadius: BorderRadius.circular(10),
+              //           elevation: 3.0,
+              //           shadowColor: black,
+              //           child: TextField(
+              //             cursorColor: mainColor,
+              //             decoration: InputDecoration(
+              //               hintText: 'Search medicine available.',
+              //               isDense: true,
+              //               filled: true,
+              //               fillColor: white,
+              //               enabledBorder: OutlineInputBorder(
+              //                 borderSide: BorderSide(color: grey2),
+              //                 borderRadius: BorderRadius.circular(10),
+              //               ),
+              //               suffixIcon: Icon(
+              //                 Icons.tune_rounded,
+              //                 color: HexColor('#196737'),
+              //               ),
+              //               focusedBorder: OutlineInputBorder(
+              //                 borderSide:
+              //                     const BorderSide(color: Colors.transparent),
+              //                 borderRadius: BorderRadius.circular(10),
+              //               ),
+              //               hintStyle: TextStyle(
+              //                   color: HexColor('#196737'),
+              //                   fontSize: 14.sp,
+              //                   fontFamily: montserratBold),
+              //             ),
+              //           ),
+              //         )),
+              //   ),
+              // ),
+           
+           
+           
             ],
           ),
         ),

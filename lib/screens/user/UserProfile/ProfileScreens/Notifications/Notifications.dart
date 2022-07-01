@@ -1,6 +1,7 @@
 import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import '../../../Medications/appBar/AppBars.dart';
 import 'NotificationsCard.dart';
@@ -22,7 +23,7 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBars('Notifcation', false, 93, true, 98),
+        appBar: AppBars('notifications'.tr, false, 93, true, 98),
         body: GroupedListView<dynamic, String>(
           elements: _elements,
           groupBy: (element) => element['group'],

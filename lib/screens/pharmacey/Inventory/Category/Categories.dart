@@ -2,7 +2,7 @@ import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:drug_delivery_application/screens/user/HomePage/cards/categoriesCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:get/get.dart';
 import '../../../../backend/firebase.dart';
 
 class PharmCategories extends StatefulWidget {
@@ -29,7 +29,7 @@ class _PharmCategoriesState extends State<PharmCategories> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'All Categories',
+                    'allcate'.tr,
                     style: TextStyle(
                         fontSize: 16.sp,
                         color: mainColor,
@@ -39,7 +39,7 @@ class _PharmCategoriesState extends State<PharmCategories> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("Edit",
+                      Text("edit".tr,
                           style: TextStyle(
                               color: mainColor, fontWeight: FontWeight.bold)),
                       SizedBox(

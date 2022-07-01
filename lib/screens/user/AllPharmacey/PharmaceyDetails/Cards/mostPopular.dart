@@ -2,9 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../helpers/theme.dart';
+import '../../../../../helpers/utile.dart';
 
 class MostPopular extends StatefulWidget {
-  MostPopular({Key? key}) : super(key: key);
+  final String id;
+  final String name;
+  final String image;
+  final String price;
+  final String description;
+  final String categoryId;
+  final String avalibilty;
+  final String howToUse;
+  final String pharmId;
+  MostPopular(this.id, this.name, this.image, this.price, this.description,
+      this.categoryId, this.avalibilty, this.howToUse, this.pharmId,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<MostPopular> createState() => _MostPopularState();
@@ -24,13 +37,17 @@ class _MostPopularState extends State<MostPopular> {
       ]),
       child: Column(
         children: [
-          Image.asset(
-            'assets/images/strepsils.png',
-            height: 70.h,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: WidgetRelease.getInstance().cashed(
+              widget.image,
+              70,
+              70,
+            ),
           ),
           SizedBox(height: 2.h),
           Text(
-            'Pandol cold & Flu',
+            widget.name,
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 11.sp,
@@ -40,7 +57,7 @@ class _MostPopularState extends State<MostPopular> {
           ),
           SizedBox(height: 2.h),
           Text(
-            '₪10',
+            '₪${widget.price}',
             style: TextStyle(
                 color: HexColor('#196737'),
                 fontSize: 11.sp,

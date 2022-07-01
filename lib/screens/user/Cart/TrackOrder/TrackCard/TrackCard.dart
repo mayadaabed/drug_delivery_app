@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../helpers/theme.dart';
@@ -28,7 +29,7 @@ class _TrackCardState extends State<TrackCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Order #3455',
+              '${'order'.tr} #3455',
               style: TextStyle(
                 color: mainGreen,
                 fontSize: 16.sp,
@@ -60,7 +61,7 @@ class _TrackCardState extends State<TrackCard> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '3 Items : Delivery Time  30 Min',
+                    '3 ${'items'.tr} : ${'deliverytime'.tr}  30 Min',
                     style: TextStyle(
                         color: HexColor('#A8A8A8'),
                         fontSize: 12.sp,
@@ -82,7 +83,7 @@ class _TrackCardState extends State<TrackCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Home Adress',
+                    'homeaddress'.tr,
                     style: TextStyle(
                         color: black,
                         fontSize: 14.sp,

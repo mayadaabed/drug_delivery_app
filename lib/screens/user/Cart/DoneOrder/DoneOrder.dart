@@ -38,7 +38,7 @@ class _DoneOrderState extends State<DoneOrder> {
         SizedBox(height: 30.h),
         Center(
           child: Text(
-            'Your Order is on the way',
+            'yourorder'.tr,
             style: TextStyle(
                 color: mainColor,
                 fontSize: 17.sp,
@@ -49,8 +49,7 @@ class _DoneOrderState extends State<DoneOrder> {
         SizedBox(height: 12.h),
         Center(
           child: Text(
-            '''your order was placed successfully
-For more details track order''',
+            'yourorderwasplaced'.tr,
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: HexColor('#A8A8A8'),
@@ -71,7 +70,7 @@ For more details track order''',
                   borderRadius: BorderRadius.circular(5), color: mainColor),
               child: Center(
                   child: Text(
-                'Track Order',
+                'trackorder'.tr,
                 style: TextStyle(
                   color: white,
                   fontSize: 13.sp,
@@ -87,7 +86,7 @@ For more details track order''',
           },
           child: Center(
               child: Text(
-            'Rate us',
+            'rateus'.tr,
             style: TextStyle(
               color: mainColor,
               decoration: TextDecoration.underline,

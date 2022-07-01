@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../../backend/firebase.dart';
 import '../../../../helpers/theme.dart';
 import '../../Medications/appBar/AppBars.dart';
 
@@ -13,11 +16,12 @@ class ChangeAddress extends StatefulWidget {
 }
 
 class _ChangeAddressState extends State<ChangeAddress> {
+  TextEditingController addressController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: white,
-        appBar: AppBars('Address', false, 93, true, 101),
+        appBar: AppBars('address'.tr, false, 93, true, 101),
         body: ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
           Padding(
             padding: EdgeInsets.only(top: 37.h, left: 20.w, right: 20.w),
@@ -28,20 +32,21 @@ class _ChangeAddressState extends State<ChangeAddress> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Home Adress',
+                    'homeaddress'.tr,
                     style: TextStyle(
                         color: black,
                         fontSize: 14.sp,
                         fontFamily: poppins,
                         fontWeight: FontWeight.w600),
                   ),
-                  Text(
-                    '''Gaza, Al Remal -Ahmed Abd El Azeez
-Street next to AlKenz Mosque''',
-                    style: TextStyle(
-                        color: HexColor('#A8A8A8'),
-                        fontSize: 12.sp,
-                        fontFamily: poppins),
+                  Obx(
+                    () => Text(
+                      appGet.userMap['address'],
+                      style: TextStyle(
+                          color: HexColor('#A8A8A8'),
+                          fontSize: 12.sp,
+                          fontFamily: poppins),
+                    ),
                   ),
                 ],
               ),
@@ -50,7 +55,7 @@ Street next to AlKenz Mosque''',
           Padding(
             padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
             child: Text(
-              'Change Address',
+              'changeaddress'.tr,
               style: TextStyle(
                   color: black,
                   fontSize: 16.sp,
@@ -63,6 +68,7 @@ Street next to AlKenz Mosque''',
             child: Align(
                 alignment: Alignment.topLeft,
                 child: TextField(
+                  controller: addressController,
                   cursorColor: mainColor,
                   maxLines: 5,
                   decoration: InputDecoration(
@@ -78,7 +84,20 @@ Street next to AlKenz Mosque''',
                 )),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              if (addressController.text.isEmpty) {
+                EasyLoading.showError("enteraddress".tr);
+              } else {
+                EasyLoading.show(status: "loading".tr);
+                updateAddress(addressController.text.toString()).then((value) {
+                  if (value == true) {
+                    EasyLoading.dismiss();
+                    EasyLoading.showSuccess("updatedsuccess".tr);
+                    getUserFromFirestore(userId: userIds, pass: appGet.pass);
+                  }
+                });
+              }
+            },
             child: Container(
                 height: 52.h,
                 width: 224.h,
@@ -87,7 +106,7 @@ Street next to AlKenz Mosque''',
                     borderRadius: BorderRadius.circular(5), color: mainColor),
                 child: Center(
                     child: Text(
-                  'Change Address',
+                  'changeaddress'.tr,
                   style: TextStyle(
                     color: white,
                     fontSize: 14.sp,

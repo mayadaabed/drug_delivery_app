@@ -1,11 +1,11 @@
 import 'package:drug_delivery_application/screens/user/AllPharmacey/AllPharmaceyCard/AllPharmacyCard.dart';
 import 'package:drug_delivery_application/screens/user/AllPharmacey/PharmaceyDetails/PharmaceyDetails.dart';
-import 'package:drug_delivery_application/screens/user/CustomAppbar/CustomAppbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
+import '../Medications/appBar/AppBars.dart';
 
 class AllPharmacey extends StatefulWidget {
   AllPharmacey({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class _AllPharmaceyState extends State<AllPharmacey> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: white,
-        appBar: const CustomAppbar(true),
+        appBar: AppBars('allpharm'.tr, false, 93, true, 80),
         body: Scaffold(
             body: ListView(
           padding: EdgeInsets.only(bottom: 50.h),
@@ -36,7 +36,7 @@ class _AllPharmaceyState extends State<AllPharmacey> {
                               padding: EdgeInsets.only(
                                   top: 37.h, left: 21.w, right: 21.w),
                               child: Text(
-                                'Showing ${snapshot.data!.size} pharmacies',
+                                '${'showing'.tr} ${snapshot.data!.size} ${'pharmacies'.tr}',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontSize: 12.sp,
@@ -53,18 +53,26 @@ class _AllPharmaceyState extends State<AllPharmacey> {
                                 return GestureDetector(
                                     onTap: () {
                                       Get.to(() => PharmaceyDetails(
-                                        snapshot.data!.docs[index]['userId'].toString(),
-                                snapshot.data!.docs[index]['pharmName']
-                                    .toString(),
-                                snapshot.data!.docs[index]['imageUrl']
-                                    .toString(),
-                                snapshot.data!.docs[index]['address']
-                                    .toString(),
-                                snapshot.data!.docs[index]['phoneNumber']
-                                    .toString(),
-                                snapshot.data!.docs[index]['openHours']
-                                    .toString(),
-                                      ));
+                                            snapshot.data!.docs[index]['userId']
+                                                .toString(),
+                                            snapshot
+                                                .data!.docs[index]['pharmName']
+                                                .toString(),
+                                            snapshot
+                                                .data!.docs[index]['imageUrl']
+                                                .toString(),
+                                            snapshot
+                                                .data!.docs[index]['address']
+                                                .toString(),
+                                            snapshot.data!
+                                                .docs[index]['phoneNumber']
+                                                .toString(),
+                                            snapshot
+                                                .data!.docs[index]['openHours']
+                                                .toString(),
+                                            snapshot.data!.docs[index]
+                                                ['rating'],
+                                          ));
                                     },
                                     child: AllPharmceycard(
                                       snapshot.data!.docs[index]['userId']

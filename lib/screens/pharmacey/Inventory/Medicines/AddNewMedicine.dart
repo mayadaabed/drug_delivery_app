@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:collection/collection.dart';
@@ -24,7 +25,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
   TextEditingController pricecontroller = TextEditingController();
   TextEditingController desccontroller = TextEditingController();
   TextEditingController howToUseccontroller = TextEditingController();
-  String _category = 'Category';
+  String _category = 'category'.tr;
   String categoryId = '1';
   bool _switchValue = true;
 
@@ -37,7 +38,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
-                "Image source",
+                "imagesource".tr,
                 textAlign: TextAlign.start,
                 style: TextStyle(
                     fontSize: 22.sp, fontFamily: montserratBold, color: black),
@@ -45,7 +46,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
               actions: <Widget>[
                 MaterialButton(
                   child: Text(
-                    "Camera",
+                    "camera".tr,
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: montserratBold,
@@ -57,7 +58,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                 ),
                 MaterialButton(
                   child: Text(
-                    "Gallery",
+                    "gallery".tr,
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: montserratBold,
@@ -84,7 +85,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: white,
-            appBar: AppBars('Add New', false, 93, true, 85),
+            appBar: AppBars('addnew'.tr, false, 93, true, 85),
             body: ListView(
               padding: EdgeInsets.only(bottom: 50.h),
               children: [
@@ -133,7 +134,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Availability",
+                        "availabilty".tr,
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 17.sp),
                       ),
@@ -164,7 +165,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5)),
-                          labelText: "Product Name"),
+                          labelText: "medname".tr),
                     ),
                     SizedBox(height: 10.h),
                     TextField(
@@ -173,7 +174,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5)),
-                          labelText: "price"),
+                          labelText: "price".tr),
                     ),
                     SizedBox(height: 10.h),
                     Container(
@@ -223,7 +224,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5)),
-                          labelText: "Description"),
+                          labelText: "description".tr),
                     ),
                     SizedBox(height: 10.h, width: 10.w),
                     TextField(
@@ -232,25 +233,25 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5)),
-                          labelText: "How to use"),
+                          labelText: "howtouse".tr),
                     ),
                     SizedBox(height: 20.h, width: 20.w),
                     RaisedButton.icon(
                       onPressed: () {
                         if (proNamecontroller.text.isEmpty) {
-                          EasyLoading.showError('Please enter medicine name');
+                          EasyLoading.showError('pkeasemedicine'.tr);
                         } else if (pricecontroller.text.isEmpty) {
-                          EasyLoading.showError('Please enter price');
+                          EasyLoading.showError('pleaseprice'.tr);
                         } else if (categoryId == null) {
-                          EasyLoading.showError('Please select category');
+                          EasyLoading.showError('pleasecategory'.tr);
                         } else if (desccontroller.text.isEmpty) {
-                          EasyLoading.showError('Please enter description');
+                          EasyLoading.showError('pleasedescrp'.tr);
                         } else if (howToUseccontroller.text.isEmpty) {
-                          EasyLoading.showError('Please enter how to use');
+                          EasyLoading.showError('pleasehow'.tr);
                         } else if (pickedImages == null) {
-                          EasyLoading.showError('Please select image');
+                          EasyLoading.showError('pleaseimage'.tr);
                         } else {
-                          EasyLoading.show(status: 'Uploading...');
+                          EasyLoading.show(status: 'uploading'.tr);
                           addMedicine(
                                   File(pickedImages!.path),
                                   proNamecontroller.text.toString(),
@@ -259,13 +260,12 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                                   desccontroller.text.toString(),
                                   howToUseccontroller.text.toString(),
                                   categoryId,
-                                  ''
-                                  )
+                                  _category,
+                                  appGet.pharmacyMap['pharmName'].toString())
                               .then((value) {
                             if (value) {
                               EasyLoading.dismiss();
-                              EasyLoading.showSuccess(
-                                  'Medicine added successfully');
+                              EasyLoading.showSuccess('medicineadded'.tr);
                             }
                           });
                         }
@@ -273,8 +273,8 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                       shape: const RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
-                      label: const Text(
-                        'Add',
+                      label: Text(
+                        'add'.tr,
                         style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(

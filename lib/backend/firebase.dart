@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drug_delivery_application/backend/AppGet.dart';
@@ -11,7 +12,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import '../screens/onboarding/onboarding2.dart';
 import '../screens/pharmacey/PharmSignUp/verfiyEmail.dart';
+
+final AppGet appGet = Get.put(AppGet());
 
 FirebaseAuth auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -19,8 +23,6 @@ FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 DatabaseReference dbRef =
     FirebaseDatabase.instance.reference().child("userNames");
 FieldValue timestamp = FieldValue.serverTimestamp();
-
-final AppGet appGet = Get.put(AppGet());
 
 var uuid = const Uuid();
 var v4 = uuid.v4();
@@ -31,21 +33,90 @@ String usersCollectionName = 'Users';
 String pharmaciesCollectionName = 'Pharmacies';
 String pharmaciesProductsCollectionName = 'Products';
 String categoriesCollectionName = 'categories';
+String cartCollection = 'cart';
+String ordersCollection = 'orders';
+String favouriteCollection = 'Favourite';
+String chatCollectionName = 'chat';
+String userRateCollectionName = 'rates';
 
-savetoken(String token, int type) async {
+savetoken(String token, int type, String password) async {
   final prefs = await SharedPreferences.getInstance();
   final key = 'token';
   final keyPharmacyorUser = 'type';
+  final pass = 'password';
+  final email = 'email';
   final value = token;
   final valtyp = type;
+  final valuePass = pass;
+  final valemail = email;
 
   appGet.tokenuser = token;
   appGet.tokentype = type.toString();
+  appGet.pass = pass.toString();
+  appGet.email = email.toString();
   await prefs.setString(key, value);
+  await prefs.setString(pass, valuePass);
+  await prefs.setString(email, valemail);
 
   await prefs.setString(keyPharmacyorUser, valtyp.toString());
   print('trpesave' + appGet.tokentype.toString());
   print('tokensave' + appGet.tokenuser.toString());
+  print('tokensave' + appGet.email.toString());
+}
+
+kiltoken() async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = 'token';
+  final type = 'type';
+  final pass = 'password';
+  final email = 'email';
+  final value = 'null';
+  appGet.tokenuser = '';
+  appGet.tokentype = '';
+  appGet.pass = '';
+  appGet.email = '';
+  await prefs.setString(token, value);
+  await prefs.setString(type, value);
+  await prefs.setString(pass, value);
+  await prefs.setString(email, value);
+  print('trpekill' + appGet.tokentype.toString());
+  print('tokenkill' + appGet.tokenuser.toString());
+  print('tokenkill' + appGet.pass.toString());
+  print('tokenkill' + appGet.email.toString());
+}
+
+gettoken() async {
+  var tokens;
+  var typ;
+  var pass;
+  var emai;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  tokens = prefs.get('token');
+  typ = prefs.get('type');
+  pass = prefs.get('password');
+  emai = prefs.get('email');
+  appGet.tokenuser = tokens.toString();
+  appGet.tokentype = typ.toString();
+  userIds = tokens.toString();
+  appGet.pass = pass.toString();
+  appGet.email = emai.toString();
+
+  print('trpesmo' + appGet.tokentype.toString());
+  print('tokenmo' + appGet.tokenuser.toString());
+  print('tokenmo' + appGet.pass.toString());
+  print('tokenmo' + appGet.email.toString());
+  if (appGet.tokenuser.toString() == 'null') {
+    Get.offAll(() => const Onboarding2());
+  } else {
+    if (appGet.tokentype == '1') {
+      Get.offAll(() => const UserNavBar());
+      getUserFromFirestore(userId: appGet.tokenuser, pass: appGet.pass);
+    } else if (appGet.tokentype == '2') {
+      Get.offAll(() => const PharmNavBar());
+      getPharmFromFirestore(userId: appGet.tokenuser, pass: appGet.pass);
+    }
+    userIds = appGet.tokenuser;
+  }
 }
 
 Future<Map?> signInWithEmailAndPassword(
@@ -60,10 +131,10 @@ Future<Map?> signInWithEmailAndPassword(
 
       Map map;
       if (userOrPhram == 1) {
-        map = await getUserFromFirestore(userId: userIds);
+        map = await getUserFromFirestore(userId: userIds, pass: password);
         appGet.userorpharm = 1;
       } else {
-        map = await getPharmFromFirestore(userId: userIds);
+        map = await getPharmFromFirestore(userId: userIds, pass: password);
         appGet.userorpharm = 2;
       }
       if (appGet.logornot == 1) {
@@ -82,9 +153,9 @@ Future<Map?> signInWithEmailAndPassword(
   } on FirebaseAuthException catch (e) {
     appGet.dissmis;
     if (e.code == 'user-not-found') {
-      EasyLoading.showError('Invalid Email');
+      EasyLoading.showError('invaildemail'.tr);
     } else if (e.code == 'wrong-password') {
-      EasyLoading.showError('Invalid Password');
+      EasyLoading.showError('invaildpassword'.tr);
     }
     return null;
   } catch (e) {
@@ -95,7 +166,7 @@ Future<Map?> signInWithEmailAndPassword(
 }
 
 Future<Map<String, dynamic>> getUserFromFirestore(
-    {required String userId}) async {
+    {required String userId, required String pass}) async {
   print(userIds.toString());
   DocumentSnapshot documentSnapshot =
       await firestore.collection(usersCollectionName).doc(userIds).get();
@@ -105,15 +176,15 @@ Future<Map<String, dynamic>> getUserFromFirestore(
   if (response == null) {
     appGet.logornot = 1;
   } else {
-    savetoken(userIds, 1);
+    savetoken(userIds, 1, pass);
   }
-  appGet.userMap = response;
+  appGet.userMap.value = response;
   print('this i map' + appGet.userMap.toString());
   return response;
 }
 
 Future<Map<String, dynamic>> getPharmFromFirestore(
-    {required String userId}) async {
+    {required String userId, required String pass}) async {
   print(userIds.toString());
   DocumentSnapshot documentSnapshot =
       await firestore.collection(pharmaciesCollectionName).doc(userIds).get();
@@ -123,9 +194,9 @@ Future<Map<String, dynamic>> getPharmFromFirestore(
   if (response == null) {
     appGet.logornot = 1;
   } else {
-    savetoken(userIds, 2);
+    savetoken(userIds, 2, pass);
   }
-  appGet.pharmacyMap = response;
+  appGet.pharmacyMap.value = response;
   print('this i map' + appGet.pharmacyMap.toString());
   return response;
 }
@@ -145,17 +216,17 @@ Future<String?> registerUsingEmailAndPassword({
     print(userCredential.user!.uid);
     if (userCredential != null) {
       String userId = userCredential.user!.uid;
-      savetoken(userId, 1);
+      savetoken(userId, 1, password);
       return userId;
     } else {
-      EasyLoading.showError('Failed');
+      EasyLoading.showError('failed'.tr);
 
       return null;
     }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
       appGet.dissmis;
-      EasyLoading.showError('Weak Password');
+      EasyLoading.showError('weakpassword'.tr);
     } else {
       appGet.dissmis;
       EasyLoading.showError(e.code);
@@ -167,7 +238,7 @@ Future<String?> registerUsingEmailAndPassword({
   }
 }
 
-registrationProcess(
+Future registrationProcess(
     {String? name,
     required String email,
     required String password,
@@ -176,7 +247,6 @@ registrationProcess(
     required bool isUser,
     String? pharmName,
     String? openHours}) async {
-  EasyLoading.show(status: 'Loading...');
   try {
     saveUserNameInRealtimeDb(userName: email);
 
@@ -208,26 +278,19 @@ registrationProcess(
 
       if (isSuccess == true && isUser == true) {
         print('userrrrrrrrrrr');
-        getUserFromFirestore(userId: userId);
+        getUserFromFirestore(userId: userId, pass: appGet.pass);
 
-        appGet.dissmis;
         Get.offAll(() => VerfiyEmail(name!, email, 1));
-        // Get.offAll(() => UserNavBar());
       } else if (isSuccess == true && isUser == false) {
         print('pharmacyrrrrrrrrrr');
-        getPharmFromFirestore(userId: userId);
-        appGet.dissmis;
+        getPharmFromFirestore(userId: userId, pass: appGet.pass);
         Get.offAll(() => VerfiyEmail(pharmName!, email, 2));
-        //    Get.offAll(() => AddAddress(name!));
-        // Get.offAll(() => PharmNavBar());
       }
-      appGet.dissmis;
       if (isSuccess == false) {
         throw ('Failed Save user in firestore');
       }
     }
   } on Exception catch (e) {
-    appGet.dissmis;
     EasyLoading.showError(e.toString());
   }
 }
@@ -284,6 +347,53 @@ saveUserNameInRealtimeDb({required String userName}) async {
   dbRef.push().set({"userName": userName});
 }
 
+Future<String?> uploadIdentityImage(File? file, String? userId) async {
+  String msar = Uuid().v1();
+  print('msar' + msar);
+  print('msaruser' + appGet.tokenuser.toString());
+  String downloadUrl = '';
+  try {
+    final Reference reference =
+        FirebaseStorage.instance.ref().child("UserIdentityImages/$msar.png");
+
+    await reference.putFile(file!);
+
+    downloadUrl = await reference.getDownloadURL();
+
+    await FirebaseFirestore.instance
+        .collection(usersCollectionName)
+        .doc(appGet.tokenuser)
+        .update({
+      "imageUrl": downloadUrl,
+    });
+
+    getUserFromFirestore(userId: appGet.tokenuser, pass: appGet.pass);
+    return downloadUrl;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Future uploadchatImage(file) async {
+  String msar = Uuid().v1();
+  print('msar' + msar);
+  print('msaruser' + userIds.toString());
+  String downloadUrl = '';
+  try {
+    final Reference reference =
+        FirebaseStorage.instance.ref().child("chatImages/$msar.png");
+
+    await reference.putFile(File(file));
+
+    downloadUrl = await reference.getDownloadURL();
+
+    // return await reference.getDownloadURL();
+  } on Exception catch (e) {
+    return null;
+  }
+  return downloadUrl;
+}
+
 Future<String?> uploadImage(File? file, String? userId) async {
   String msar = Uuid().v1();
   print('msar' + msar);
@@ -304,7 +414,7 @@ Future<String?> uploadImage(File? file, String? userId) async {
       "imageUrl": downloadUrl,
     });
 
-    getPharmFromFirestore(userId: appGet.tokenuser);
+    getPharmFromFirestore(userId: appGet.tokenuser, pass: appGet.pass);
     return downloadUrl;
   } on Exception catch (e) {
     return null;
@@ -348,7 +458,8 @@ Future addMedicine(
     String? description,
     String? howToUse,
     String cateid,
-    String cateName) async {
+    String cateName,
+    String pharmName) async {
   try {
     String msar = Uuid().v1();
     String id = Uuid().v4();
@@ -375,6 +486,7 @@ Future addMedicine(
       'medicineId': id,
       'categoryId': cateid,
       'categoryName': cateName,
+      'pharmName': pharmName
     });
     return true;
   } on Exception catch (e) {
@@ -432,5 +544,503 @@ Stream<QuerySnapshot>? getAllCategoriesMedications(String categoryId) {
     return stream;
   } on Exception catch (e) {
     return null;
+  }
+}
+
+Stream<QuerySnapshot>? getAllCategoriesMedicationsByPharm(
+    String categoryId, String pharmId) {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(pharmaciesProductsCollectionName)
+        .where('categoryId', isEqualTo: categoryId)
+        .where('pharmaceyId', isEqualTo: pharmId)
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Future getMedicationsByPharm(String pharmId) async {
+  try {
+    var data = await firestore
+        .collection(pharmaciesProductsCollectionName)
+        .where('pharmaceyId', isEqualTo: pharmId)
+        .get();
+
+    print(data.docs);
+    print(userIds);
+    appGet.pharmPro.value = data.docs;
+
+    print(appGet.pharmPro.toList());
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future addToCart(
+  String imageUrl,
+  String name,
+  String price,
+  String? availability,
+  String? description,
+  String? howToUse,
+  String cateid,
+  String cateName,
+  String qty,
+  String totalPrice,
+  String medicineId,
+  String pharmId,
+  String pharmname,
+) async {
+  try {
+    String id = Uuid().v4();
+    print('msaruser' + appGet.tokenuser.toString());
+
+    await firestore.collection(cartCollection).doc().set({
+      'userId': userIds,
+      'medicineImage': imageUrl,
+      'medicineName': name,
+      'medicinePrice': price,
+      'medicineAvailability': availability,
+      'medicineDescription': description,
+      'medicineHowToUse': howToUse,
+      'pharmaceyId': pharmId,
+      'createdDate': timestamp,
+      'medicineId': medicineId,
+      'categoryId': cateid,
+      'categoryName': cateName,
+      'quntity': qty,
+      'totalPrice': totalPrice,
+      'pharmName': pharmname,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future checkCartItem(medicineId) async {
+  try {
+    print(medicineId.toString());
+    await firestore
+        .collection(cartCollection)
+        .where('medicineId', isEqualTo: medicineId)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        Map<String, dynamic> documentData = value.docs.single.data();
+        appGet.cartItemId = documentData['medicineId'].toString();
+        appGet.pharmId = documentData['pharmaceyId'].toString();
+      } else {}
+    }).catchError((e) => print("error fetching data: $e"));
+
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future getUserCart() async {
+  try {
+    var data = await firestore
+        .collection(cartCollection)
+        .where('userId', isEqualTo: userIds)
+        .get();
+
+    print(data.docs);
+    print(userIds);
+    appGet.cartList.value = data.docs;
+
+    print(appGet.cartList.toList());
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future updateqty(String qty, String medId) async {
+  try {
+    firestore
+        .collection(cartCollection)
+        .where('medicineId', isEqualTo: medId)
+        .get()
+        .then((value) => value.docs.forEach((doc) {
+              doc.reference.update({
+                'quntity': qty,
+              });
+            }));
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future updateAddress(String address) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection(usersCollectionName)
+        .doc(userIds)
+        .update({
+      "address": address,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future addToFavourite(
+    String imageUrl,
+    String name,
+    String price,
+    String availability,
+    String description,
+    String howToUse,
+    String cateid,
+    String cateName,
+    String medicineId,
+    String pharmId,
+    String pharmname) async {
+  try {
+    await firestore.collection(favouriteCollection).doc().set({
+      'userId': userIds,
+      'medicineImage': imageUrl,
+      'medicineName': name,
+      'medicinePrice': price,
+      'medicineAvailability': availability,
+      'medicineDescription': description,
+      'medicineHowToUse': howToUse,
+      'pharmaceyId': pharmId,
+      'createdDate': timestamp,
+      'medicineId': medicineId,
+      'categoryId': cateid,
+      'categoryName': cateName,
+      'pharmName': pharmname
+    });
+    return true;
+  } on Exception catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+Future removeFromFav(String medId) async {
+  try {
+    final firstore = FirebaseFirestore.instance;
+    firstore
+        .collection(favouriteCollection)
+        .where('medicineId', isEqualTo: medId)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+        print(ds.reference);
+      }
+    });
+
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future getAllFavourite() async {
+  try {
+    var data = await firestore
+        .collection(favouriteCollection)
+        .where('userId', isEqualTo: userIds)
+        .get();
+
+    print(data.docs);
+    print(userIds);
+    appGet.favList.value = data.docs;
+
+    print(appGet.favList.toList());
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future<void> signOut() async {
+  await FirebaseAuth.instance.signOut();
+}
+
+Future updateUserData(String name) async {
+  try {
+    FirebaseFirestore.instance
+        .collection(usersCollectionName)
+        .doc(userIds)
+        .update({
+      "userName": name,
+    });
+
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future ratePharm(double rating, String pharmId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection(pharmaciesCollectionName)
+        .doc(pharmId)
+        .update({
+      "rating": rating,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future deleteCartItem(String medId) async {
+  try {
+    final firstore = FirebaseFirestore.instance;
+    firstore
+        .collection(cartCollection)
+        .where('medicineId', isEqualTo: medId)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+        print(ds.reference);
+      }
+    });
+
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Stream<QuerySnapshot>? getchatlist() {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(chatCollectionName)
+        .where('users', arrayContains: userIds)
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Future<String> updatchatstatuse(String docid) async {
+  print(docid);
+  await FirebaseFirestore.instance
+      .collection(chatCollectionName)
+      .doc(docid)
+      .update({
+    "state": '2',
+  });
+  return 'true';
+}
+
+Stream<QuerySnapshot>? getmychat(String userrecive) {
+  print('typsuserreciveuserrecive' + userrecive);
+  print('typsuserreciveusendddddddd' + userIds);
+  String chtr = '';
+
+  chtr = getChatRoomId(userIds, userrecive);
+
+  print('chtruser' + chtr);
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(chatCollectionName)
+        .doc(chtr)
+        .collection("chats")
+        .orderBy('time')
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+getChatRoomId(String a, String b) {
+  print('ssssss' + a);
+  print('hhhhhhh' + b);
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
+  }
+}
+
+Future onFileUploadButtonPressed(String filePath) async {
+  print('filePathnnnnn' + filePath);
+  FirebaseStorage firebaseStoragen = FirebaseStorage.instance;
+  String downloadUrl = '';
+  try {
+    final Reference reference4 = firebaseStoragen
+        .ref('upload-voice-firebase')
+        .child(filePath.substring(filePath.lastIndexOf('/'), filePath.length));
+    await reference4.putFile(File(filePath)).whenComplete(() async {
+      downloadUrl = await reference4.getDownloadURL();
+      print('mmmaamm' + downloadUrl);
+    });
+    onUploadComplete();
+  } catch (error) {
+    print('Error occured while uplaoding to Firebase ${error.toString()}');
+  } finally {}
+  return downloadUrl;
+}
+
+List<Reference> references = [];
+Future<void> onUploadComplete() async {
+  ListResult listResult =
+      await firebaseStorage.ref().child('upload-voice-firebase').listAll();
+
+  references = listResult.items;
+  print(references.toString());
+}
+
+Future<bool> savechatFirestore(
+  String userrecivename,
+  String usermostakbleid,
+  String detailes,
+  bool islocation,
+  double lat,
+  double lon,
+  String soundownload,
+  bool issound,
+  bool isimage,
+  String imgurl,
+  String userimgurl,
+) async {
+  String chatrt;
+  print('ussend' + userIds.toString());
+  print('usermostakble' + usermostakbleid.toString());
+
+  chatrt = getChatRoomId(userIds, usermostakbleid);
+
+  List<String> users = [usermostakbleid, userIds];
+  Map<String, dynamic> chatRoom = {
+    "users": users,
+    "chatRoomId": chatrt,
+    "creatdate": DateTime.now().millisecondsSinceEpoch,
+    "useridrecive": usermostakbleid,
+    "usersend": userIds,
+    "detailes": detailes,
+    "state": '1',
+    "islocation": islocation,
+    "lat": lat,
+    "lon": lon,
+    "soundownload": soundownload,
+    "issound": issound,
+    'isimage': isimage,
+    'imageurl': imgurl,
+    "mostakblename": userrecivename,
+    "morslname": appGet.userMap['userName'],
+    "userimage": userimgurl
+  };
+
+  addChatRoom(chatRoom, chatrt);
+
+  try {
+    FirebaseFirestore.instance
+        .collection(chatCollectionName)
+        .doc(chatrt)
+        .collection("chats")
+        .add({
+      'detailes': detailes,
+      'sendby': userIds,
+      "mostakblename": userrecivename,
+      "morslname": appGet.userMap['userName'],
+      'time': DateTime.now().millisecondsSinceEpoch,
+      'state': '1',
+      'delete': 0,
+      "islocation": islocation,
+      "lat": lat,
+      "lon": lon,
+      "soundownload": soundownload,
+      "issound": issound,
+      'isimage': isimage,
+      'imageurl': imgurl
+    });
+    FirebaseFirestore.instance
+        .collection(chatCollectionName)
+        .doc(chatrt)
+        .update({
+      'state': '1',
+      'detailes': detailes,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future<bool>? addChatRoom(chatRoom, chatRoomId) {
+  FirebaseFirestore.instance
+      .collection(chatCollectionName)
+      .doc(chatRoomId)
+      .set(chatRoom)
+      .catchError((e) {
+    print(e);
+  });
+  return null;
+}
+
+Future deleteCart() async {
+  try {
+    final firstore = FirebaseFirestore.instance;
+    firstore
+        .collection(cartCollection)
+        .where('userId', isEqualTo: userIds)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future userReview(String review, double rate) async {
+  try {
+    await firestore.collection(userRateCollectionName).doc().set({
+      'userId': userIds,
+      'review': review,
+      'rate': rate,
+      'createdDate': timestamp,
+    });
+    return true;
+  } on Exception catch (e) {
+    print(e);
+    return false;
+  }
+}
+
+Future addOrder(
+    String pharmId, String pharmName, String note, int orderStatus) async {
+  var rng = new Random();
+  var code = rng.nextInt(9000) + 1000;
+  List yourItemList = [];
+  try {
+    await firestore.collection(ordersCollection).doc().set({
+      'orderNumber': code,
+      'address': appGet.userMap['address'],
+      'userName': appGet.userMap['userName'],
+      'userId': userIds,
+      'userPhone': appGet.userMap['phoneNumber'],
+      'useremail': appGet.userMap['email'],
+      'pharmId': pharmId,
+      'phamName': pharmName,
+      'note': note,
+      'orderStatus': orderStatus,
+      'items': FieldValue.arrayUnion(yourItemList),
+    });
+    return true;
+  } on Exception catch (e) {
+    print(e);
+    return false;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../helpers/theme.dart';
@@ -31,7 +32,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
           Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 12.h),
             child: Text(
-              'Order #3455',
+              '${'order'.tr} #3455',
               style: TextStyle(
                   fontSize: 16.sp,
                   fontFamily: montserratBold,
@@ -42,7 +43,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
           Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 7.h),
             child: Text(
-              'Delivered on 12 Feb 2022',
+              '${'deliverdon'.tr} 12 Feb 2022',
               style: TextStyle(
                   fontSize: 12.sp, fontFamily: montserratBold, color: black),
             ),
@@ -71,7 +72,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '3 Items : Delivery Time  30 Min',
+                    '3 ${'items'.tr} : ${'deliverytime'.tr}  30 Min',
                     style: TextStyle(
                         fontSize: 12.sp,
                         fontFamily: poppins,
@@ -84,7 +85,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Details',
+                    'details'.tr,
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontFamily: poppins,
@@ -143,7 +144,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
                   SvgPicture.asset('assets/images/manual-task.svg'),
                   SizedBox(width: 10.w),
                   Text(
-                    'Reorder',
+                    'reorder'.tr,
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontFamily: montserratBold,

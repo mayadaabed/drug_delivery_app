@@ -15,19 +15,19 @@ class Onboarding2 extends StatefulWidget {
 class _Onboarding2State extends State<Onboarding2> {
   final PageController _pageController = PageController();
   final List<OnBoardModel> onBoardData = [
-    const OnBoardModel(
-      title: "No long term commitments",
-      description: "Explore frequently ordes",
+    OnBoardModel(
+      title: "nolong".tr,
+      description: "explore".tr,
       imgUrl: "assets/images/onboard1.svg",
     ),
-    const OnBoardModel(
-      title: "Delivery on the way",
-      description: "Get your order by speed delivery",
+    OnBoardModel(
+      title: "deliveryon".tr,
+      description: "getyour".tr,
       imgUrl: 'assets/images/onboard2.svg',
     ),
-    const OnBoardModel(
-      title: "Delivery Arrived",
-      description: "Order arrived at your Place",
+    OnBoardModel(
+      title: "deliveryarrived",
+      description: "orderarrived".tr,
       imgUrl: 'assets/images/onboard3.svg',
     ),
   ];
@@ -69,7 +69,7 @@ class _Onboarding2State extends State<Onboarding2> {
             Get.to(() => ChooseAccount());
           },
           child: Text(
-            "Skip",
+            "skip".tr,
             style: TextStyle(color: grey),
           ),
         ),
@@ -85,7 +85,7 @@ class _Onboarding2State extends State<Onboarding2> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5), color: buttonMain),
                 child: Text(
-                  state.isLastPage ? "Done" : "Next",
+                  state.isLastPage ? "done".tr : "next".tr,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

@@ -2,6 +2,7 @@ import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:drug_delivery_application/screens/pharmacey/Inventory/Category/Categories.dart';
 import 'package:drug_delivery_application/screens/pharmacey/Inventory/Medicines/PharmMedicines.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -24,12 +25,12 @@ class _InventoryState extends State<Inventory> {
               actions: [],
               title: Column(
                 children: [
-                  const Text(
-                    "Inventory",
-                    style: const TextStyle(
+                  Text(
+                    "inventory".tr,
+                    style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Montserrat",
-                        fontSize: 20,
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold),
                   ),
                   Padding(
@@ -44,7 +45,7 @@ class _InventoryState extends State<Inventory> {
                           child: TextField(
                             cursorColor: mainColor,
                             decoration: InputDecoration(
-                              hintText: 'Search medicine available.',
+                              hintText: 'searchmedicine'.tr,
                               isDense: true,
                               filled: true,
                               fillColor: white,
@@ -116,10 +117,10 @@ class _InventoryState extends State<Inventory> {
                 indicatorColor: white,
                 tabs: [
                   Tab(
-                    text: "Medicines",
+                    text: "medicines".tr,
                   ),
                   Tab(
-                    text: "Categories",
+                    text: "categories".tr,
                   )
                 ],
               ),

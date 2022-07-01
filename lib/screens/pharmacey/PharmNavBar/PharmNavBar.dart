@@ -4,6 +4,7 @@ import 'package:drug_delivery_application/screens/pharmacey/Inventory/TabBarPhar
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../AllOrder/AllOrders.dart';
 import '../PharmProfile copy/PharmProfile.dart';
@@ -52,19 +53,19 @@ class _PharmNavBarState extends State<PharmNavBar> {
                 'assets/images/pharmacy-medicine.svg',
                 height: 22.h,
               ),
-              label: 'Orders',
+              label: 'orders'.tr,
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/images/medical-report.svg'),
-              label: 'Inventory',
+              label: 'inventory'.tr,
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/images/textmessage.svg'),
-              label: 'Chat',
+              label: 'chat'.tr,
             ),
             BottomNavigationBarItem(
               icon: SvgPicture.asset('assets/images/person.svg'),
-              label: 'My Account',
+              label: 'myacc'.tr,
             ),
           ],
           selectedItemColor: mainColor,

@@ -4,7 +4,6 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../helpers/theme.dart';
 import '../../../../helpers/utile.dart';
-import 'package:flutter_launch/flutter_launch.dart';
 
 class DetailsCard extends StatefulWidget {
   final String name;

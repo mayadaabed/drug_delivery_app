@@ -1,17 +1,16 @@
-import 'package:drug_delivery_application/screens/user/Medications/Card/RelatedProductsCard.dart';
 import 'package:drug_delivery_application/screens/user/Medications/appBar/AppBars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../../../../helpers/Counter.dart';
-import '../../../../helpers/helper.dart';
 import '../../../../helpers/theme.dart';
 
 class PharmMedicationsDetails extends StatefulWidget {
   const PharmMedicationsDetails({Key? key}) : super(key: key);
 
   @override
-  State<PharmMedicationsDetails> createState() => _PharmMedicationsDetailsState();
+  State<PharmMedicationsDetails> createState() =>
+      _PharmMedicationsDetailsState();
 }
 
 class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
@@ -20,7 +19,7 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: white,
-        appBar: AppBars('Details', false, 93, true, 110),
+        appBar: AppBars('details'.tr, false, 93, true, 110),
         body: ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
           Container(
               height: 266.h,
@@ -52,7 +51,6 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
                           EdgeInsets.only(top: 29.h, right: 20.w, left: 20.w),
                       height: 25.h,
                       width: 25.w,
-                     
                       child: Center(
                           child: Icon(Icons.edit_note_sharp,
                               size: 30, color: mainColor)),
@@ -63,28 +61,33 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
               )),
           Padding(
             padding: EdgeInsets.only(top: 24.h, left: 20.w, right: 20.w),
-
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-              'Strespsils',
-              style: TextStyle(
-                  fontSize: 24.sp,
-                  color: HexColor('#393939'),
-                  fontFamily: montserratBold,
-                  fontWeight: FontWeight.w800),
-            ),
-             Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                       Text("Edit", style: TextStyle(color: mainColor, fontWeight:FontWeight.bold)),
-                       SizedBox(width: 5.w,),
-                       Icon(Icons.edit_note_sharp, color: mainColor,)
-                      ],
-                    )
-            ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Strespsils',
+                    style: TextStyle(
+                        fontSize: 24.sp,
+                        color: HexColor('#393939'),
+                        fontFamily: montserratBold,
+                        fontWeight: FontWeight.w800),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("edit".tr,
+                          style: TextStyle(
+                              color: mainColor, fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      Icon(
+                        Icons.edit_note_sharp,
+                        color: mainColor,
+                      )
+                    ],
+                  )
+                ]),
           ),
           Padding(
             padding: EdgeInsets.only(top: 13.h, left: 20.w, right: 20.w),
@@ -102,14 +105,14 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
             child: Row(
               children: [
                 Text(
-                  'Availablity: ',
+                  '${'availabilty'.tr}: ',
                   style: TextStyle(
                       color: grey2,
                       fontSize: 16.sp,
                       fontFamily: montserratBold),
                 ),
                 Text(
-                  'In stock',
+                  'instock'.tr,
                   style: TextStyle(
                       color: HexColor('#196737'),
                       fontSize: 16.sp,
@@ -118,11 +121,11 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
               ],
             ),
           ),
-      
+
           Padding(
             padding: EdgeInsets.only(top: 22.h, left: 20.w, right: 20.w),
             child: Text(
-              'Description',
+              'description'.tr,
               style: TextStyle(
                   fontSize: 18.sp,
                   color: HexColor('#393939'),
@@ -143,7 +146,7 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 45.h, left: 20.w, right: 20.w),
             child: Text(
-              'How to use',
+              'howtouse'.tr,
               style: TextStyle(
                   fontSize: 18.sp,
                   color: HexColor('#393939'),
@@ -170,7 +173,7 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 17.h, left: 20.w, right: 20.w),
             child: Text(
-              'Related Products',
+              'relatedpro'.tr,
               style: TextStyle(
                   fontSize: 18.sp,
                   color: HexColor('#393939'),
@@ -178,18 +181,18 @@ class _PharmMedicationsDetailsState extends State<PharmMedicationsDetails> {
             ),
           ),
           SizedBox(height: 20.h),
-          SizedBox(
-            height: 140.h,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return RelatedCard();
-                
-              },
-            ),
-          )
+          // SizedBox(
+          //   height: 140.h,
+          //   child: ListView.builder(
+          //     shrinkWrap: true,
+          //     scrollDirection: Axis.horizontal,
+          //     itemCount: 3,
+          //     itemBuilder: (context, index) {
+          //       return RelatedCard();
+
+          //     },
+          //   ),
+          // )
         ]),
       ),
     );

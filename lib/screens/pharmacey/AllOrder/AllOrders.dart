@@ -3,7 +3,6 @@ import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../PastOrder/pastOrders.dart';
 import 'AllOrdersCard.dart';
 
@@ -40,7 +39,7 @@ class _DrugDelieveryscrState extends State<DrugDelieveryscr> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Drug Delivery',
+                    'drugdelivery'.tr,
                     style: TextStyle(
                       fontSize: 24.sp,
                       fontFamily: poppins,

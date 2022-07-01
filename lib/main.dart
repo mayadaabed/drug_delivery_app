@@ -1,12 +1,19 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import 'backend/firebase.dart';
+import 'lang/local.dart';
 import 'screens/splash.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -57,13 +64,177 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late FirebaseMessaging firebaseMessaging;
+  int totalnotificationcounter = 0;
+  PushNotification? notificationinfo;
+
+  void registernotifications() async {
+    //on app open
+    await Firebase.initializeApp();
+    firebaseMessaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await firebaseMessaging.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: false,
+      sound: true,
+    );
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('Authorized');
+    } else {
+      print('UnAuthorized');
+    }
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('aaaaaa' + message.notification.toString());
+      PushNotification notification = PushNotification(
+        title: message.notification!.title.toString(),
+        body: message.notification!.body ?? '',
+        datatitle: message.data['title'] ?? '',
+        databody: message.data['body'] ?? '',
+      );
+      setState(() {
+        totalnotificationcounter++;
+        notificationinfo = notification;
+        appGet.totalnotificationcounterget.value = totalnotificationcounter;
+
+        // appGet.pushmsg.add(notification.title);
+        // appGet.pushmsg.add(notification.body);
+        // safesharedlist();
+
+        // print('push' + appGet.pushmsg.toString());
+      });
+      if (notification != null) {
+        showSimpleNotification(
+          Text(
+            notificationinfo!.title.toString(),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          background: Colors.white,
+          leading: Container(
+            width: 54.w,
+            height: 54.h,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                image: DecorationImage(
+                    image: AssetImage('assets/images/logo.png')),
+                border: Border.all(color: HexColor('#707070'), width: 2.w)),
+          ),
+          subtitle: Text(
+            notificationinfo!.body.toString(),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          duration: Duration(seconds: 4),
+        );
+      }
+    });
+  }
+
+  Future<void> openTheRecorder() async {
+    if (!kIsWeb) {
+      var status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        throw RecordingPermissionException('Microphone permission not granted');
+      }
+    }
+  }
 
   @override
   void initState() {
-    firebaseMessaging = FirebaseMessaging.instance;
-    registerNotification();
     super.initState();
+    openTheRecorder();
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      PushNotification notification = PushNotification(
+        title: message.notification!.title.toString(),
+        body: message.notification!.body.toString(),
+        datatitle: message.data['title'],
+        databody: message.data['body'],
+      );
+      setState(() {
+        totalnotificationcounter++;
+        notificationinfo = notification;
+      });
+      if (notification != null) {
+        showSimpleNotification(
+          Text(
+            notificationinfo!.title,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          background: Colors.white,
+          leading: Container(
+            width: 54.w,
+            height: 54.h,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                image: DecorationImage(
+                    image: AssetImage('assets/images/logo.png')),
+                border: Border.all(color: HexColor('#707070'), width: 2.w)),
+          ),
+          subtitle: Text(
+            notificationinfo!.body,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          duration: Duration(seconds: 4),
+        );
+      }
+    });
+    registernotifications();
+    checkinit();
+    FirebaseMessaging.instance.getToken().then((token) {
+      print('A new token was generated: $token');
+      appGet.fcmToken.value = token!;
+    });
   }
+
+  checkinit() async {
+    //on app termniate
+    RemoteMessage? initialmessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (initialmessage != null) {
+      PushNotification notification = PushNotification(
+        title: initialmessage.notification!.title.toString(),
+        body: initialmessage.notification!.body.toString(),
+        datatitle: initialmessage.data['title'],
+        databody: initialmessage.data['body'],
+      );
+      setState(() {
+        totalnotificationcounter++;
+        notificationinfo = notification;
+      });
+      if (notification != null) {
+        showSimpleNotification(
+          Text(
+            notificationinfo!.title,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          background: Colors.white,
+          leading: Container(
+            width: 54.w,
+            height: 54.h,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                image: const DecorationImage(
+                    image: AssetImage('assets/images/logo.png')),
+                border: Border.all(color: HexColor('#707070'), width: 2.w)),
+          ),
+          subtitle: Text(
+            notificationinfo!.body,
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          duration: const Duration(seconds: 4),
+        );
+      }
+    }
+  }
+
+  // @override
+  // void initState() {
+  //   firebaseMessaging = FirebaseMessaging.instance;
+  //   registerNotification();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +249,9 @@ class _MyAppState extends State<MyApp> {
             fontFamily: 'Montserrat',
             primaryColor: const Color.fromARGB(255, 105, 160, 58)),
         debugShowCheckedModeBanner: false,
+        locale: LocalizationService.locale,
+        fallbackLocale: LocalizationService.fallbackLocale,
+        translations: LocalizationService(),
         home: const MyHomePage(),
       ),
     );
@@ -119,4 +293,17 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return const Splash();
   }
+}
+
+class PushNotification {
+  PushNotification(
+      {required this.title,
+      required this.body,
+      required this.datatitle,
+      required this.databody});
+
+  String title;
+  String body;
+  String datatitle;
+  String databody;
 }

@@ -10,7 +10,11 @@ import '../../../helpers/theme.dart';
 
 class Medications extends StatefulWidget {
   final String cateid;
-  Medications(this.cateid, {Key? key}) : super(key: key);
+  final bool isPharm;
+  final String pharmId;
+
+  Medications(this.cateid, this.isPharm, this.pharmId, {Key? key})
+      : super(key: key);
 
   @override
   State<Medications> createState() => _MedicationsState();
@@ -22,12 +26,16 @@ class _MedicationsState extends State<Medications> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: white,
-        appBar: AppBars('Medications', true, 134, false, 90),
+        appBar: AppBars('medication'.tr, false, 93, true, 98),
+        // AppBars('', true, 134, false, 90),
         body: ListView(
           padding: EdgeInsets.only(bottom: 50.h),
           children: [
             StreamBuilder(
-                stream: getAllCategoriesMedications(widget.cateid),
+                stream: widget.isPharm
+                    ? getAllCategoriesMedicationsByPharm(
+                        widget.cateid, widget.pharmId)
+                    : getAllCategoriesMedications(widget.cateid),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   return snapshot.hasData
                       ? Column(
@@ -37,7 +45,7 @@ class _MedicationsState extends State<Medications> {
                               padding: EdgeInsets.only(
                                   top: 33.h, left: 26.w, right: 26.w),
                               child: Text(
-                                'Showing items ${snapshot.data!.size}',
+                                '${'showitem'.tr} ${snapshot.data!.size}',
                                 style: TextStyle(
                                     fontSize: 12.sp,
                                     color: lightGrey,
@@ -95,6 +103,12 @@ class _MedicationsState extends State<Medications> {
                                                   .toString(),
                                               snapshot.data!
                                                   .docs[index]['pharmaceyId']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['categoryName']
+                                                  .toString(),
+                                                   snapshot.data!
+                                                  .docs[index]['pharmName']
                                                   .toString(),
                                             ));
                                       },

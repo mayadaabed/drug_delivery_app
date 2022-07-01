@@ -1,12 +1,9 @@
 import 'dart:io';
-
-import 'package:drug_delivery_application/screens/pharmacey/PharmNavBar/PharmNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hexcolor/hexcolor.dart';
 import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
 import '../../Login/Login.dart';
@@ -38,7 +35,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
         context: context,
         builder: (context) => AlertDialog(
               title: Text(
-                "Image source",
+                "imagesource".tr,
                 textAlign: TextAlign.start,
                 style: TextStyle(
                     fontSize: 22.sp, fontFamily: montserratBold, color: black),
@@ -46,7 +43,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
               actions: <Widget>[
                 MaterialButton(
                   child: Text(
-                    "Camera",
+                    "camera".tr,
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: montserratBold,
@@ -58,7 +55,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                 ),
                 MaterialButton(
                   child: Text(
-                    "Gallery",
+                    "gallery".tr,
                     style: TextStyle(
                         fontSize: 18.sp,
                         fontFamily: montserratBold,
@@ -103,7 +100,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
               child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Create Account',
+                    'createacc'.tr,
                     style: TextStyle(
                         fontSize: 24.sp,
                         color: black1,
@@ -153,7 +150,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                     controller: namecontroller,
                     cursorColor: mainColor,
                     decoration: InputDecoration(
-                      labelText: 'Pharmacy name',
+                      labelText: 'pharmname'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -175,7 +172,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                     controller: openHourscontroller,
                     cursorColor: mainColor,
                     decoration: InputDecoration(
-                      labelText: 'Open Hours',
+                      labelText: 'openhours'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -198,7 +195,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                     cursorColor: mainColor,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'emailsignup'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -221,7 +218,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                     cursorColor: mainColor,
                     obscureText: visible,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'password'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -300,7 +297,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                           cursorColor: mainColor,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
-                            labelText: 'Phone Number',
+                            labelText: 'phonenum'.tr,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: lightGrey2),
                             ),
@@ -320,15 +317,15 @@ class _PharmSignUpState extends State<PharmSignUp> {
             GestureDetector(
               onTap: () {
                 if (pickedImages == null) {
-                  EasyLoading.showError('Please add pharmacy photo');
+                  EasyLoading.showError('pleasepharmphoto'.tr);
                 } else if (namecontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your name');
+                  EasyLoading.showError('pleasename'.tr);
                 } else if (emailcontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your email');
+                  EasyLoading.showError('pleaseemail'.tr);
                 } else if (passwordcontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your password');
+                  EasyLoading.showError('pleasepass'.tr);
                 } else if (phonecontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your phone number');
+                  EasyLoading.showError('pleasephone'.tr);
                 } else {
                   registrationProcess(
                     pharmName: namecontroller.text.toString(),
@@ -352,7 +349,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                       width: 274.w,
                       child: Center(
                         child: Text(
-                          'Sign Up',
+                          'signup'.tr,
                           style: TextStyle(
                               color: white,
                               fontSize: 14.sp,
@@ -373,7 +370,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Already have an account',
+                  'alreadyhaveacc'.tr,
                   style: TextStyle(
                       color: grey2,
                       fontSize: 14.sp,
@@ -385,7 +382,7 @@ class _PharmSignUpState extends State<PharmSignUp> {
                     Get.to(() => Login(2));
                   },
                   child: Text(
-                    ' Log In',
+                    'login'.tr,
                     style: TextStyle(
                         color: green,
                         fontSize: 14.sp,

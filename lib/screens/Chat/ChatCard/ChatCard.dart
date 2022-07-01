@@ -4,7 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ChatCard extends StatefulWidget {
-  ChatCard({Key? key}) : super(key: key);
+  final int creatdate;
+  final String detailes;
+  final String morslname;
+  final String mosname;
+  final String userId;
+  final String state;
+  final String image;
+  ChatCard(this.creatdate, this.detailes, this.morslname, this.mosname,
+      this.userId, this.state, this.image,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<ChatCard> createState() => _ChatCardState();
@@ -13,6 +23,8 @@ class ChatCard extends StatefulWidget {
 class _ChatCardState extends State<ChatCard> {
   @override
   Widget build(BuildContext context) {
+    var recDate =
+        DateTime.fromMillisecondsSinceEpoch(widget.creatdate, isUtc: true);
     return Column(
       children: [
         Container(
@@ -23,22 +35,23 @@ class _ChatCardState extends State<ChatCard> {
             Container(
               width: 54.w,
               height: 54.h,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage('assets/images/avatar.png'),
+                  image: NetworkImage(widget.image),
                   fit: BoxFit.fill,
                 ),
               ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Janat xe',
+                      widget.mosname,
                       style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w600,
@@ -48,22 +61,12 @@ class _ChatCardState extends State<ChatCard> {
                     SizedBox(
                       width: 160.w,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          '9:23',
-                          style: TextStyle(
-                              fontSize: 13.sp,
-                              fontFamily: montserratBold,
-                              color: HexColor('#8C8C8C')),
-                        ),
-                        SizedBox(width: 5.w),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: HexColor('#ACACAC'),
-                          size: 13.w,
-                        )
-                      ],
+                    Text(
+                      recDate.toString().substring(0, 10),
+                      style: TextStyle(
+                          fontSize: 13.sp,
+                          fontFamily: montserratBold,
+                          color: HexColor('#8C8C8C')),
                     )
                   ],
                 ),
@@ -74,7 +77,7 @@ class _ChatCardState extends State<ChatCard> {
                   height: 35.h,
                   width: 250.w,
                   child: Text(
-                    'Hello ahmed, How can I help you ?Hello ahmed, How can I help you ?',
+                    widget.detailes,
                     style: TextStyle(
                         fontSize: 13.sp,
                         fontFamily: montserratBold,

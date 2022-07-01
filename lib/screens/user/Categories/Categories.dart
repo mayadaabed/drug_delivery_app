@@ -1,9 +1,11 @@
-import 'package:drug_delivery_application/screens/user/CustomAppbar/CustomAppbar.dart';
 import 'package:drug_delivery_application/screens/user/HomePage/cards/categoriesCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
+import '../Medications/Medications.dart';
+import '../Medications/appBar/AppBars.dart';
 
 class Categories extends StatefulWidget {
   const Categories({Key? key}) : super(key: key);
@@ -17,14 +19,14 @@ class _CategoriesState extends State<Categories> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: const CustomAppbar(false),
+          appBar: AppBars('allcate'.tr, false, 93, true, 90),
           body: ListView(
             padding: EdgeInsets.only(bottom: 50.h),
             children: [
               Padding(
                 padding: EdgeInsets.only(top: 33.h, left: 26.w, right: 26.w),
                 child: Text(
-                  'All Categories',
+                  'allcate'.tr,
                   style: TextStyle(
                       fontSize: 16.sp,
                       color: mainColor,
@@ -52,7 +54,13 @@ class _CategoriesState extends State<Categories> {
                                 itemCount: snapshot.data!.size,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Get.to(() => Medications(snapshot
+                                            .data!.docs[index]['catId']
+                                            .toString(),
+                                            false,'' 
+                                            ));
+                                      },
                                       child: CategoriesCard(
                                         snapshot.data!.docs[index]['catId']
                                             .toString(),

@@ -1,6 +1,7 @@
 import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class AllOederCard extends StatefulWidget {
   AllOederCard({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _AllOederCardState extends State<AllOederCard> {
                     ),
                     child: Center(
                       child: Text(
-                        'New Order Request',
+                        'neworderrequest'.tr,
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontFamily: montserratBold,
@@ -82,7 +83,7 @@ class _AllOederCardState extends State<AllOederCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Order #3455',
+                        '${'order'.tr} #3455',
                         style: TextStyle(
                             fontSize: 14.sp,
                             fontFamily: montserratBold,
@@ -93,7 +94,7 @@ class _AllOederCardState extends State<AllOederCard> {
                         width: 170.w,
                         height: 35.h,
                         child: Text(
-                          '3 Items: Fructis,strespils and Garnier cream',
+                          '3 ${'items'.tr}: Fructis,strespils and Garnier cream',
                           style: TextStyle(
                             fontSize: 12.sp,
                             fontFamily: poppins,
@@ -107,7 +108,7 @@ class _AllOederCardState extends State<AllOederCard> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'Details',
+                        'details'.tr,
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontFamily: poppins,
@@ -162,7 +163,7 @@ class _AllOederCardState extends State<AllOederCard> {
                 ],
               ),
               Text(
-                'Address',
+                'address'.tr,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontFamily: poppins,

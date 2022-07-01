@@ -1,6 +1,8 @@
+import 'package:drug_delivery_application/backend/firebase.dart';
 import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:drug_delivery_application/screens/Login/Login.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:drug_delivery_application/screens/user/Cart/ChangeAddress/ChangeAddress.dart';
+import 'package:drug_delivery_application/screens/user/Cart/RateUs/RateUs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +10,8 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../helpers/helper.dart';
+import '../../../lang/local.dart';
 import 'ProfileScreens/Favorite/Favourite.dart';
 import 'ProfileScreens/MyOrders/MyOrders.dart';
 
@@ -21,6 +25,12 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   bool _switchValue = true;
   @override
+  void initState() {
+    super.initState();
+    getAllFavourite();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -30,54 +40,66 @@ class _UserProfileState extends State<UserProfile> {
               width: double.infinity,
               decoration: BoxDecoration(color: mainColor),
               child: Stack(children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SvgPicture.asset('assets/images/newmessage.svg'),
+                InkWell(
+                  onTap: () {
+                    displayTextInputDialog(context);
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgPicture.asset('assets/images/newmessage.svg'),
+                    ),
                   ),
                 ),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('Ahmed kh',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: white,
-                            fontFamily: montserratBold,
-                            fontWeight: FontWeight.w600,
-                          )),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Text('Ahmed.kh@gmail.com',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: white,
-                            fontFamily: montserratBold,
-                          )),
-                    ],
+                Obx(
+                  () => Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(appGet.userMap['userName'],
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              color: white,
+                              fontFamily: montserratBold,
+                              fontWeight: FontWeight.w600,
+                            )),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Text(appGet.userMap['email'],
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: white,
+                              fontFamily: montserratBold,
+                            )),
+                      ],
+                    ),
                   ),
                 )
               ])),
           Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 45.w),
-                child: Row(
-                  children: [
-                    SvgPicture.asset('assets/images/home (4).svg'),
-                    SizedBox(width: 16.w),
-                    Text(
-                      'Change Address',
-                      style: TextStyle(
-                          color: HexColor('#393939'),
-                          fontSize: 14.sp,
-                          fontFamily: poppins,
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
+              InkWell(
+                onTap: () {
+                  Get.to(() => ChangeAddress());
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 45.w),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/images/home (4).svg'),
+                      SizedBox(width: 16.w),
+                      Text(
+                        'changeaddress'.tr,
+                        style: TextStyle(
+                            color: HexColor('#393939'),
+                            fontSize: 14.sp,
+                            fontFamily: poppins,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -103,7 +125,7 @@ class _UserProfileState extends State<UserProfile> {
                       SvgPicture.asset('assets/images/shopping-bag (2).svg'),
                       SizedBox(width: 16.w),
                       Text(
-                        'My Orders',
+                        'myorders'.tr,
                         style: TextStyle(
                             color: HexColor('#393939'),
                             fontSize: 14.sp,
@@ -140,7 +162,7 @@ class _UserProfileState extends State<UserProfile> {
                           SvgPicture.asset('assets/images/heart (3).svg'),
                           SizedBox(width: 16.w),
                           Text(
-                            'Favourites',
+                            'favourite'.tr,
                             style: TextStyle(
                                 color: HexColor('#393939'),
                                 fontSize: 14.sp,
@@ -149,13 +171,15 @@ class _UserProfileState extends State<UserProfile> {
                           )
                         ],
                       ),
-                      Text(
-                        '3 items',
-                        style: TextStyle(
-                            color: HexColor('#393939'),
-                            fontSize: 12.sp,
-                            fontFamily: montserratBold,
-                            fontWeight: FontWeight.w600),
+                      Obx(
+                        () => Text(
+                          '${appGet.favList.length} items',
+                          style: TextStyle(
+                              color: HexColor('#393939'),
+                              fontSize: 12.sp,
+                              fontFamily: montserratBold,
+                              fontWeight: FontWeight.w600),
+                        ),
                       )
                     ],
                   ),
@@ -183,7 +207,7 @@ class _UserProfileState extends State<UserProfile> {
                         SvgPicture.asset('assets/images/bell.svg'),
                         SizedBox(width: 16.w),
                         Text(
-                          'Get Notification',
+                          'getnotification'.tr,
                           style: TextStyle(
                               color: HexColor('#393939'),
                               fontSize: 14.sp,
@@ -219,34 +243,39 @@ class _UserProfileState extends State<UserProfile> {
               )
             ],
           ),
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
-                child: Row(
-                  children: [
-                    SvgPicture.asset('assets/images/rateus.svg'),
-                    SizedBox(width: 16.w),
-                    Text(
-                      'Rate us',
-                      style: TextStyle(
-                          color: HexColor('#393939'),
-                          fontSize: 14.sp,
-                          fontFamily: poppins,
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
+          InkWell(
+            onTap: () {
+              Get.to(() => RateUs());
+            },
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset('assets/images/rateus.svg'),
+                      SizedBox(width: 16.w),
+                      Text(
+                        'rateus'.tr,
+                        style: TextStyle(
+                            color: HexColor('#393939'),
+                            fontSize: 14.sp,
+                            fontFamily: poppins,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                height: 1.h,
-                width: double.infinity,
-                color: HexColor('#D1D1D1'),
-              )
-            ],
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  height: 1.h,
+                  width: double.infinity,
+                  color: HexColor('#D1D1D1'),
+                )
+              ],
+            ),
           ),
           Column(
             children: [
@@ -257,7 +286,7 @@ class _UserProfileState extends State<UserProfile> {
                     SvgPicture.asset('assets/images/question.svg'),
                     SizedBox(width: 16.w),
                     Text(
-                      'Help',
+                      'help'.tr,
                       style: TextStyle(
                           color: HexColor('#393939'),
                           fontSize: 14.sp,
@@ -279,16 +308,64 @@ class _UserProfileState extends State<UserProfile> {
           ),
           InkWell(
             onTap: () {
+              if (appGet.lanid == 'English') {
+                setState(() {
+                  LocalizationService().changeLocale('Arabic');
+                });
+              } else {
+                setState(() {
+                  LocalizationService().changeLocale('English');
+                });
+              }
+            },
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.language,
+                        color: Colors.grey[700],
+                        size: 30,
+                      ),
+                      SizedBox(width: 16.w),
+                      Text(
+                        'changeLan'.tr,
+                        style: TextStyle(
+                            color: HexColor('#393939'),
+                            fontSize: 14.sp,
+                            fontFamily: poppins,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Container(
+                  height: 1.h,
+                  width: double.infinity,
+                  color: HexColor('#D1D1D1'),
+                )
+              ],
+            ),
+          ),
+          InkWell(
+            onTap: () {
               Get.offAll(() => Login(1));
+              signOut();
+              kiltoken();
             },
             child: Padding(
-              padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
+              padding: EdgeInsets.only(left: 30.w, right: 26.w, top: 21.w),
               child: Row(
                 children: [
                   SvgPicture.asset('assets/images/logout (1).svg'),
                   SizedBox(width: 16.w),
                   Text(
-                    'Log Out',
+                    'logout'.tr,
                     style: TextStyle(
                         color: HexColor('#393939'),
                         fontSize: 14.sp,

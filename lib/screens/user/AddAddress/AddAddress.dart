@@ -1,5 +1,4 @@
 import 'package:drug_delivery_application/screens/pharmacey/PharmNavBar/PharmNavBar.dart';
-import 'package:drug_delivery_application/screens/user/HomePage/HomePage.dart';
 import 'package:drug_delivery_application/screens/user/UserNavBar/UserNavBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -49,7 +48,7 @@ class _AddAddressState extends State<AddAddress> {
           child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Add your Address',
+                'addyouraddress'.tr,
                 style: TextStyle(
                     fontSize: 24.sp,
                     color: black1,
@@ -65,7 +64,7 @@ class _AddAddressState extends State<AddAddress> {
           child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Enter Your Name',
+                'enteryourname'.tr,
                 style: TextStyle(
                     fontSize: 15.sp,
                     color: HexColor('#0C0B0B'),
@@ -102,7 +101,7 @@ class _AddAddressState extends State<AddAddress> {
           child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Add Address',
+                'addaddress'.tr,
                 style: TextStyle(
                     fontSize: 15.sp,
                     color: HexColor('#0C0B0B'),
@@ -119,7 +118,7 @@ class _AddAddressState extends State<AddAddress> {
                 cursorColor: mainColor,
                 maxLines: 5,
                 decoration: InputDecoration(
-                  labelText: 'Your Address',
+                  labelText: 'addyouraddress'.tr,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: lightGrey2),
                     borderRadius: BorderRadius.circular(10),
@@ -138,9 +137,9 @@ class _AddAddressState extends State<AddAddress> {
         GestureDetector(
           onTap: () {
             if (addresscontroller.text.toString().isEmpty) {
-              EasyLoading.showError('Please enter your Address');
+              EasyLoading.showError('pleaseaddress'.tr);
             } else {
-              EasyLoading.show(status: 'Adding Address...');
+              EasyLoading.show(status: 'addingaddress'.tr);
               if (widget.isUser == 1) {
                 addAddress(addresscontroller.text).then((value) {
                   if (value) {
@@ -167,7 +166,7 @@ class _AddAddressState extends State<AddAddress> {
                   width: 274.w,
                   child: Center(
                     child: Text(
-                      'Save',
+                      'save'.tr,
                       style: TextStyle(
                           color: white,
                           fontSize: 14.sp,

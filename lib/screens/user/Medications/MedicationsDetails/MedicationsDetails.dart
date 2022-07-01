@@ -1,7 +1,10 @@
+import 'package:drug_delivery_application/screens/user/Cart/checkout/Checkout.dart';
 import 'package:drug_delivery_application/screens/user/Medications/Card/RelatedProductsCard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import '../../../../backend/firebase.dart';
 import '../../../../helpers/Counter.dart';
 import '../../../../helpers/helper.dart';
 import '../../../../helpers/theme.dart';
@@ -18,6 +21,8 @@ class MedicationsDetails extends StatefulWidget {
   final String avalibilty;
   final String howToUse;
   final String pharmId;
+  final String categoryName;
+  final String pharmName;
   const MedicationsDetails(
       this.id,
       this.name,
@@ -28,6 +33,8 @@ class MedicationsDetails extends StatefulWidget {
       this.avalibilty,
       this.howToUse,
       this.pharmId,
+      this.categoryName,
+      this.pharmName,
       {Key? key})
       : super(key: key);
 
@@ -36,12 +43,19 @@ class MedicationsDetails extends StatefulWidget {
 }
 
 class _MedicationsDetailsState extends State<MedicationsDetails> {
+  bool isFav = false;
+  @override
+  void initState() {
+    super.initState();
+    checkCartItem(widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: white,
-        appBar: AppBars('Details', false, 93, true, 110),
+        appBar: AppBars('details'.tr, false, 93, true, 110),
         body: ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
           Container(
               height: 266.h,
@@ -73,20 +87,47 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                       360,
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      margin:
-                          EdgeInsets.only(top: 29.h, right: 20.w, left: 20.w),
-                      height: 25.h,
-                      width: 25.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: HexColor('#ffcccc'),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isFav = !isFav;
+                        print(isFav);
+                      });
+                      if (isFav == true) {
+                        addToFavourite(
+                            widget.image.toString(),
+                            widget.name.toString(),
+                            widget.price.toString(),
+                            widget.avalibilty.toString(),
+                            widget.description.toString(),
+                            widget.howToUse.toString(),
+                            widget.categoryId.toString(),
+                            widget.categoryName.toString(),
+                            widget.id.toString(),
+                            widget.pharmId.toString(),
+                            widget.pharmName.toString());
+                      } else {
+                        removeFromFav(widget.id);
+                      }
+                    },
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        margin:
+                            EdgeInsets.only(top: 29.h, right: 20.w, left: 20.w),
+                        height: 25.h,
+                        width: 25.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: HexColor('#ffcccc'),
+                        ),
+                        child: Center(
+                            child: Icon(Icons.favorite,
+                                size: 15,
+                                color: isFav == true
+                                    ? HexColor('#F03A16')
+                                    : grey)),
                       ),
-                      child: Center(
-                          child: Icon(Icons.favorite,
-                              size: 15, color: HexColor('#F03A16'))),
                     ),
                   ),
                 ],
@@ -118,14 +159,14 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
             child: Row(
               children: [
                 Text(
-                  'Availablity: ',
+                  '${'availabilty'.tr}: ',
                   style: TextStyle(
                       color: grey2,
                       fontSize: 16.sp,
                       fontFamily: montserratBold),
                 ),
                 Text(
-                  widget.avalibilty == '1' ? 'In Stock' : 'Out of Stock',
+                  widget.avalibilty == '1' ? 'instock'.tr : 'outstock'.tr,
                   style: TextStyle(
                       color: HexColor('#196737'),
                       fontSize: 16.sp,
@@ -140,7 +181,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Select the quantity: ',
+                  'selectqty'.tr,
                   style: TextStyle(
                       color: grey2,
                       fontSize: 16.sp,
@@ -205,7 +246,41 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    successSanck("Strespsils ", "have been added to cart");
+                    // if (appGet.pharmId == widget.pharmId) {
+                    if (appGet.cartList.isEmpty) {
+                      if (appGet.qty == 0) {
+                        errorSanck(widget.name, "addqty".tr, SnackPosition.TOP);
+                      } else {
+                        addToCart(
+                          widget.image.toString(),
+                          widget.name.toString(),
+                          widget.price.toString(),
+                          widget.avalibilty.toString(),
+                          widget.description.toString(),
+                          widget.howToUse.toString(),
+                          widget.categoryId.toString(),
+                          widget.categoryName.toString(),
+                          appGet.qty.toString(),
+                          widget.price.toString(),
+                          widget.id.toString(),
+                          widget.pharmId.toString(),
+                          widget.pharmName.toString(),
+                        ).then((value) {
+                          if (value == true) {
+                            successSanck(widget.name, "addedtocart".tr,
+                                SnackPosition.TOP);
+                          }
+                        });
+                      }
+                    } else if (appGet.cartItemId == widget.id) {
+                      print('kd');
+                      errorSanck(
+                          widget.name, "itemincart".tr, SnackPosition.TOP);
+                    }
+                    // } else if (appGet.pharmId != widget.pharmId &&
+                    //     appGet.pharmId != '') {
+                    //   samePharm(context);
+                    // }
                   },
                   child: Container(
                     height: 48.h,
@@ -216,7 +291,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                     ),
                     child: Center(
                       child: Text(
-                        'Add to cart',
+                        'addtocart'.tr,
                         style: TextStyle(
                             color: white,
                             fontSize: 18.sp,
@@ -227,21 +302,48 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                   ),
                 ),
                 SizedBox(width: 7.w),
-                Container(
-                  height: 48.h,
-                  width: 165.w,
-                  decoration: BoxDecoration(
-                    color: HexColor('#F2F2F2'),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'BUY NOW',
-                      style: TextStyle(
-                          color: HexColor('#196737'),
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: montserratBold),
+                GestureDetector(
+                  onTap: () {
+                    if (appGet.cartItemId == widget.id) {
+                      errorSanck(
+                          widget.name, "itemincart".tr, SnackPosition.TOP);
+                    } else if (appGet.qty == 0) {
+                      errorSanck(widget.name, "addqty".tr, SnackPosition.TOP);
+                    } else {
+                      addToCart(
+                        widget.image.toString(),
+                        widget.name.toString(),
+                        widget.price.toString(),
+                        widget.avalibilty.toString(),
+                        widget.description.toString(),
+                        widget.howToUse.toString(),
+                        widget.categoryId.toString(),
+                        widget.categoryName.toString(),
+                        appGet.qty.toString(),
+                        widget.price.toString(),
+                        widget.id.toString(),
+                        widget.pharmId.toString(),
+                        widget.pharmName.toString(),
+                      );
+                      Get.to(() => CheckOut());
+                    }
+                  },
+                  child: Container(
+                    height: 48.h,
+                    width: 165.w,
+                    decoration: BoxDecoration(
+                      color: HexColor('#F2F2F2'),
+                      borderRadius: BorderRadius.circular(3),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'buynow'.tr,
+                        style: TextStyle(
+                            color: HexColor('#196737'),
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: montserratBold),
+                      ),
                     ),
                   ),
                 )
@@ -251,7 +353,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 22.h, left: 20.w, right: 20.w),
             child: Text(
-              'Description',
+              'description'.tr,
               style: TextStyle(
                   fontSize: 18.sp,
                   color: HexColor('#393939'),
@@ -272,7 +374,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 45.h, left: 20.w, right: 20.w),
             child: Text(
-              'How to use',
+              'howtouse'.tr,
               style: TextStyle(
                   fontSize: 18.sp,
                   color: HexColor('#393939'),
@@ -299,7 +401,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
           Padding(
             padding: EdgeInsets.only(top: 17.h, left: 20.w, right: 20.w),
             child: Text(
-              'Related Products',
+              'relatedpro'.tr,
               style: TextStyle(
                   fontSize: 18.sp,
                   color: HexColor('#393939'),
@@ -309,14 +411,91 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
           SizedBox(height: 20.h),
           SizedBox(
             height: 140.h,
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return RelatedCard();
-              },
-            ),
+            child: StreamBuilder(
+                stream: getAllCategoriesMedications(widget.categoryId),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  return snapshot.hasData
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount:
+                              snapshot.data!.size > 3 ? 3 : snapshot.data!.size,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MedicationsDetails(
+                                              snapshot.data!
+                                                  .docs[index]['medicineId']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['medicineName']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['medicineImage']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['medicinePrice']
+                                                  .toString(),
+                                              snapshot
+                                                  .data!
+                                                  .docs[index]
+                                                      ['medicineDescription']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['categoryId']
+                                                  .toString(),
+                                              snapshot
+                                                  .data!
+                                                  .docs[index]
+                                                      ['medicineAvailability']
+                                                  .toString(),
+                                              snapshot
+                                                  .data!
+                                                  .docs[index]
+                                                      ['medicineHowToUse']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['pharmaceyId']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['categoryName']
+                                                  .toString(),
+                                              snapshot.data!
+                                                  .docs[index]['pharmName']
+                                                  .toString(),
+                                            )));
+                              },
+                              child: RelatedCard(
+                                snapshot.data!.docs[index]['medicineId']
+                                    .toString(),
+                                snapshot.data!.docs[index]['medicineName']
+                                    .toString(),
+                                snapshot.data!.docs[index]['medicineImage']
+                                    .toString(),
+                                snapshot.data!.docs[index]['medicinePrice']
+                                    .toString(),
+                                snapshot
+                                    .data!.docs[index]['medicineDescription']
+                                    .toString(),
+                                snapshot.data!.docs[index]['categoryId']
+                                    .toString(),
+                                snapshot
+                                    .data!.docs[index]['medicineAvailability']
+                                    .toString(),
+                                snapshot.data!.docs[index]['medicineHowToUse']
+                                    .toString(),
+                                snapshot.data!.docs[index]['pharmaceyId']
+                                    .toString(),
+                              ),
+                            );
+                          },
+                        )
+                      : Text('');
+                }),
           )
         ]),
       ),

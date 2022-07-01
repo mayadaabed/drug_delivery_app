@@ -1,6 +1,7 @@
 import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class PastOrderscard extends StatefulWidget {
   PastOrderscard({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
                             ),
                             child: Center(
                               child: Text(
-                                'Deleivered',
+                                'deliverd'.tr,
                                 style: TextStyle(
                                     fontSize: 13.sp,
                                     color: green,
@@ -77,7 +78,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
                             ),
                             child: Center(
                               child: Text(
-                                'Canceled',
+                                'canceled'.tr,
                                 style: TextStyle(
                                   fontSize: 13.sp,
                                   fontFamily: montserratBold,
@@ -99,7 +100,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
                 ],
               ),
               Text(
-                'Order #3455',
+                '${'order'.tr} #3455',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontFamily: montserratBold,
@@ -110,7 +111,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
               SizedBox(
                 width: 167.w,
                 child: Text(
-                  '3 Items: Fructis,strespils and Garnier cream',
+                  '3 ${'items'.tr}: Fructis,strespils and Garnier cream',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontFamily: poppins,

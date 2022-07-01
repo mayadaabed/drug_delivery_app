@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Drug Delivery',
+                  'drugdelivery'.tr,
                   style: TextStyle(
                       fontSize: 24.sp,
                       color: mainColor,
@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
                       enabled: false,
                       cursorColor: mainColor,
                       decoration: InputDecoration(
-                        hintText: 'Search medicine available.',
+                        hintText: 'searchmedicine'.tr,
                         filled: true,
                         fillColor: white,
                         enabledBorder: OutlineInputBorder(
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Categories',
+                  'categories'.tr,
                   style: TextStyle(
                       fontSize: 18.sp,
                       color: mainColor,
@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                     Get.to(() => Categories());
                   },
                   child: Text(
-                    'See All',
+                    'seeall'.tr,
                     style: TextStyle(
                         fontSize: 10.sp,
                         color: HexColor('#666769'),
@@ -143,7 +143,9 @@ class _HomePageState extends State<HomePage> {
                                 onTap: () {
                                   Get.to(() => Medications(snapshot
                                       .data!.docs[index]['catId']
-                                      .toString()));
+                                      .toString(),
+                                      false, ''
+                                      ));
                                 },
                                 child: CategoriesCard(
                                   snapshot.data!.docs[index]['catId']
@@ -164,7 +166,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Pharmacies',
+                  'pharmacies'.tr,
                   style: TextStyle(
                       fontSize: 18.sp,
                       color: mainColor,
@@ -176,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                     Get.to(() => AllPharmacey());
                   },
                   child: Text(
-                    'See All',
+                    'seeall'.tr,
                     style: TextStyle(
                         fontSize: 10.sp,
                         color: HexColor('#666769'),
@@ -216,6 +218,9 @@ class _HomePageState extends State<HomePage> {
                                             .toString(),
                                         snapshot.data!.docs[index]['openHours']
                                             .toString(),
+                                        double.parse(snapshot
+                                            .data!.docs[index]['rating']
+                                            .toString()),
                                       ));
                                 },
                                 child: PharmaciesCard(

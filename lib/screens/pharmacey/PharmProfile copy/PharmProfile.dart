@@ -1,5 +1,4 @@
 import 'package:drug_delivery_application/screens/pharmacey/PharmProfile%20copy/ProfileNavs/PastOrders.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,7 +8,6 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../../helpers/theme.dart';
 import '../../Login/Login.dart';
-import '../../user/UserProfile/ProfileScreens/MyOrders/MyOrders.dart';
 
 class PharmProfile extends StatefulWidget {
   PharmProfile({Key? key}) : super(key: key);
@@ -76,7 +74,7 @@ class _PharmProfileState extends State<PharmProfile> {
                   SvgPicture.asset('assets/images/shopping-bag (2).svg'),
                   SizedBox(width: 16.w),
                   Text(
-                    'Past Orders',
+                    'pastorders'.tr,
                     style: TextStyle(
                         color: HexColor('#393939'),
                         fontSize: 14.sp,
@@ -109,7 +107,7 @@ class _PharmProfileState extends State<PharmProfile> {
                     SvgPicture.asset('assets/images/bell.svg'),
                     SizedBox(width: 16.w),
                     Text(
-                      'Get Notification',
+                      'getnotification'.tr,
                       style: TextStyle(
                           color: HexColor('#393939'),
                           fontSize: 14.sp,
@@ -154,7 +152,7 @@ class _PharmProfileState extends State<PharmProfile> {
                 SvgPicture.asset('assets/images/settings (6).svg'),
                 SizedBox(width: 16.w),
                 Text(
-                  'Settings',
+                  'settings'.tr,
                   style: TextStyle(
                       color: HexColor('#393939'),
                       fontSize: 14.sp,
@@ -185,7 +183,7 @@ class _PharmProfileState extends State<PharmProfile> {
               SvgPicture.asset('assets/images/logout (1).svg'),
               SizedBox(width: 16.w),
               Text(
-                'Log Out',
+                'logout'.tr,
                 style: TextStyle(
                     color: HexColor('#393939'),
                     fontSize: 14.sp,

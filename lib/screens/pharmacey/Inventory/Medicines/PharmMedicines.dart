@@ -30,7 +30,7 @@ class _PharmMedicinesState extends State<PharmMedicines> {
                       height: 12.h,
                     ),
                     Text(
-                      'All Drugs',
+                      'alldrugs'.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 18.sp,
@@ -50,7 +50,7 @@ class _PharmMedicinesState extends State<PharmMedicines> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     label: Text(
-                      'Add new',
+                      'addnew'.tr,
                       style: TextStyle(color: Colors.white),
                     ),
                     icon: Icon(

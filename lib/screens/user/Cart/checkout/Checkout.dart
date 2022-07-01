@@ -1,3 +1,4 @@
+import 'package:drug_delivery_application/backend/firebase.dart';
 import 'package:drug_delivery_application/screens/user/Cart/DoneOrder/DoneOrder.dart';
 import 'package:drug_delivery_application/screens/user/Cart/checkout/ordercard.dart';
 import 'package:flutter/material.dart';
@@ -17,17 +18,18 @@ class CheckOut extends StatefulWidget {
 }
 
 class _CheckOutState extends State<CheckOut> {
+  TextEditingController noteController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: white,
-        appBar: AppBars('Checkout', false, 93, true, 101),
+        appBar: AppBars('checkout'.tr, false, 93, true, 101),
         body: ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
           Padding(
             padding: EdgeInsets.only(top: 40.h, right: 30.w, left: 30.w),
             child: ExpandablePanel(
               header: Text(
-                'Shipping Address',
+                'shippingaddress'.tr,
                 style: TextStyle(
                     color: HexColor('#3D3E41'),
                     fontSize: 16.sp,
@@ -39,7 +41,7 @@ class _CheckOutState extends State<CheckOut> {
                 children: [
                   Row(children: [
                     Text(
-                      'Name :',
+                      '${'name'.tr} :',
                       style: TextStyle(
                           color: HexColor('#A8A8A8'),
                           fontSize: 12.sp,
@@ -47,7 +49,7 @@ class _CheckOutState extends State<CheckOut> {
                     ),
                     SizedBox(width: 5.w),
                     Text(
-                      'Ahmed kh',
+                      appGet.userMap['userName'],
                       style: TextStyle(
                           color: HexColor('#A8A8A8'),
                           fontSize: 12.sp,
@@ -57,7 +59,7 @@ class _CheckOutState extends State<CheckOut> {
                   SizedBox(height: 10.h),
                   Row(children: [
                     Text(
-                      'Email :',
+                      '${'emailsignup'.tr} :',
                       style: TextStyle(
                           color: HexColor('#A8A8A8'),
                           fontSize: 12.sp,
@@ -65,7 +67,7 @@ class _CheckOutState extends State<CheckOut> {
                     ),
                     SizedBox(width: 5.w),
                     Text(
-                      'Ahmed-kh@gmail.com',
+                      appGet.userMap['email'],
                       style: TextStyle(
                           color: HexColor('#A8A8A8'),
                           fontSize: 12.sp,
@@ -75,7 +77,7 @@ class _CheckOutState extends State<CheckOut> {
                   SizedBox(height: 10.h),
                   Row(children: [
                     Text(
-                      'Phone number :',
+                      '${'phonenum'.tr} :',
                       style: TextStyle(
                           color: HexColor('#A8A8A8'),
                           fontSize: 12.sp,
@@ -83,7 +85,7 @@ class _CheckOutState extends State<CheckOut> {
                     ),
                     SizedBox(width: 5.w),
                     Text(
-                      '+972595954300',
+                      appGet.userMap['phoneNumber'],
                       style: TextStyle(
                           color: HexColor('#A8A8A8'),
                           fontSize: 12.sp,
@@ -98,7 +100,7 @@ class _CheckOutState extends State<CheckOut> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Musallam pharmacy',
+                          appGet.cartList[0]['pharmName'],
                           style: TextStyle(
                               color: black,
                               fontSize: 14.sp,
@@ -106,7 +108,7 @@ class _CheckOutState extends State<CheckOut> {
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          '3 Items : Delivery Time  30 Min',
+                          '${appGet.cartList.length} ${'items'.tr} ',
                           style: TextStyle(
                               color: HexColor('#A8A8A8'),
                               fontSize: 12.sp,
@@ -128,7 +130,7 @@ class _CheckOutState extends State<CheckOut> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Home Adress',
+                          'homeaddress'.tr,
                           style: TextStyle(
                               color: black,
                               fontSize: 14.sp,
@@ -136,8 +138,7 @@ class _CheckOutState extends State<CheckOut> {
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          '''Gaza, Al Remal -Ahmed Abd El Azeez
-Street next to AlKenz Mosque''',
+                          appGet.userMap['address'],
                           style: TextStyle(
                               color: HexColor('#A8A8A8'),
                               fontSize: 12.sp,
@@ -160,7 +161,7 @@ Street next to AlKenz Mosque''',
           Padding(
             padding: EdgeInsets.only(top: 25.h, right: 30.w, left: 30.w),
             child: Text(
-              'Order details',
+              'orderdetails'.tr,
               style: TextStyle(
                   color: HexColor('#3D3E41'),
                   fontSize: 16.sp,
@@ -170,13 +171,18 @@ Street next to AlKenz Mosque''',
           ),
           SizedBox(height: 22.h),
           ListView.builder(
-            itemCount: 3,
+            itemCount: appGet.cartList.length,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: [
-                  OrderCard(),
+                  OrderCard(
+                    appGet.cartList[index]['medicineImage'].toString(),
+                    appGet.cartList[index]['totalPrice'].toString(),
+                    appGet.cartList[index]['quntity'].toString(),
+                    appGet.cartList[index]['medicineName'].toString(),
+                  ),
                   Container(
                     height: .5.h,
                     width: 335.w,
@@ -191,7 +197,7 @@ Street next to AlKenz Mosque''',
           Padding(
             padding: EdgeInsets.only(top: 25.h, right: 30.w, left: 30.w),
             child: Text(
-              'NOTE:',
+              '${'note'.tr}:',
               style: TextStyle(
                   color: HexColor('#3D3E41'),
                   fontSize: 16.sp,
@@ -202,8 +208,7 @@ Street next to AlKenz Mosque''',
           Padding(
             padding: EdgeInsets.only(top: 10.h, right: 30.w, left: 30.w),
             child: Text(
-              '''Deleivery cost will be paid ON
-Deleivery''',
+              'deliverycost'.tr,
               style: TextStyle(
                   color: HexColor('#A8A8A8'),
                   fontSize: 14.sp,
@@ -213,7 +218,7 @@ Deleivery''',
           Padding(
             padding: EdgeInsets.only(top: 25.h, right: 30.w, left: 30.w),
             child: Text(
-              'Your note',
+              'yournote'.tr,
               style: TextStyle(
                   color: HexColor('#3D3E41'),
                   fontSize: 16.sp,
@@ -229,7 +234,7 @@ Deleivery''',
                   cursorColor: mainColor,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    labelText: 'Write your note',
+                    labelText: 'writenote'.tr,
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: lightGrey2),
                       borderRadius: BorderRadius.circular(10.r),
@@ -247,7 +252,9 @@ Deleivery''',
           ),
           GestureDetector(
             onTap: () {
-              Get.to(() => DoneOrder());
+              addOrder(appGet.cartList[0]['pharmaceyId'],
+                  appGet.cartList[0]['pharmName'], noteController.text, 1);
+              // Get.to(() => DoneOrder());
             },
             child: Container(
                 height: 50.h,
@@ -257,7 +264,7 @@ Deleivery''',
                     borderRadius: BorderRadius.circular(5), color: mainColor),
                 child: Center(
                     child: Text(
-                  'Checkout',
+                  'checkout'.tr,
                   style: TextStyle(
                     color: white,
                     fontSize: 14.sp,

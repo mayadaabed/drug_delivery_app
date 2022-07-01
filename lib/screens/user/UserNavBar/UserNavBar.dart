@@ -4,6 +4,7 @@ import 'package:drug_delivery_application/screens/user/HomePage/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../Cart/Cart.dart';
@@ -54,19 +55,19 @@ class _UserNavBarState extends State<UserNavBar> {
                   'assets/images/home.svg',
                   height: 22.h,
                 ),
-                label: 'HOME',
+                label: 'home'.tr,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset('assets/images/shoppingcart.svg'),
-                label: 'Shopping cart',
+                label: 'shoppingcart'.tr,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset('assets/images/textmessage.svg'),
-                label: 'Chat',
+                label: 'chat'.tr,
               ),
               BottomNavigationBarItem(
                 icon: SvgPicture.asset('assets/images/person.svg'),
-                label: 'My Account',
+                label: 'myacc'.tr,
               ),
             ],
             selectedItemColor: mainColor,

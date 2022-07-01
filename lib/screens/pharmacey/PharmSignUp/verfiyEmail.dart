@@ -43,7 +43,7 @@ class _VerfiyEmailState extends State<VerfiyEmail> {
     return Scaffold(
         body: Center(
       child: Text(
-        'An email has been sent to ${widget.email} please verfiy',
+        '${'emailsent'.tr} ${widget.email} ${'pleaseverfiy'.tr}',
         textAlign: TextAlign.center,
       ),
     ));

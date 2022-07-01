@@ -44,7 +44,7 @@ class _ChooseAccountState extends State<ChooseAccount> {
                     width: 274.w,
                     child: Center(
                       child: Text(
-                        'Log In As User',
+                        'loginasuser'.tr,
                         style: TextStyle(
                             color: white,
                             fontSize: 14.sp,
@@ -72,7 +72,7 @@ class _ChooseAccountState extends State<ChooseAccount> {
                     width: 274.w,
                     child: Center(
                       child: Text(
-                        'Log In As Pharmacey',
+                        'loginaspharmacy'.tr,
                         style: TextStyle(
                             color: mainColor,
                             fontSize: 14.sp,

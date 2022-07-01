@@ -54,8 +54,8 @@ class _PharmMedicinesCardState extends State<PharmMedicinesCard> {
            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
            children: [
            Text("Strespsils", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
-           Text("Medication", style: TextStyle(color: grey),),
-           Text("50 Items", style: TextStyle(color: grey),)
+           Text("medication".tr, style: TextStyle(color: grey),),
+           Text("50 ${'items'.tr}", style: TextStyle(color: grey),)
         
            ],
          )
@@ -81,7 +81,7 @@ class _PharmMedicinesCardState extends State<PharmMedicinesCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                       Text("Edit", style: TextStyle(color: mainColor),),
+                       Text("edit".tr, style: TextStyle(color: mainColor),),
                        SizedBox(width: 5.w,),
                        Icon(Icons.edit_note_sharp, color: mainColor,)
                       ],

@@ -1,11 +1,11 @@
+import 'dart:io';
 import 'package:drug_delivery_application/screens/Login/Login.dart';
-import 'package:drug_delivery_application/screens/VerfiyAccount/VerfiyAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:image_picker/image_picker.dart';
 import '../../backend/firebase.dart';
 import '../../helpers/theme.dart';
 
@@ -25,6 +25,57 @@ class _SignUpState extends State<SignUp> {
   String phonee = "+970";
 
   bool visible = true;
+
+  XFile? pickedImages;
+  String? base64Image;
+  final ImagePicker picker = ImagePicker();
+  Future getimagdata(BuildContext context) async {
+    final imageSource = await showDialog<ImageSource>(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(
+                "imagesource".tr,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: 22.sp, fontFamily: montserratBold, color: black),
+              ),
+              actions: <Widget>[
+                MaterialButton(
+                  child: Text(
+                    "camera".tr,
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: montserratBold,
+                        color: black),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context, ImageSource.camera);
+                  },
+                ),
+                MaterialButton(
+                  child: Text(
+                    "gallery".tr,
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontFamily: montserratBold,
+                        color: black),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context, ImageSource.gallery);
+                  },
+                )
+              ],
+            ));
+
+    if (imageSource != null) {
+      var imgfil = await picker.pickImage(source: imageSource);
+      print('images is full');
+
+      pickedImages = imgfil;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,13 +99,56 @@ class _SignUpState extends State<SignUp> {
               child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Create Account',
+                    'createacc'.tr,
                     style: TextStyle(
                         fontSize: 24.sp,
                         color: black1,
                         fontFamily: montserratBold,
                         fontWeight: FontWeight.bold),
                   )),
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+            GestureDetector(
+              onTap: () {
+                getimagdata(context);
+              },
+              child: pickedImages == null
+                  ? Container(
+                      height: 100.h,
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                        color: lightGrey2,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: grey,
+                          size: 30,
+                        ),
+                      ))
+                  : Container(
+                      height: 100.h,
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              // fit: BoxFit.fitWidth,
+                              image: FileImage(
+                            File(pickedImages!.path),
+                          ))),
+                    ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 30.w, right: 30.w, top: 20.h),
+              child: Text(
+                'addidentity'.tr,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    fontSize: 15.sp, color: black1, fontFamily: montserratBold),
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: 30.w, right: 30.w, top: 50.h),
@@ -64,7 +158,7 @@ class _SignUpState extends State<SignUp> {
                     controller: namecontroller,
                     cursorColor: mainColor,
                     decoration: InputDecoration(
-                      labelText: 'Username',
+                      labelText: 'username'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -87,7 +181,7 @@ class _SignUpState extends State<SignUp> {
                     cursorColor: mainColor,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: 'emailsignup'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -110,7 +204,7 @@ class _SignUpState extends State<SignUp> {
                     cursorColor: mainColor,
                     obscureText: visible,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'password'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -190,7 +284,7 @@ class _SignUpState extends State<SignUp> {
                           cursorColor: mainColor,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
-                            labelText: 'Phone Number',
+                            labelText: 'phonenum'.tr,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: lightGrey2),
                             ),
@@ -209,22 +303,31 @@ class _SignUpState extends State<SignUp> {
             ),
             GestureDetector(
               onTap: () {
-                if (namecontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your name');
+                if (pickedImages == null) {
+                  EasyLoading.showError('pleaseidentity'.tr);
+                } else if (namecontroller.text.toString().isEmpty) {
+                  EasyLoading.showError('pleasename'.tr);
                 } else if (emailcontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your email');
+                  EasyLoading.showError('pleaseemail'.tr);
                 } else if (passwordcontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your password');
+                  EasyLoading.showError('pleasepass'.tr);
                 } else if (phonecontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your phone number');
+                  EasyLoading.showError('pleasepass'.tr);
                 } else {
+                  EasyLoading.show(status: 'loading'.tr);
                   registrationProcess(
-                      name: namecontroller.text.toString(),
-                      email: emailcontroller.text.toString(),
-                      password: passwordcontroller.text.toString(),
-                      mobile: phonee + phonecontroller.text.toString(),
-                      address: '',
-                      isUser: true);
+                          name: namecontroller.text.toString(),
+                          email: emailcontroller.text.toString(),
+                          password: passwordcontroller.text.toString(),
+                          mobile: phonee + phonecontroller.text.toString(),
+                          address: '',
+                          isUser: true)
+                      .then((value) {
+                    uploadIdentityImage(File(pickedImages!.path), userIds)
+                        .then((value) {
+                      EasyLoading.dismiss();
+                    });
+                  });
                 }
               },
               child: Padding(
@@ -236,7 +339,7 @@ class _SignUpState extends State<SignUp> {
                       width: 274.w,
                       child: Center(
                         child: Text(
-                          'Sign Up',
+                          'signup'.tr,
                           style: TextStyle(
                               color: white,
                               fontSize: 14.sp,
@@ -257,7 +360,7 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Already have an account',
+                  'alreadyhaveacc'.tr,
                   style: TextStyle(
                       color: grey2,
                       fontSize: 14.sp,
@@ -269,7 +372,7 @@ class _SignUpState extends State<SignUp> {
                     Get.to(() => Login(1));
                   },
                   child: Text(
-                    ' Log In',
+                    'login'.tr,
                     style: TextStyle(
                         color: green,
                         fontSize: 14.sp,

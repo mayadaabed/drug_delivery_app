@@ -21,7 +21,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
        backgroundColor: white,
-        appBar: AppBars("Order Details", false, 75, true, 70),
+        appBar: AppBars("orderdetails".tr, false, 75, true, 70),
         body: ListView(
           padding: const EdgeInsets.all(20),
             children: <Widget>[ 
@@ -38,7 +38,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                       borderRadius: BorderRadius.circular(5.r),
                     ),
                  child: Text(
-                        'New Order Request',
+                        'neworderrequest'.tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 13.sp,
@@ -49,8 +49,8 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                         ),
                       ),
                    ),
-                   const Text(
-                    "Order #4444",
+                    Text(
+                    "${'order'.tr} #4444",
                     style: TextStyle(
                       fontWeight:FontWeight.w700,
 
@@ -84,7 +84,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Total", style: TextStyle(fontWeight: FontWeight.bold),),
+              Text("checkouttotal".tr, style: TextStyle(fontWeight: FontWeight.bold),),
              Text("10₪" , style: TextStyle(fontSize: 15),),
             ],
           ),
@@ -97,7 +97,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                   onPressed: () {  },
                   height: 50.h,
                   minWidth: 50.w,
-                  child: Text("Accept all", style: TextStyle(fontSize: 15.sp, color: white),
+                  child: Text("acceptall".tr, style: TextStyle(fontSize: 15.sp, color: white),
               
                 ),
                 color: mainColor,
@@ -110,7 +110,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 (onPressed: (){}, 
                  height: 50.h,
                  focusColor: green,
-                child: Text("Reject Order", style: TextStyle(fontSize: 15.sp, color: mainColor),),
+                child: Text("rejectorder".tr, style: TextStyle(fontSize: 15.sp, color: mainColor),),
                 color: white ,
                 ),
               )

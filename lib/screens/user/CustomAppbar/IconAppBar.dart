@@ -14,7 +14,6 @@ class IconAppBar extends StatefulWidget implements PreferredSizeWidget {
   State<IconAppBar> createState() => _IconAppBarState();
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(height.h);
 }
 

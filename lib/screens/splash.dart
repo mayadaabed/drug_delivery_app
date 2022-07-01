@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../backend/firebase.dart';
 import '../helpers/utile.dart';
-import 'onboarding/onboarding2.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -17,7 +16,7 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   rout() async {
     await Future.delayed(const Duration(seconds: 3));
-    Get.offAll(() => const Onboarding2());
+    gettoken();
   }
 
   @override
@@ -40,7 +39,7 @@ class _SplashState extends State<Splash> {
               height: 20.h,
             ),
             Text(
-              'Drug Delivery',
+              'drugdelivery'.tr,
               style: TextStyle(
                   color: mainColor,
                   fontFamily: montserratBold,

@@ -18,6 +18,7 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppbarState extends State<CustomAppbar> {
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
@@ -77,9 +78,10 @@ class _CustomAppbarState extends State<CustomAppbar> {
                       elevation: 3.0,
                       shadowColor: black,
                       child: TextField(
+                        controller: searchController,
                         cursorColor: mainColor,
                         decoration: InputDecoration(
-                          hintText: 'Search medicine available.',
+                          hintText: 'searchmedicine'.tr,
                           isDense: true,
                           filled: true,
                           fillColor: white,

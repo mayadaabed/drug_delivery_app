@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
               child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Login',
+                    'login'.tr,
                     style: TextStyle(
                         fontSize: 24.sp,
                         color: black1,
@@ -60,7 +60,7 @@ class _LoginState extends State<Login> {
                     keyboardType: TextInputType.emailAddress,
                     cursorColor: mainColor,
                     decoration: InputDecoration(
-                      labelText: 'E-mail',
+                      labelText: 'email'.tr,
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
                     obscureText: visible,
                     cursorColor: mainColor,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'password'.tr,
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: lightGrey2),
                       ),
@@ -112,11 +112,11 @@ class _LoginState extends State<Login> {
             GestureDetector(
               onTap: () {
                 if (emailcontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your email');
+                  EasyLoading.showError('pleaseemail'.tr);
                 } else if (passwordcontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your password');
+                  EasyLoading.showError('pleasepass'.tr);
                 } else {
-                  EasyLoading.show(status: 'Loading...');
+                  EasyLoading.show(status: 'loading'.tr);
                   signInWithEmailAndPassword(
                           email: emailcontroller.text.toString(),
                           password: passwordcontroller.text.toString(),
@@ -135,7 +135,7 @@ class _LoginState extends State<Login> {
                       width: 274.w,
                       child: Center(
                         child: Text(
-                          'Log In',
+                          'login'.tr,
                           style: TextStyle(
                               color: white,
                               fontSize: 14.sp,
@@ -176,18 +176,18 @@ class _LoginState extends State<Login> {
             GestureDetector(
               onTap: () {
                 if (emailcontroller.text.toString().isEmpty) {
-                  EasyLoading.showError('Please enter your email');
+                  EasyLoading.showError('pleaseemail'.tr);
                 } else {
                   sendPasswordResetEmail(emailcontroller.text.toString())
                       .then((value) {
                     EasyLoading.showSuccess(
-                        'Check your eamil for password reset link');
+                        'checkemail'.tr);
                   });
                 }
               },
               child: Center(
                 child: Text(
-                  'Forget Password?',
+                  'forgetpassword'.tr,
                   style: TextStyle(
                       color: grey2,
                       fontSize: 13.sp,
@@ -202,7 +202,7 @@ class _LoginState extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Don\'t have an account? ',
+                  'donthaveacc'.tr,
                   style: TextStyle(
                       color: grey2,
                       fontSize: 14.sp,
@@ -218,7 +218,7 @@ class _LoginState extends State<Login> {
                     }
                   },
                   child: Text(
-                    'Sign up',
+                    'signup'.tr,
                     style: TextStyle(
                         color: green,
                         fontSize: 14.sp,

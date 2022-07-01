@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../../helpers/theme.dart';
 import '../../Medications/appBar/AppBars.dart';
@@ -26,7 +27,7 @@ class _TrackOrderState extends State<TrackOrder> {
     ),
     Tuple2(
       Icons.directions_bus,
-      'Shipped',
+      'shipped'.tr,
     ),
     Tuple2(
       Icons.directions_railway,
@@ -43,7 +44,7 @@ class _TrackOrderState extends State<TrackOrder> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: white,
-        appBar: AppBars('Track Order', false, 93, true, 85),
+        appBar: AppBars('trackorder'.tr, false, 93, true, 85),
         body: ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
           TrackCard(),
           EnhanceStepper(
@@ -60,7 +61,7 @@ class _TrackOrderState extends State<TrackOrder> {
                   ),
                   isActive: false,
                   title: Text(
-                    "Ordered",
+                    "ordered".tr,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontFamily: montserratBold,
@@ -78,7 +79,7 @@ class _TrackOrderState extends State<TrackOrder> {
                   ),
                   isActive: false,
                   title: Text(
-                    "Shipped",
+                    "shipped".tr,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontFamily: montserratBold,
@@ -96,7 +97,7 @@ class _TrackOrderState extends State<TrackOrder> {
                   ),
                   isActive: false,
                   title: Text(
-                    "Out for deleviry",
+                    "outfordelivery".tr,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontFamily: montserratBold,
@@ -114,7 +115,7 @@ class _TrackOrderState extends State<TrackOrder> {
                   ),
                   isActive: false,
                   title: Text(
-                    "Received",
+                    "recived".tr,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontFamily: montserratBold,
@@ -203,7 +204,7 @@ class _TrackOrderState extends State<TrackOrder> {
                           color: mainColor),
                       child: Center(
                           child: Text(
-                        'Confirm order recieved',
+                        'confirmorder'.tr,
                         style: TextStyle(
                           color: white,
                           fontSize: 13.sp,
@@ -222,7 +223,7 @@ class _TrackOrderState extends State<TrackOrder> {
                           color: HexColor('#F2F2F2')),
                       child: Center(
                           child: Text(
-                        'Done!',
+                        'done'.tr,
                         style: TextStyle(
                           color: black1,
                           fontSize: 18.sp,

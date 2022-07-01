@@ -3,6 +3,7 @@ import 'package:drug_delivery_application/screens/pharmacey/PastOrder/pastOrders
 import 'package:drug_delivery_application/screens/user/Medications/appBar/AppBars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class PastOrders extends StatefulWidget {
   PastOrders({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _PastOrdersState extends State<PastOrders> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: white,
-        appBar: AppBars('Past Orders', false, 93.h, true, 65.w),
+        appBar: AppBars('pastorders'.tr, false, 93.h, true, 65.w),
         body: ListView.builder(
           itemCount: 5,
           itemBuilder: (BuildContext context, int index) {

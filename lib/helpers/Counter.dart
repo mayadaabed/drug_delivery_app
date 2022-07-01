@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../backend/firebase.dart';
+
 class Counter extends StatefulWidget {
   Counter({Key? key}) : super(key: key);
 
@@ -11,17 +13,15 @@ class Counter extends StatefulWidget {
 }
 
 class _CounterState extends State<Counter> {
-  int _n = 0;
-
   void add() {
     setState(() {
-      _n++;
+      appGet.qty++;
     });
   }
 
   void minus() {
     setState(() {
-      if (_n != 0) _n--;
+      if (appGet.qty != 0) appGet.qty--;
     });
   }
 
@@ -50,7 +50,7 @@ class _CounterState extends State<Counter> {
         ),
         SizedBox(width: 10.w),
         Text(
-          '$_n',
+          '${appGet.qty}',
           style: TextStyle(
               color: HexColor('#393939'),
               fontSize: 13.sp,
@@ -77,13 +77,6 @@ class _CounterState extends State<Counter> {
             ),
           ),
         ),
-
-        // FloatingActionButton(
-        //   onPressed: minus,
-        //   child: Icon(const IconData(0xe15b, fontFamily: 'MaterialIcons'),
-        //       color: Colors.black),
-        //   backgroundColor: Colors.white,
-        // ),
       ],
     );
   }
