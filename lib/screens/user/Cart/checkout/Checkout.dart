@@ -253,8 +253,13 @@ class _CheckOutState extends State<CheckOut> {
           GestureDetector(
             onTap: () {
               addOrder(appGet.cartList[0]['pharmaceyId'],
-                  appGet.cartList[0]['pharmName'], noteController.text, 1);
-              // Get.to(() => DoneOrder());
+                      appGet.cartList[0]['pharmName'], noteController.text, 1)
+                  .then((value) {
+                if (value == true) {
+                  deleteCart();
+                  Get.to(() => DoneOrder());
+                } else {}
+              });
             },
             child: Container(
                 height: 50.h,

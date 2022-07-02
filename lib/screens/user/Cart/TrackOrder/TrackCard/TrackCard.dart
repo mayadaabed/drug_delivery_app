@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../../../backend/firebase.dart';
 import '../../../../../helpers/theme.dart';
 
 class TrackCard extends StatefulWidget {
@@ -29,7 +30,7 @@ class _TrackCardState extends State<TrackCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${'order'.tr} #3455',
+              '${'order'.tr} #${appGet.orderId}',
               style: TextStyle(
                 color: mainGreen,
                 fontSize: 16.sp,
@@ -53,7 +54,7 @@ class _TrackCardState extends State<TrackCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Musallam pharmacy',
+                    appGet.orderList[0]['phamName'].toString(),
                     style: TextStyle(
                         color: black,
                         fontSize: 14.sp,
@@ -61,7 +62,7 @@ class _TrackCardState extends State<TrackCard> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '3 ${'items'.tr} : ${'deliverytime'.tr}  30 Min',
+                    '${appGet.orderList.length} ${'items'.tr}',
                     style: TextStyle(
                         color: HexColor('#A8A8A8'),
                         fontSize: 12.sp,
@@ -91,8 +92,7 @@ class _TrackCardState extends State<TrackCard> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '''Gaza, Al Remal -Ahmed Abd El Azeez
-Street next to AlKenz Mosque''',
+                    appGet.orderList[0]['address'].toString(),
                     style: TextStyle(
                         color: HexColor('#A8A8A8'),
                         fontSize: 12.sp,

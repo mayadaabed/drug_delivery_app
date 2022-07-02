@@ -45,10 +45,13 @@ class AppGet extends GetxController {
   var pharmacyMap = <String, dynamic>{}.obs;
   var cartItemId = '';
   var pharmId = '';
+  var orderId = '';
 
   var cartList = [].obs;
   var pharmPro = [].obs;
   var favList = [].obs;
+  var orderList;
+  var ordersList = [].obs;
 
   setPharmacyMap(Map<String, dynamic> map) {
     this.pharmacyMap.value = map;

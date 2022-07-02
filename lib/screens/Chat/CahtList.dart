@@ -3,7 +3,6 @@ import 'package:drug_delivery_application/screens/Chat/ChatCard/ChatCard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../backend/firebase.dart';
-import '../user/CustomAppbar/IconAppBar.dart';
 import '../user/Medications/appBar/AppBars.dart';
 import 'chatroom.dart';
 

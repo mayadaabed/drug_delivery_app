@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -1023,7 +1024,28 @@ Future addOrder(
     String pharmId, String pharmName, String note, int orderStatus) async {
   var rng = new Random();
   var code = rng.nextInt(9000) + 1000;
-  List yourItemList = [];
+  List lolo = [];
+  print(appGet.cartList[0]['medicineName']);
+  for (var ii = 0; ii < appGet.cartList.length; ii++) {
+    lolo.add({
+      'categoryId': appGet.cartList[ii]['categoryId'],
+      'categoryName': appGet.cartList[ii]['categoryName'],
+      'createdDate': appGet.cartList[ii]['createdDate'],
+      'medicineAvailability': appGet.cartList[ii]['medicineAvailability'],
+      'medicineDescription': appGet.cartList[ii]['medicineDescription'],
+      'medicineHowToUse': appGet.cartList[ii]['medicineHowToUse'],
+      'medicineId': appGet.cartList[ii]['medicineId'],
+      'medicineImage': appGet.cartList[ii]['medicineImage'],
+      'medicineName': appGet.cartList[ii]['medicineName'],
+      'medicinePrice': appGet.cartList[ii]['medicinePrice'],
+      'pharmName': appGet.cartList[ii]['pharmName'],
+      'pharmaceyId': appGet.cartList[ii]['pharmaceyId'],
+      'quntity': appGet.cartList[ii]['quntity'],
+      'totalPrice': appGet.cartList[ii]['totalPrice'],
+      'userId': appGet.cartList[ii]['userId'],
+    });
+  }
+  print(lolo);
   try {
     await firestore.collection(ordersCollection).doc().set({
       'orderNumber': code,
@@ -1036,11 +1058,84 @@ Future addOrder(
       'phamName': pharmName,
       'note': note,
       'orderStatus': orderStatus,
-      'items': FieldValue.arrayUnion(yourItemList),
+      // ignore: invalid_use_of_protected_member
+      'items': lolo,
+      'createdDate': DateTime.now().millisecondsSinceEpoch,
+      'deliveryDate': DateTime.now().millisecondsSinceEpoch
     });
+    appGet.orderId = code.toString();
     return true;
   } on Exception catch (e) {
     print(e);
     return false;
+  }
+}
+
+Future getUserOrder() async {
+  try {
+    var data = await firestore
+        .collection(ordersCollection)
+        .where('orderNumber', isEqualTo: int.parse(appGet.orderId))
+        .get();
+
+    print(data.docs);
+    print(userIds);
+    appGet.orderList.value = data.docs;
+
+    print(appGet.orderList.toList());
+
+    print(appGet.orderId);
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future updateOrderStatus() async {
+  try {
+    firestore
+        .collection(ordersCollection)
+        .where('orderNumber', isEqualTo: int.parse(appGet.orderId))
+        .get()
+        .then((value) => value.docs.forEach((doc) {
+              doc.reference.update({
+                'orderStatus': 4,
+                'deliveryDate': DateTime.now().millisecondsSinceEpoch,
+              });
+            }));
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+// Future getUserOrders() async {
+//   try {
+//     var data = await firestore
+//         .collection(ordersCollection)
+//         .where('userId', isEqualTo: userIds)
+//         .get();
+
+//     print(data.docs);
+//     print(userIds);
+//     appGet.ordersList.value = data.docs;
+
+//     print(appGet.ordersList.toList());
+
+//     return true;
+//   } on Exception catch (e) {
+//     return false;
+//   }
+// }
+
+Stream<QuerySnapshot>? getUserOrders() {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(ordersCollection)
+        .where('userId', isEqualTo: userIds)
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
   }
 }

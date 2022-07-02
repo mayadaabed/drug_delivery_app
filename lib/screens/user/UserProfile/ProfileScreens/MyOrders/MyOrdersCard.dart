@@ -5,9 +5,21 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../../../helpers/theme.dart';
+import '../../../../../helpers/utile.dart';
 
 class MyOrdersCard extends StatefulWidget {
-  MyOrdersCard({Key? key}) : super(key: key);
+  final String address;
+  final String note;
+  final String orderNum;
+  final String orderstatus;
+  final String pharmName;
+  final String pharmId;
+  final List items;
+  final String delvDate;
+  MyOrdersCard(this.address, this.note, this.orderNum, this.orderstatus,
+      this.pharmName, this.pharmId, this.items, this.delvDate,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<MyOrdersCard> createState() => _MyOrdersCardState();
@@ -32,7 +44,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
           Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 12.h),
             child: Text(
-              '${'order'.tr} #3455',
+              '${'order'.tr} #${widget.orderNum}',
               style: TextStyle(
                   fontSize: 16.sp,
                   fontFamily: montserratBold,
@@ -43,7 +55,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
           Padding(
             padding: EdgeInsets.only(left: 16.w, right: 16.w, top: 7.h),
             child: Text(
-              '${'deliverdon'.tr} 12 Feb 2022',
+              '${'deliverdon'.tr} ' ' ${widget.delvDate}',
               style: TextStyle(
                   fontSize: 12.sp, fontFamily: montserratBold, color: black),
             ),
@@ -56,27 +68,32 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
           ),
           SizedBox(height: 10.h),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(width: 12.w),
-              SvgPicture.asset('assets/images/market.svg'),
-              SizedBox(width: 10.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    'Musallam pharmacy',
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        fontFamily: poppins,
-                        color: black,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    '3 ${'items'.tr} : ${'deliverytime'.tr}  30 Min',
-                    style: TextStyle(
-                        fontSize: 12.sp,
-                        fontFamily: poppins,
-                        color: HexColor('#A8A8A8')),
+                  SizedBox(width: 12.w),
+                  SvgPicture.asset('assets/images/market.svg'),
+                  SizedBox(width: 10.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.pharmName,
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            fontFamily: poppins,
+                            color: black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        '${widget.items.length} ${'items'.tr}',
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            fontFamily: poppins,
+                            color: HexColor('#A8A8A8')),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -102,7 +119,14 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
                             border: Border.all(color: HexColor('#D1D1D1')),
                             color: white),
                         child: Center(
-                          child: Image.asset('assets/images/med.png'),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: WidgetRelease.getInstance().cashed(
+                              widget.items[0]['medicineImage'],
+                              50,
+                              50,
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(width: 5.w),
@@ -115,7 +139,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
                             color: white),
                         child: Center(
                           child: Text(
-                            '+2',
+                            '+${widget.items.length}',
                             style: TextStyle(
                                 fontSize: 16.sp,
                                 fontFamily: poppins,
@@ -124,6 +148,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
                           ),
                         ),
                       ),
+                      SizedBox(width: 10.w),
                     ],
                   ),
                 ],
@@ -131,27 +156,32 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
             ],
           ),
           SizedBox(height: 15.h),
-          Center(
-            child: Container(
-              height: 45.h,
-              width: 261.w,
-              decoration: BoxDecoration(
-                  color: HexColor('#C5DBB2'),
-                  borderRadius: BorderRadius.circular(5)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset('assets/images/manual-task.svg'),
-                  SizedBox(width: 10.w),
-                  Text(
-                    'reorder'.tr,
-                    style: TextStyle(
-                        fontSize: 14.sp,
-                        fontFamily: montserratBold,
-                        color: mainGreen,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
+          GestureDetector(
+            onTap: (){
+              
+            },
+            child: Center(
+              child: Container(
+                height: 45.h,
+                width: 261.w,
+                decoration: BoxDecoration(
+                    color: HexColor('#C5DBB2'),
+                    borderRadius: BorderRadius.circular(5)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset('assets/images/manual-task.svg'),
+                    SizedBox(width: 10.w),
+                    Text(
+                      'reorder'.tr,
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontFamily: montserratBold,
+                          color: mainGreen,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
               ),
             ),
           )
