@@ -97,13 +97,16 @@ class _CartCardState extends State<CartCard> {
           width: 100.w,
           height: 100.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.w),
+            borderRadius: BorderRadius.circular(10.r),
             border: Border.all(color: HexColor('#D1D1D1'), width: 1.w),
           ),
-          child: WidgetRelease.getInstance().cashed(
-            widget.image,
-            90,
-            90,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10.r),
+            child: WidgetRelease.getInstance().cashed(
+              widget.image,
+              90,
+              90,
+            ),
           ),
         ),
         SizedBox(width: 20.w),
@@ -112,17 +115,20 @@ class _CartCardState extends State<CartCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  widget.medname,
-                  style: TextStyle(
-                      fontSize: 14.sp,
-                      fontFamily: montserratBold,
-                      fontWeight: FontWeight.bold,
-                      color: black1),
+                SizedBox(
+                  width: 100.w,
+                  child: Text(
+                    widget.medname,
+                    style: TextStyle(
+                        fontSize: 14.sp,
+                        fontFamily: montserratBold,
+                        fontWeight: FontWeight.bold,
+                        color: black1),
+                  ),
                 ),
-                SizedBox(width: 115.w),
+                SizedBox(width: 80.w),
                 InkWell(
                   onTap: () {
                     deleteCartItem(widget.medid).then((value) {

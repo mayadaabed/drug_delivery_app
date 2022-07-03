@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import '../screens/onboarding/onboarding2.dart';
 import '../screens/pharmacey/PharmSignUp/verfiyEmail.dart';
+import '../screens/user/AddAddress/AddAddress.dart';
 
 final AppGet appGet = Get.put(AppGet());
 
@@ -282,12 +283,13 @@ Future registrationProcess(
       if (isSuccess == true && isUser == true) {
         print('userrrrrrrrrrr');
         getUserFromFirestore(userId: userId, pass: appGet.pass);
-
-        Get.offAll(() => VerfiyEmail(name!, email, 1));
+        Get.offAll(() => AddAddress(name!, 1));
+        // Get.offAll(() => VerfiyEmail(name!, email, 1));
       } else if (isSuccess == true && isUser == false) {
         print('pharmacyrrrrrrrrrr');
         getPharmFromFirestore(userId: userId, pass: appGet.pass);
-        Get.offAll(() => VerfiyEmail(pharmName!, email, 2));
+        // Get.offAll(() => VerfiyEmail(pharmName!, email, 2));
+        Get.offAll(() => AddAddress(pharmName!, 2));
       }
       if (isSuccess == false) {
         throw ('Failed Save user in firestore');
@@ -337,6 +339,7 @@ Future<bool> savePharmacyInFirestore(
       'createdDate': timestamp,
       'openHours': openHours,
       'pharmName': pharmName,
+      'rating': 0.0
     });
     appGet.dissmis;
     return true;
@@ -903,7 +906,7 @@ Future<void> onUploadComplete() async {
 }
 
 Future<bool> savechatFirestore(
-  String userrecivename,
+  String mosName,
   String usermostakbleid,
   String detailes,
   bool islocation,
@@ -937,7 +940,7 @@ Future<bool> savechatFirestore(
     "issound": issound,
     'isimage': isimage,
     'imageurl': imgurl,
-    "mostakblename": userrecivename,
+    "mostakblename": mosName,
     "morslname": appGet.userMap['userName'],
     "userimage": userimgurl
   };
@@ -952,7 +955,7 @@ Future<bool> savechatFirestore(
         .add({
       'detailes': detailes,
       'sendby': userIds,
-      "mostakblename": userrecivename,
+      "mostakblename": mosName,
       "morslname": appGet.userMap['userName'],
       'time': DateTime.now().millisecondsSinceEpoch,
       'state': '1',

@@ -216,8 +216,8 @@ class _SignUpState extends State<SignUp> {
                           },
                           icon: Icon(
                             visible == true
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
                             color: lightGrey2,
                           )),
                       focusedBorder: UnderlineInputBorder(

@@ -164,5 +164,6 @@ For more details track order''',
   'pleaserate': 'Please enter rate',
   'please': 'Please write your review',
   'samepharm': 'You\'re ordering from different pharmacy are you want to delete cart',
-  'orderplaced':'Your order was placed'
+  'orderplaced':'Your order was placed',
+  'favempty':'Your Favourites List is Empty',
 };

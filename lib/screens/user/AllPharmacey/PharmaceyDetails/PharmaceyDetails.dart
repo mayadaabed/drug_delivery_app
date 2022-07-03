@@ -97,7 +97,10 @@ class _PharmaceyDetailsState extends State<PharmaceyDetails> {
                         Get.to(() =>
                             ChatRoom(widget.id, widget.name, widget.image));
                       },
-                      child: SvgPicture.asset('assets/images/newmessage.svg'))
+                      child: Icon(
+                        Icons.message_rounded,
+                        color: white,
+                      ))
                 ],
               ),
             ),
@@ -236,9 +239,11 @@ class _PharmaceyDetailsState extends State<PharmaceyDetails> {
                 ),
               ),
             ),
-            Visibility(
-                visible: appGet.pharmPro.isNotEmpty ? true : false,
-                child: SizedBox(height: 20.h)),
+            appGet.pharmPro.isEmpty
+                ? Text('')
+                : Visibility(
+                    visible: appGet.pharmPro.isNotEmpty ? true : false,
+                    child: SizedBox(height: 20.h)),
             Visibility(
               visible: appGet.pharmPro.isNotEmpty ? true : false,
               child: SizedBox(

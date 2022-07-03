@@ -231,6 +231,7 @@ class _CheckOutState extends State<CheckOut> {
             child: Align(
                 alignment: Alignment.topLeft,
                 child: TextField(
+                  controller: noteController,
                   cursorColor: mainColor,
                   maxLines: 5,
                   decoration: InputDecoration(

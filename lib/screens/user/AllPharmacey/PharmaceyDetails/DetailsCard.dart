@@ -34,7 +34,7 @@ class _DetailsCardState extends State<DetailsCard> {
                 ? Alignment.bottomRight
                 : Alignment.bottomLeft,
             child: Container(
-              width: 77.w,
+              width: 90.w,
               height: 33.h,
               decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -47,22 +47,24 @@ class _DetailsCardState extends State<DetailsCard> {
                         onTap: () {
                           WidgetRelease.getInstance().sendSms(widget.phone);
                         },
-                        child:
-                            SvgPicture.asset('assets/images/sms-messages.svg')),
+                        child: SvgPicture.asset(
+                            'assets/images/sms-messages.svg',
+                            width: 18.w)),
                     GestureDetector(
                         onTap: () {
                           WidgetRelease.getInstance()
                               .makePhoneCall(widget.phone);
                         },
-                        child:
-                            SvgPicture.asset('assets/images/phone-call.svg')),
+                        child: SvgPicture.asset('assets/images/phone-call.svg',
+                            width: 18.w)),
                     GestureDetector(
                         onTap: () {
                           WidgetRelease.getInstance()
                               .whatsAppOpen(widget.phone);
                         },
                         child: SvgPicture.asset(
-                            'assets/images/whatsapp-color.svg')),
+                            'assets/images/whatsapp-color.svg',
+                            width: 18.w)),
                   ]),
             ),
           ),

@@ -28,26 +28,26 @@ void main() {
   //   expect(find.text('1'), findsOneWidget);
   // });
 
-  testWidgets('Add new medicine', (tester) async {
-    await tester.runAsync(() async {
-      final file = File('strepsils.png');
-      Future future = addMedicine(
-              file,
-              'Akamol',
-              '20',
-              '1',
-              'easy',
-              'Please follow the instructions included in the product packaging',
-              '4',
-              'medications',
-              '')
-          .then((value) async {
-        expect(Future.value, completion(equals(true)));
-      });
-      expect(Future.value(true), completion(equals(true)));
-      // expect(future, completes);
-    });
-  });
+  // testWidgets('Add new medicine', (tester) async {
+  //   await tester.runAsync(() async {
+  //     final file = File('strepsils.png');
+  //     Future future = addMedicine(
+  //             file,
+  //             'Akamol',
+  //             '20',
+  //             '1',
+  //             'easy',
+  //             'Please follow the instructions included in the product packaging',
+  //             '4',
+  //             'medications',
+  //             '')
+  //         .then((value) async {
+  //       expect(Future.value, completion(equals(true)));
+  //     });
+  //     expect(Future.value(true), completion(equals(true)));
+  //     // expect(future, completes);
+  //   });
+  // });
 
   test('Failed Add new medicine', () {
     final file = File('test/test_resources/random_user.json');

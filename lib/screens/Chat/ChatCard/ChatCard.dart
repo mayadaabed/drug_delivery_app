@@ -48,25 +48,31 @@ class _ChatCardState extends State<ChatCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      widget.mosname,
-                      style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: montserratBold,
-                          color: black),
+                    SizedBox(
+                      width: 100.w,
+                      child: Text(
+                        widget.mosname,
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: montserratBold,
+                            color: black),
+                      ),
                     ),
                     SizedBox(
-                      width: 160.w,
+                      width: 80.w,
                     ),
-                    Text(
-                      recDate.toString().substring(0, 10),
-                      style: TextStyle(
-                          fontSize: 13.sp,
-                          fontFamily: montserratBold,
-                          color: HexColor('#8C8C8C')),
+                    SizedBox(
+                      width: 70.w,
+                      child: Text(
+                        recDate.toString().substring(0, 10),
+                        style: TextStyle(
+                            fontSize: 13.sp,
+                            fontFamily: montserratBold,
+                            color: HexColor('#8C8C8C')),
+                      ),
                     )
                   ],
                 ),
@@ -89,7 +95,7 @@ class _ChatCardState extends State<ChatCard> {
           ]),
         ),
         Container(
-          margin: EdgeInsets.only(left: 20.w),
+          margin: EdgeInsets.only(left: 20.w, right: 20.w),
           height: 1.h,
           color: HexColor('#0D0925').withOpacity(.1),
         )

@@ -62,10 +62,13 @@ class _FavoriteCardState extends State<FavoriteCard> {
                       width: 1.0,
                     ),
                   ),
-                  child: WidgetRelease.getInstance().cashed(
-                    widget.image,
-                    100,
-                    100,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: WidgetRelease.getInstance().cashed(
+                      widget.image,
+                      100,
+                      100,
+                    ),
                   ),
                 ),
                 SizedBox(width: 6.w),
@@ -162,9 +165,7 @@ class _FavoriteCardState extends State<FavoriteCard> {
                           GestureDetector(
                             onTap: () {
                               if (appGet.cartItemId == widget.id) {
-                                errorSanck(
-                                    widget.name,
-                                    "itemincart".tr,
+                                errorSanck(widget.name, "itemincart".tr,
                                     SnackPosition.TOP);
                               } else if (appGet.qty == 0) {
                                 errorSanck(widget.name, "addqty".tr,
@@ -188,9 +189,7 @@ class _FavoriteCardState extends State<FavoriteCard> {
                                         widget.pharmname)
                                     .then((value) {
                                   if (value == true) {
-                                    successSanck(
-                                        widget.name,
-                                        "addedtocart".tr,
+                                    successSanck(widget.name, "addedtocart".tr,
                                         SnackPosition.TOP);
                                   }
                                 });

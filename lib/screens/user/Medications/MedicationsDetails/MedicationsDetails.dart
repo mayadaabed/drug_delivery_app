@@ -274,6 +274,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                             if (value == true) {
                               successSanck(widget.name, "addedtocart".tr,
                                   SnackPosition.TOP);
+                              getUserCart();
                             }
                           });
                         }

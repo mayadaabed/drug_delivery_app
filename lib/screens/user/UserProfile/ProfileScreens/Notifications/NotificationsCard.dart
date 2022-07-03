@@ -14,8 +14,8 @@ class NotificationsCard extends StatefulWidget {
   final String status;
   final String userId;
   final String details;
-  NotificationsCard(
-      this.datecreate, this.title, this.fcmorder, this.status, this.userId,this.details,
+  NotificationsCard(this.datecreate, this.title, this.fcmorder, this.status,
+      this.userId, this.details,
       {Key? key})
       : super(key: key);
 
@@ -67,23 +67,13 @@ class _NotificationsCardState extends State<NotificationsCard> {
                   children: [
                     SizedBox(
                       width: 230.w,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                           widget.title ,
-                            style: TextStyle(
-                                color: black1,
-                                fontSize: 14.sp,
-                                fontFamily: poppins,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Icon(
-                            Icons.more_vert,
-                            color: black,
-                            size: 15.w,
-                          )
-                        ],
+                      child: Text(
+                        widget.title,
+                        style: TextStyle(
+                            color: black1,
+                            fontSize: 14.sp,
+                            fontFamily: poppins,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                     SizedBox(height: 5.h),

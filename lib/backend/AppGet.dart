@@ -14,7 +14,7 @@ class AppGet extends GetxController {
   var total = 0.0;
   var totalnotificationcounterget = 0.obs;
   var notificationcounts = 0.obs;
-   int notificationcount = 0;
+  int notificationcount = 0;
   // var fcmToken = ''.obs;
   var lanid = 'English'.obs;
   String fcmToken = '';
@@ -25,6 +25,7 @@ class AppGet extends GetxController {
   var tokenuser = '';
   var pass = '';
   var email = '';
+  var isVerf = '';
   var tokentype = '';
 
   String catId = '';

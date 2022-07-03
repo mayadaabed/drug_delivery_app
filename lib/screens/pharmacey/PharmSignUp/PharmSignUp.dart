@@ -230,8 +230,8 @@ class _PharmSignUpState extends State<PharmSignUp> {
                           },
                           icon: Icon(
                             visible == true
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
                             color: lightGrey2,
                           )),
                       focusedBorder: UnderlineInputBorder(

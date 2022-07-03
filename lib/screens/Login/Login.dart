@@ -21,6 +21,7 @@ class _LoginState extends State<Login> {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   bool visible = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -95,8 +96,8 @@ class _LoginState extends State<Login> {
                           },
                           icon: Icon(
                             visible == true
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
                             color: lightGrey2,
                           )),
                       enabledBorder: UnderlineInputBorder(
@@ -180,8 +181,7 @@ class _LoginState extends State<Login> {
                 } else {
                   sendPasswordResetEmail(emailcontroller.text.toString())
                       .then((value) {
-                    EasyLoading.showSuccess(
-                        'checkemail'.tr);
+                    EasyLoading.showSuccess('checkemail'.tr);
                   });
                 }
               },

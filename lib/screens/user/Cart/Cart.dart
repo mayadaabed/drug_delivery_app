@@ -43,7 +43,37 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: white,
-        appBar: AppBars('mycart'.tr, false, 93, true, 110),
+        appBar: PreferredSize(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20)),
+                border: Border.all(color: grey2),
+                color: mainColor),
+            child: Padding(
+              padding: EdgeInsets.only(top: 15.h),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 110.w,
+                  ),
+                  Text(
+                    'mycart'.tr,
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        color: white,
+                        fontFamily: montserratBold,
+                        fontWeight: FontWeight.w800),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          preferredSize: Size.fromHeight(93.h),
+        ),
         body: Obx(
           () => Stack(
             children: [
@@ -109,7 +139,9 @@ class _CartState extends State<Cart> {
                           onTap: () {
                             deleteCart().then((value) {
                               appGet.cartList.clear();
-                              getUserCart();
+                              Future.delayed(const Duration(seconds: 5), () {
+                                getUserCart();
+                              });
                             });
                           },
                           child: Container(
@@ -202,10 +234,13 @@ class _CartState extends State<Cart> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          getUserCart().then((value) {
-                            totalprice();
-                          });
-                          Get.to(() => CheckOut());
+                          if (appGet.cartList.isEmpty) {
+                          } else {
+                            getUserCart().then((value) {
+                              totalprice();
+                            });
+                            Get.to(() => CheckOut());
+                          }
                         },
                         child: Container(
                             height: 50.h,

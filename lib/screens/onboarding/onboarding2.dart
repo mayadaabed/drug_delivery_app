@@ -26,8 +26,8 @@ class _Onboarding2State extends State<Onboarding2> {
       imgUrl: 'assets/images/onboard2.svg',
     ),
     OnBoardModel(
-      title: "deliveryarrived",
-      description: "orderarrived".tr,
+      title: "deliveryarrived".tr,
+      description: 'orderarrived'.tr,
       imgUrl: 'assets/images/onboard3.svg',
     ),
   ];

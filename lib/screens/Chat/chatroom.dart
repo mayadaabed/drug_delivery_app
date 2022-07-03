@@ -25,11 +25,11 @@ import 'showimage.dart';
 
 class ChatRoom extends StatefulWidget {
   final String usrreciverid;
-  final String usrrecivname;
+  final String mosName;
   final String imageUrl;
 
 
-  ChatRoom(this.usrreciverid, this.usrrecivname, this.imageUrl, {Key? key}) : super(key: key);
+  ChatRoom(this.usrreciverid, this.mosName, this.imageUrl, {Key? key}) : super(key: key);
 
   @override
   _ChatRoomState createState() => _ChatRoomState();
@@ -41,6 +41,8 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
   Animation<double>? _animation;
   AnimationController? _animationController;
   var msar = '';
+  var taggg = Uuid().v4();
+  var taggg2 = Uuid().v1();
   @override
   void initState() {
     FlutterAudioRecorder2.hasPermissions;
@@ -133,7 +135,7 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                       Get.to(PhotoShow(msar, imagurl));
                     },
                     child: Hero(
-                      tag: msar,
+                      tag: 'tt$msar',
                       child: WidgetRelease.getInstance().cashed(
                         imagurl,
                         90,
@@ -415,96 +417,94 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                       child: Padding(
                         padding: EdgeInsets.only(
                             left: 10.w, right: 10.w, bottom: 20.h),
-                        child: Expanded(
-                          child: TextField(
-                            autofocus: true,
-                            focusNode: myFocusNode,
-                            textInputAction: TextInputAction.done,
-                            keyboardType: TextInputType.text,
-                            textCapitalization: TextCapitalization.sentences,
-                            controller: groupNameController,
-                            
-                            decoration: InputDecoration(
-                              hintText: 'typeyourmess'.tr,
-                              filled: true,
-                              fillColor: HexColor('#C5DBB2'),
-                              prefixIcon: SizedBox(
-                                width: 100.w,
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: 40.w,
-                                      height: 40.w,
-                                      margin:
-                                          EdgeInsets.only(left: 5.w, right: 5.w),
-                                      decoration: BoxDecoration(
-                                          color: mainColor,
-                                          shape: BoxShape.circle),
-                                      child: IconButton(
-                                          icon: Icon(
-                                            Icons.photo_camera_outlined,
-                                            color: white,
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              showbuttons = !showbuttons;
-                                              opa = showbuttons ? 1 : 0;
-                                              containerhight =
-                                                  containerhight == 1500
-                                                      ? 100
-                                                      : 150;
-                                            });
-                                          }),
-                                    ),
-                                    Recordvoice(
-                                        widget.usrrecivname,
+                        child: TextField(
+                          autofocus: true,
+                          focusNode: myFocusNode,
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.text,
+                          textCapitalization: TextCapitalization.sentences,
+                          controller: groupNameController,
+                          
+                          decoration: InputDecoration(
+                            hintText: 'typeyourmess'.tr,
+                            filled: true,
+                            fillColor: HexColor('#C5DBB2'),
+                            prefixIcon: SizedBox(
+                              width: 100.w,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 40.w,
+                                    height: 40.w,
+                                    margin:
+                                        EdgeInsets.only(left: 5.w, right: 5.w),
+                                    decoration: BoxDecoration(
+                                        color: mainColor,
+                                        shape: BoxShape.circle),
+                                    child: IconButton(
+                                        icon: Icon(
+                                          Icons.photo_camera_outlined,
+                                          color: white,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            showbuttons = !showbuttons;
+                                            opa = showbuttons ? 1 : 0;
+                                            containerhight =
+                                                containerhight == 1500
+                                                    ? 100
+                                                    : 150;
+                                          });
+                                        }),
+                                  ),
+                                  Recordvoice(
+                                      widget.mosName,
+                                      widget.usrreciverid,
+                                      groupNameController.text,
+                                      '', widget.imageUrl),
+                                ],
+                              ),
+                            ),
+                            suffixIcon: SizedBox(
+                              width: 40,
+                              child: IconButton(
+                                  icon: Icon(Icons.send, color: mainColor),
+                                  onPressed: () {
+                                    savechatFirestore(
+                                        widget.mosName,
                                         widget.usrreciverid,
                                         groupNameController.text,
-                                        '', widget.imageUrl),
-                                  ],
-                                ),
-                              ),
-                              suffixIcon: SizedBox(
-                                width: 40,
-                                child: IconButton(
-                                    icon: Icon(Icons.send, color: mainColor),
-                                    onPressed: () {
-                                      savechatFirestore(
-                                          widget.usrrecivname,
-                                          widget.usrreciverid,
-                                          groupNameController.text,
-                                          ismapcaht,
-                                          0.0,
-                                          0.0,
-                                          '',
-                                          false,
-                                          false,
-                                          '',
-                                         widget. imageUrl,
-                                          );
+                                        ismapcaht,
+                                        0.0,
+                                        0.0,
+                                        '',
+                                        false,
+                                        false,
+                                        '',
+                                       widget. imageUrl,
+                                        );
 
-                                      ismapcaht = false;
-                                      groupNameController.text = '';
+                                    ismapcaht = false;
+                                    groupNameController.text = '';
 
-                                      Timer(const Duration(milliseconds: 500),
-                                          () {
-                                        scrollController.jumpTo(scrollController
-                                            .position.maxScrollExtent);
-                                      });
-                                    }),
-                              ),
-                              
-
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(
-                                      color: HexColor('#C5DBB2'), width: 2.0)),
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: HexColor('#C5DBB2'), width: 2.0),
-                                  borderRadius: BorderRadius.circular(25.0)),
-                              labelText: '',
+                                    Timer(const Duration(milliseconds: 500),
+                                        () {
+                                      scrollController.jumpTo(scrollController
+                                          .position.maxScrollExtent);
+                                    });
+                                  }),
                             ),
+                            
+
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(
+                                    color: HexColor('#C5DBB2'), width: 2.0)),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: HexColor('#C5DBB2'), width: 2.0),
+                                borderRadius: BorderRadius.circular(25.0)),
+                            labelText: '',
                           ),
                         ),
                       ),
@@ -537,12 +537,13 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         FloatingActionButton(
+                          heroTag: taggg,
                           onPressed: () {
                             appGet.getImages(ImageSource.camera).then((value) {
                               uploadchatImage(appGet.selectedImagePath.value)
                                   .then((value) {
                                 savechatFirestore(
-                                        widget.usrrecivname,
+                                        widget.mosName,
                                         widget.usrreciverid,
                                         groupNameController.text,
                                         false,
@@ -565,12 +566,14 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                           child: const Icon(Icons.camera_alt),
                         ),
                         FloatingActionButton(
+                          heroTag: taggg2,
                           onPressed: () {
+                              
                             appGet.getImages(ImageSource.gallery).then((value) {
                               uploadchatImage(appGet.selectedImagePath.value)
                                   .then((value) {
                                 savechatFirestore(
-                                        widget.usrrecivname,
+                                        widget.mosName,
                                         widget.usrreciverid,
                                         groupNameController.text,
                                         false,
