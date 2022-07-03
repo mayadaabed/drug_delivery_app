@@ -47,6 +47,10 @@ class _HomePageState extends State<HomePage> {
                     Get.to(() => Notifications());
                   },
                   child: Badge(
+                      showBadge:
+                          appGet.notificationcounts.string.toString().isNotEmpty
+                              ? true
+                              : false,
                       badgeColor: HexColor('#D4721B'),
                       elevation: 0,
                       position: BadgePosition.topStart(start: 8, top: 2),
@@ -141,11 +145,11 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             return GestureDetector(
                                 onTap: () {
-                                  Get.to(() => Medications(snapshot
-                                      .data!.docs[index]['catId']
-                                      .toString(),
-                                      false, ''
-                                      ));
+                                  Get.to(() => Medications(
+                                      snapshot.data!.docs[index]['catId']
+                                          .toString(),
+                                      false,
+                                      ''));
                                 },
                                 child: CategoriesCard(
                                   snapshot.data!.docs[index]['catId']

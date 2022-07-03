@@ -71,12 +71,19 @@ class _PharmaceyDetailsState extends State<PharmaceyDetails> {
                       onTap: () {
                         Get.back();
                       },
-                      child: SvgPicture.asset(
-                        'assets/images/Shape.svg',
-                        color: white,
-                        height: 16.h,
-                        width: 25.w,
-                      )),
+                      child: appGet.lanid == 'Arabic'
+                          ? SvgPicture.asset(
+                              'assets/images/ShapeFlip.svg',
+                              color: white,
+                              height: 16.h,
+                              width: 25.w,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/Shape.svg',
+                              color: white,
+                              height: 16.h,
+                              width: 25.w,
+                            )),
                   Text(
                     'pharmdetails'.tr,
                     style: TextStyle(

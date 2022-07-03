@@ -195,54 +195,54 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
           ),
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SvgPicture.asset('assets/images/bell.svg'),
-                        SizedBox(width: 16.w),
-                        Text(
-                          'getnotification'.tr,
-                          style: TextStyle(
-                              color: HexColor('#393939'),
-                              fontSize: 14.sp,
-                              fontFamily: poppins,
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
-                    ),
-                    FlutterSwitch(
-                      height: 20.0,
-                      width: 40.0,
-                      padding: 4.0,
-                      toggleSize: 15.0,
-                      borderRadius: 10.0,
-                      activeColor: mainColor,
-                      value: _switchValue,
-                      onToggle: (value) {
-                        setState(() {
-                          _switchValue = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                height: 1.h,
-                width: double.infinity,
-                color: HexColor('#D1D1D1'),
-              )
-            ],
-          ),
+          // Column(
+          //   children: [
+          //     Padding(
+          //       padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           Row(
+          //             children: [
+          //               SvgPicture.asset('assets/images/bell.svg'),
+          //               SizedBox(width: 16.w),
+          //               Text(
+          //                 'getnotification'.tr,
+          //                 style: TextStyle(
+          //                     color: HexColor('#393939'),
+          //                     fontSize: 14.sp,
+          //                     fontFamily: poppins,
+          //                     fontWeight: FontWeight.w600),
+          //               )
+          //             ],
+          //           ),
+          //           FlutterSwitch(
+          //             height: 20.0,
+          //             width: 40.0,
+          //             padding: 4.0,
+          //             toggleSize: 15.0,
+          //             borderRadius: 10.0,
+          //             activeColor: mainColor,
+          //             value: _switchValue,
+          //             onToggle: (value) {
+          //               setState(() {
+          //                 _switchValue = value;
+          //               });
+          //             },
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       height: 10.h,
+          //     ),
+          //     Container(
+          //       height: 1.h,
+          //       width: double.infinity,
+          //       color: HexColor('#D1D1D1'),
+          //     )
+          //   ],
+          // ),
           InkWell(
             onTap: () {
               Get.to(() => RateUs());
@@ -277,35 +277,35 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
           ),
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
-                child: Row(
-                  children: [
-                    SvgPicture.asset('assets/images/question.svg'),
-                    SizedBox(width: 16.w),
-                    Text(
-                      'help'.tr,
-                      style: TextStyle(
-                          color: HexColor('#393939'),
-                          fontSize: 14.sp,
-                          fontFamily: poppins,
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              Container(
-                height: 1.h,
-                width: double.infinity,
-                color: HexColor('#D1D1D1'),
-              )
-            ],
-          ),
+          // Column(
+          //   children: [
+          //     Padding(
+          //       padding: EdgeInsets.only(left: 26.w, right: 26.w, top: 21.w),
+          //       child: Row(
+          //         children: [
+          //           SvgPicture.asset('assets/images/question.svg'),
+          //           SizedBox(width: 16.w),
+          //           Text(
+          //             'help'.tr,
+          //             style: TextStyle(
+          //                 color: HexColor('#393939'),
+          //                 fontSize: 14.sp,
+          //                 fontFamily: poppins,
+          //                 fontWeight: FontWeight.w600),
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       height: 10.h,
+          //     ),
+          //     Container(
+          //       height: 1.h,
+          //       width: double.infinity,
+          //       color: HexColor('#D1D1D1'),
+          //     )
+          //   ],
+          // ),
           InkWell(
             onTap: () {
               if (appGet.lanid == 'English') {

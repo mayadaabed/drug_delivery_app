@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -13,6 +14,7 @@ import 'package:overlay_support/overlay_support.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'backend/firebase.dart';
+import 'helpers/theme.dart';
 import 'lang/local.dart';
 import 'screens/splash.dart';
 
@@ -106,22 +108,23 @@ class _MyAppState extends State<MyApp> {
         showSimpleNotification(
           Text(
             notificationinfo!.title.toString(),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: montserratBold,
+                fontWeight: FontWeight.bold),
           ),
           background: Colors.white,
-          leading: Container(
+          leading: SizedBox(
             width: 54.w,
             height: 54.h,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/logo.png')),
-                border: Border.all(color: HexColor('#707070'), width: 2.w)),
+            child: SvgPicture.asset('assets/images/medicines.svg'),
           ),
           subtitle: Text(
             notificationinfo!.body.toString(),
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: montserratBold,
+                fontWeight: FontWeight.bold),
           ),
           duration: Duration(seconds: 4),
         );
@@ -140,6 +143,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    appGet.lanid.value;
     super.initState();
     openTheRecorder();
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -157,22 +161,23 @@ class _MyAppState extends State<MyApp> {
         showSimpleNotification(
           Text(
             notificationinfo!.title,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: montserratBold,
+                fontWeight: FontWeight.bold),
           ),
           background: Colors.white,
-          leading: Container(
+          leading: SizedBox(
             width: 54.w,
             height: 54.h,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                image: DecorationImage(
-                    image: AssetImage('assets/images/logo.png')),
-                border: Border.all(color: HexColor('#707070'), width: 2.w)),
+            child: SvgPicture.asset('assets/images/medicines.svg'),
           ),
           subtitle: Text(
             notificationinfo!.body,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: montserratBold),
           ),
           duration: Duration(seconds: 4),
         );
@@ -180,9 +185,10 @@ class _MyAppState extends State<MyApp> {
     });
     registernotifications();
     checkinit();
+    FirebaseMessaging.instance.subscribeToTopic('topic');
     FirebaseMessaging.instance.getToken().then((token) {
       print('A new token was generated: $token');
-      appGet.fcmToken.value = token!;
+      appGet.fcmToken = token!;
     });
   }
 
@@ -205,23 +211,20 @@ class _MyAppState extends State<MyApp> {
         showSimpleNotification(
           Text(
             notificationinfo!.title,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: montserratBold,
+                fontWeight: FontWeight.bold),
           ),
           background: Colors.white,
-          leading: Container(
+          leading: SizedBox(
             width: 54.w,
             height: 54.h,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                image: const DecorationImage(
-                    image: AssetImage('assets/images/logo.png')),
-                border: Border.all(color: HexColor('#707070'), width: 2.w)),
+            child: SvgPicture.asset('assets/images/medicines.svg'),
           ),
           subtitle: Text(
             notificationinfo!.body,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black, fontFamily: montserratBold),
           ),
           duration: const Duration(seconds: 4),
         );
@@ -242,17 +245,19 @@ class _MyAppState extends State<MyApp> {
       designSize: const Size(357, 812),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => GetMaterialApp(
-        builder: EasyLoading.init(),
-        title: 'Drug Delivery',
-        theme: ThemeData(
-            fontFamily: 'Montserrat',
-            primaryColor: const Color.fromARGB(255, 105, 160, 58)),
-        debugShowCheckedModeBanner: false,
-        locale: LocalizationService.locale,
-        fallbackLocale: LocalizationService.fallbackLocale,
-        translations: LocalizationService(),
-        home: const MyHomePage(),
+      builder: (context, child) => OverlaySupport.global(
+        child: GetMaterialApp(
+          builder: EasyLoading.init(),
+          title: 'Drug Delivery',
+          theme: ThemeData(
+              fontFamily: 'Montserrat',
+              primaryColor: const Color.fromARGB(255, 105, 160, 58)),
+          debugShowCheckedModeBanner: false,
+          locale: LocalizationService.locale,
+          fallbackLocale: LocalizationService.fallbackLocale,
+          translations: LocalizationService(),
+          home: const MyHomePage(),
+        ),
       ),
     );
   }

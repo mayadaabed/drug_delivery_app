@@ -42,9 +42,10 @@ void main() {
               'medications',
               '')
           .then((value) async {
-        expect(value, true);
+        expect(Future.value, completion(equals(true)));
       });
-      expect(future, completes);
+      expect(Future.value(true), completion(equals(true)));
+      // expect(future, completes);
     });
   });
 

@@ -13,8 +13,11 @@ class AppGet extends GetxController {
   int qty = 0;
   var total = 0.0;
   var totalnotificationcounterget = 0.obs;
-  var fcmToken = ''.obs;
-  String lanid = '';
+  var notificationcounts = 0.obs;
+   int notificationcount = 0;
+  // var fcmToken = ''.obs;
+  var lanid = 'English'.obs;
+  String fcmToken = '';
 
   var totatlPrice = 0.0.obs;
   var price = 0.0.obs;

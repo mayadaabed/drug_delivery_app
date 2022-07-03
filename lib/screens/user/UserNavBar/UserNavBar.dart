@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:drug_delivery_application/screens/Chat/CahtList.dart';
 import 'package:drug_delivery_application/screens/user/HomePage/HomePage.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../../../backend/firebase.dart';
 import '../Cart/Cart.dart';
 import '../UserProfile/UserProfile.dart';
 
@@ -24,6 +26,8 @@ class _UserNavBarState extends State<UserNavBar> {
   void initState() {
     super.initState();
     listScreens = [HomePage(), Cart(), ChatList(), UserProfile()];
+    getUserCart();
+    getnotification();
   }
 
   @override
@@ -58,7 +62,20 @@ class _UserNavBarState extends State<UserNavBar> {
                 label: 'home'.tr,
               ),
               BottomNavigationBarItem(
-                icon: SvgPicture.asset('assets/images/shoppingcart.svg'),
+                icon: Obx(
+                  () => Badge(
+                      showBadge: appGet.cartList.isNotEmpty ? true : false,
+                      badgeColor: HexColor('#D4721B'),
+                      elevation: 0,
+                      position: BadgePosition.topEnd(top: -8, end: -3),
+                      badgeContent: Text(
+                        appGet.cartList.length.toString(),
+                        style: TextStyle(
+                            color: white, fontWeight: FontWeight.bold),
+                      ),
+                      child:
+                          SvgPicture.asset('assets/images/shoppingcart.svg')),
+                ),
                 label: 'shoppingcart'.tr,
               ),
               BottomNavigationBarItem(

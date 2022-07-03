@@ -257,6 +257,8 @@ class _CheckOutState extends State<CheckOut> {
                   .then((value) {
                 if (value == true) {
                   deleteCart();
+                  sendTofcm('success'.tr, 'orderplaced'.tr, appGet.fcmToken,
+                      appGet.orderId);
                   Get.to(() => DoneOrder());
                 } else {}
               });

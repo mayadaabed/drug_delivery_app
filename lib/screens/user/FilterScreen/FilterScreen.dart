@@ -85,12 +85,19 @@ class _FilterScreenState extends State<FilterScreen> {
                             appGet.searchName = '';
                             appGet.category.clear();
                           },
-                          child: SvgPicture.asset(
-                            'assets/images/Shape.svg',
-                            color: white,
-                            height: 16.h,
-                            width: 25.w,
-                          )),
+                          child: appGet.lanid == 'Arabic'
+                              ? SvgPicture.asset(
+                                  'assets/images/ShapeFlip.svg',
+                                  color: white,
+                                  height: 16.h,
+                                  width: 25.w,
+                                )
+                              : SvgPicture.asset(
+                                  'assets/images/Shape.svg',
+                                  color: white,
+                                  height: 16.h,
+                                  width: 25.w,
+                                )),
                     ),
                   ],
                 ),
@@ -343,7 +350,9 @@ class _FilterScreenState extends State<FilterScreen> {
                       Padding(
                         padding: EdgeInsets.only(left: 20.w, right: 20.w),
                         child: Align(
-                          alignment: Alignment.topLeft,
+                          alignment: appGet.lanid == 'English'
+                              ? Alignment.topLeft
+                              : Alignment.topRight,
                           child: Text(
                             'pharmacies'.tr,
                             textAlign: TextAlign.left,
@@ -364,6 +373,8 @@ class _FilterScreenState extends State<FilterScreen> {
                                   AsyncSnapshot snapshot) {
                                 return snapshot.hasData
                                     ? ListView.builder(
+                                        padding: EdgeInsets.only(
+                                            right: 10.w, left: 10.w),
                                         scrollDirection: Axis.horizontal,
                                         itemCount: snapshot.data!.size,
                                         itemBuilder: (context, index) {
@@ -382,7 +393,9 @@ class _FilterScreenState extends State<FilterScreen> {
                       Padding(
                         padding: EdgeInsets.only(left: 20.w, right: 20.w),
                         child: Align(
-                          alignment: Alignment.topLeft,
+                          alignment: appGet.lanid == 'English'
+                              ? Alignment.topLeft
+                              : Alignment.topRight,
                           child: Text(
                             'categories'.tr,
                             textAlign: TextAlign.left,
@@ -403,7 +416,8 @@ class _FilterScreenState extends State<FilterScreen> {
                                   AsyncSnapshot snapshot) {
                                 return snapshot.hasData
                                     ? ListView.builder(
-                                        padding: EdgeInsets.only(right: 10.w),
+                                        padding: EdgeInsets.only(
+                                            right: 10.w, left: 10.w),
                                         scrollDirection: Axis.horizontal,
                                         itemCount: snapshot.data!.size,
                                         itemBuilder: (context, index) {

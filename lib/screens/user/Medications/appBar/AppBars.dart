@@ -44,20 +44,27 @@ class _AppBarsState extends State<AppBars> {
               Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 15.w, right: 15.w),
-                    child: GestureDetector(
+                      padding: EdgeInsets.only(left: 15.w, right: 15.w),
+                      child: GestureDetector(
                         onTap: () {
                           Get.back();
                           appGet.cartItemId = '';
                           appGet.qty = 0;
                         },
-                        child: SvgPicture.asset(
-                          'assets/images/Shape.svg',
-                          color: white,
-                          height: 16.h,
-                          width: 25.w,
-                        )),
-                  ),
+                        child: appGet.lanid == 'Arabic'
+                            ? SvgPicture.asset(
+                                'assets/images/ShapeFlip.svg',
+                                color: white,
+                                height: 16.h,
+                                width: 25.w,
+                              )
+                            : SvgPicture.asset(
+                                'assets/images/Shape.svg',
+                                color: white,
+                                height: 16.h,
+                                width: 25.w,
+                              ),
+                      )),
                   SizedBox(
                     width: widget.space.w,
                   ),
@@ -110,9 +117,6 @@ class _AppBarsState extends State<AppBars> {
               //         )),
               //   ),
               // ),
-           
-           
-           
             ],
           ),
         ),

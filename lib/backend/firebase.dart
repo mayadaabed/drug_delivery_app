@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:drug_delivery_application/backend/AppGet.dart';
 import 'package:drug_delivery_application/screens/pharmacey/PharmNavBar/PharmNavBar.dart';
 import 'package:drug_delivery_application/screens/user/UserNavBar/UserNavBar.dart';
@@ -39,6 +40,7 @@ String ordersCollection = 'orders';
 String favouriteCollection = 'Favourite';
 String chatCollectionName = 'chat';
 String userRateCollectionName = 'rates';
+String notificationCollection = 'Notification';
 
 savetoken(String token, int type, String password) async {
   final prefs = await SharedPreferences.getInstance();
@@ -1071,18 +1073,18 @@ Future addOrder(
   }
 }
 
-Future getUserOrder() async {
+Future getUserOrder(String orderID) async {
   try {
     var data = await firestore
         .collection(ordersCollection)
-        .where('orderNumber', isEqualTo: int.parse(appGet.orderId))
+        .where('orderNumber', isEqualTo: int.parse(orderID))
         .get();
 
     print(data.docs);
     print(userIds);
-    appGet.orderList.value = data.docs;
+    appGet.orderList = data.docs;
 
-    print(appGet.orderList.toList());
+    print(appGet.orderList);
 
     print(appGet.orderId);
     return true;
@@ -1091,15 +1093,15 @@ Future getUserOrder() async {
   }
 }
 
-Future updateOrderStatus() async {
+Future updateOrderStatus(int status, String ordernumber) async {
   try {
     firestore
         .collection(ordersCollection)
-        .where('orderNumber', isEqualTo: int.parse(appGet.orderId))
+        .where('orderNumber', isEqualTo: int.parse(ordernumber))
         .get()
         .then((value) => value.docs.forEach((doc) {
               doc.reference.update({
-                'orderStatus': 4,
+                'orderStatus': status,
                 'deliveryDate': DateTime.now().millisecondsSinceEpoch,
               });
             }));
@@ -1133,6 +1135,112 @@ Stream<QuerySnapshot>? getUserOrders() {
     Stream<QuerySnapshot> stream = firestore
         .collection(ordersCollection)
         .where('userId', isEqualTo: userIds)
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+sendTofcm(
+  String title,
+  String body,
+  String fcmToken,
+  String ordernum,
+) async {
+  print('mndobbfcm' + fcmToken.toString());
+  final data = {
+    "notification": {"body": "$body", "title": "$title", "sound": "default"},
+    "priority": "high",
+    "data": {
+      "click_action": "FLUTTER_NOTIFICATION_CLICK",
+      "id": "1",
+      "status": "done",
+      "ordernum": 'sp'
+    },
+    "to": "$fcmToken"
+  };
+
+  final headers = {
+    'content-type': 'application/json',
+    'Authorization':
+        'key=AAAA9Dg0MNo:APA91bEWwu3XOr1bk9AIeUv6GaCa3R6uztyJyGaef5pHlN7Zbym1qXstUjWyq9naDbfAR8u38SxvKIzfx7THIt3MGAKa9OWL3y44VQ5KuwbEGasHNJ_mQoHotjZHxFyHb-hQCsusePyh'
+  };
+
+  BaseOptions options = BaseOptions(
+    connectTimeout: 5000,
+    receiveTimeout: 3000,
+    headers: headers,
+  );
+  try {
+    final response = await Dio(options)
+        .post('https://fcm.googleapis.com/fcm/send', data: data);
+
+    if (response.statusCode == 200) {
+      print('notification sending success');
+    } else {
+      print('notification sending failed');
+      // on failure do sth
+    }
+  } catch (e) {
+    print('exception $e');
+  }
+
+  savnotification(appGet.fcmToken, '1', title, ordernum, body);
+  print(title);
+  print(body);
+  print('send' + fcmToken);
+  // return val.toString();
+}
+
+Future<bool> savnotification(
+  String fcmorder,
+  String status,
+  String detailes,
+  String oderid,
+  String body,
+) async {
+  FieldValue timestamp = FieldValue.serverTimestamp();
+  try {
+    await firestore.collection(notificationCollection).add({
+      'fcmorder': fcmorder,
+      'title': detailes,
+      'status': status,
+      'userId': userIds,
+      'datecreate': timestamp,
+      'oderid': oderid,
+      'delete': 0,
+      'body': body,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+getnotification() async {
+  try {
+    final QuerySnapshot qSnap = await FirebaseFirestore.instance
+        .collection(notificationCollection)
+        .where('status', isEqualTo: '1')
+        .where('userId', isEqualTo: userIds)
+        .get();
+    appGet.notificationcount = qSnap.docs.length;
+    appGet.notificationcounts.value = qSnap.docs.length;
+
+    print('notificationscount' + appGet.notificationcount.toString());
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Stream<QuerySnapshot>? getNotificationsStream() {
+  print('allnotification');
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(notificationCollection)
+        .where('userId', isEqualTo: userIds)
+        .orderBy('datecreate', descending: true)
         .snapshots();
     return stream;
   } on Exception catch (e) {

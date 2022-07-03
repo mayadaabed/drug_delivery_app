@@ -1,3 +1,4 @@
+import 'package:drug_delivery_application/backend/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -29,7 +30,9 @@ class _DetailsCardState extends State<DetailsCard> {
       child: Stack(
         children: [
           Align(
-            alignment: Alignment.bottomRight,
+            alignment: appGet.lanid == 'English'
+                ? Alignment.bottomRight
+                : Alignment.bottomLeft,
             child: Container(
               width: 77.w,
               height: 33.h,

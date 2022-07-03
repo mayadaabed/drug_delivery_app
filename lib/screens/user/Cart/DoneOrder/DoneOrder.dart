@@ -63,8 +63,10 @@ class _DoneOrderState extends State<DoneOrder> {
           ),
           GestureDetector(
             onTap: () {
-              getUserOrder();
-              Get.to(() => TrackOrder());
+              print(appGet.orderId);
+              getUserOrder(appGet.orderId).then((value) {
+                Get.to(() => TrackOrder());
+              });
             },
             child: Container(
                 height: 50.h,

@@ -165,4 +165,5 @@ const Map<String, String> arUAE = {
   'pleaserate': 'من فضلك ادخل التقييم',
   'pleasereview': 'اكتب تعليقك من فضلك',
   'samepharm': 'أنت تطلب من صيدلية مختلفة هل تريد حذف السلة',
+  'orderplaced':'تم تقديم طلبك'
 };

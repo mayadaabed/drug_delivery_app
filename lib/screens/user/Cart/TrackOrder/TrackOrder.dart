@@ -9,7 +9,6 @@ import '../../../../helpers/theme.dart';
 import '../../Medications/appBar/AppBars.dart';
 import 'TrackCard/TrackCard.dart';
 import 'package:enhance_stepper/enhance_stepper.dart';
-import 'package:tuple/tuple.dart';
 
 class TrackOrder extends StatefulWidget {
   TrackOrder({Key? key}) : super(key: key);
@@ -21,10 +20,10 @@ class TrackOrder extends StatefulWidget {
 class _TrackOrderState extends State<TrackOrder> {
   int groupValue = 0;
 
-  List<EnhanceStep> switchm(int id) {
+  List<EnhanceStep> switchm(String id) {
     List<EnhanceStep> icon = [];
     switch (id) {
-      case 1:
+      case '1':
         icon = [
           EnhanceStep(
             icon: Icon(
@@ -101,7 +100,7 @@ class _TrackOrderState extends State<TrackOrder> {
         ];
 
         break;
-      case 2:
+      case '2':
         icon = [
           EnhanceStep(
             icon: Icon(
@@ -178,7 +177,7 @@ class _TrackOrderState extends State<TrackOrder> {
         ];
 
         break;
-      case 3:
+      case '3':
         icon = [
           EnhanceStep(
             icon: Icon(
@@ -255,7 +254,7 @@ class _TrackOrderState extends State<TrackOrder> {
         ];
 
         break;
-      case 4:
+      case '4':
         icon = [
           EnhanceStep(
             icon: Icon(
@@ -339,93 +338,106 @@ class _TrackOrderState extends State<TrackOrder> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: white,
-          appBar: AppBars('trackorder'.tr, false, 93, true, 85),
-          body: Obx(
-            () => ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
-              TrackCard(),
-              EnhanceStepper(
-                  currentStep: appGet.orderList[0]['orderStatus'] == 1
-                      ? 0
-                      : appGet.orderList[0]['orderStatus'] == 2
-                          ? 1
-                          : appGet.orderList[0]['orderStatus'] == 3
-                              ? 2
-                              : appGet.orderList[0]['orderStatus'] == 4
-                                  ? 3
-                                  : 0,
-                  type: StepperType.vertical,
-                  horizontalTitlePosition: HorizontalTitlePosition.bottom,
-                  horizontalLinePosition: HorizontalLinePosition.top,
-                  physics: NeverScrollableScrollPhysics(),
-                  steps: switchm(appGet.orderList[0]['orderStatus']),
-                  onStepCancel: () {},
-                  onStepContinue: () {},
-                  onStepTapped: (index) {},
-                  controlsBuilder:
-                      (BuildContext context, ControlsDetails details) {
-                    return Container();
-                  }),
-              Padding(
-                padding: EdgeInsets.only(top: 44.h, left: 13.w, right: 13.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        updateOrderStatus().then((value) {
-                          getUserOrder();
-                          successSanck('', 'your order is completed',
-                              SnackPosition.BOTTOM);
-                          Get.offAll(() => UserNavBar());
-                        });
-                      },
-                      child: Container(
-                          height: 52.h,
-                          width: 188.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              color: mainColor),
-                          child: Center(
-                              child: Text(
-                            'confirmorder'.tr,
-                            style: TextStyle(
-                              color: white,
-                              fontSize: 13.sp,
-                              fontFamily: montserratBold,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ))),
+        backgroundColor: white,
+        appBar: AppBars('trackorder'.tr, false, 93, true, 85),
+        body: appGet.orderList.isNotEmpty
+            ? ListView(padding: EdgeInsets.only(bottom: 50.h), children: [
+                TrackCard(),
+                EnhanceStepper(
+                    currentStep: appGet.orderList[0]['orderStatus'] == 1
+                        ? 0
+                        : appGet.orderList[0]['orderStatus'] == 2
+                            ? 1
+                            : appGet.orderList[0]['orderStatus'] == 3
+                                ? 2
+                                : appGet.orderList[0]['orderStatus'] == 4
+                                    ? 3
+                                    : 0,
+                    type: StepperType.vertical,
+                    horizontalTitlePosition: HorizontalTitlePosition.bottom,
+                    horizontalLinePosition: HorizontalLinePosition.top,
+                    physics: NeverScrollableScrollPhysics(),
+                    steps:
+                        switchm(appGet.orderList[0]['orderStatus'].toString()),
+                    onStepCancel: () {},
+                    onStepContinue: () {},
+                    onStepTapped: (index) {},
+                    controlsBuilder:
+                        (BuildContext context, ControlsDetails details) {
+                      return Container();
+                    }),
+                Visibility(
+                  visible: appGet.orderList[0]['orderStatus'].toString() == '4'
+                      ? false
+                      : true,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.only(top: 44.h, left: 13.w, right: 13.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            updateOrderStatus(4, appGet.orderId).then((value) {
+                              getUserOrder(appGet.orderId);
+                              successSanck('', 'your order is completed',
+                                  SnackPosition.BOTTOM);
+                              Get.offAll(() => UserNavBar());
+                            });
+                          },
+                          child: Container(
+                              height: 52.h,
+                              width: 188.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  color: mainColor),
+                              child: Center(
+                                  child: Text(
+                                'confirmorder'.tr,
+                                style: TextStyle(
+                                  color: white,
+                                  fontSize: 13.sp,
+                                  fontFamily: montserratBold,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ))),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.offAll(() => UserNavBar());
+                          },
+                          child: Container(
+                              height: 52.h,
+                              width: 188.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(3),
+                                  color: HexColor('#F2F2F2')),
+                              child: Center(
+                                  child: Text(
+                                'done'.tr,
+                                style: TextStyle(
+                                  color: black1,
+                                  fontSize: 18.sp,
+                                  fontFamily: montserratBold,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ))),
+                        ),
+                      ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.offAll(() => UserNavBar());
-                      },
-                      child: Container(
-                          height: 52.h,
-                          width: 188.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              color: HexColor('#F2F2F2')),
-                          child: Center(
-                              child: Text(
-                            'done'.tr,
-                            style: TextStyle(
-                              color: black1,
-                              fontSize: 18.sp,
-                              fontFamily: montserratBold,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ))),
-                    ),
-                  ],
-                ),
-              )
-            ]),
-          )),
+                  ),
+                )
+              ])
+            : Text(''),
+      ),
     );
   }
 }

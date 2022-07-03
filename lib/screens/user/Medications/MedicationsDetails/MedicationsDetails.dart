@@ -247,38 +247,47 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                 GestureDetector(
                   onTap: () {
                     // if (appGet.pharmId == widget.pharmId) {
-                    if (appGet.cartList.isEmpty) {
-                      if (appGet.qty == 0) {
-                        errorSanck(widget.name, "addqty".tr, SnackPosition.TOP);
-                      } else {
-                        addToCart(
-                          widget.image.toString(),
-                          widget.name.toString(),
-                          widget.price.toString(),
-                          widget.avalibilty.toString(),
-                          widget.description.toString(),
-                          widget.howToUse.toString(),
-                          widget.categoryId.toString(),
-                          widget.categoryName.toString(),
-                          appGet.qty.toString(),
-                          widget.price.toString(),
-                          widget.id.toString(),
-                          widget.pharmId.toString(),
-                          widget.pharmName.toString(),
-                        ).then((value) {
-                          if (value == true) {
-                            successSanck(widget.name, "addedtocart".tr,
-                                SnackPosition.TOP);
-                          }
-                        });
+
+                    if (appGet.pharmId == '' ||
+                        appGet.pharmId == widget.pharmId) {
+                      //fiil
+                      if (appGet.cartList.isEmpty) {
+                        if (appGet.qty == 0) {
+                          errorSanck(
+                              widget.name, "addqty".tr, SnackPosition.TOP);
+                        } else {
+                          addToCart(
+                            widget.image.toString(),
+                            widget.name.toString(),
+                            widget.price.toString(),
+                            widget.avalibilty.toString(),
+                            widget.description.toString(),
+                            widget.howToUse.toString(),
+                            widget.categoryId.toString(),
+                            widget.categoryName.toString(),
+                            appGet.qty.toString(),
+                            widget.price.toString(),
+                            widget.id.toString(),
+                            widget.pharmId.toString(),
+                            widget.pharmName.toString(),
+                          ).then((value) {
+                            if (value == true) {
+                              successSanck(widget.name, "addedtocart".tr,
+                                  SnackPosition.TOP);
+                            }
+                          });
+                        }
+                      } else if (appGet.cartItemId == widget.id) {
+                        print('kd');
+                        errorSanck(
+                            widget.name, "itemincart".tr, SnackPosition.TOP);
                       }
-                    } else if (appGet.cartItemId == widget.id) {
-                      print('kd');
-                      errorSanck(
-                          widget.name, "itemincart".tr, SnackPosition.TOP);
+                    } else if (appGet.pharmId != widget.pharmId) {
+                      //empty
+                      samePharm(context);
                     }
-                    // } else if (appGet.pharmId != widget.pharmId &&
-                    //     appGet.pharmId != '') {
+                    // } else if (appGet.pharmId.value != widget.pharmId
+                    //     appGet.pharmId.value != '') {
                     //   samePharm(context);
                     // }
                   },
