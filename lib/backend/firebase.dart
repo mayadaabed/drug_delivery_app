@@ -281,6 +281,7 @@ Future registrationProcess(
       }
 
       if (isSuccess == true && isUser == true) {
+        EasyLoading.dismiss();
         print('userrrrrrrrrrr');
         getUserFromFirestore(userId: userId, pass: appGet.pass);
         Get.offAll(() => AddAddress(name!, 1));
@@ -503,8 +504,10 @@ Future addMedicine(
 Future getCategories() async {
   appGet.catNames.clear();
   appGet.catIds.clear();
-  var documentSnapshot =
-      await firestore.collection(categoriesCollectionName).get();
+  var documentSnapshot = await firestore
+      .collection(categoriesCollectionName)
+      .orderBy('catId', descending: false)
+      .get();
   documentSnapshot.docs.forEach((document) {
     if (document['catId'] != null) {
       print(document['catId'].toString());
@@ -628,17 +631,42 @@ Future addToCart(
 }
 
 Future checkCartItem(medicineId) async {
+  appGet.cartItemId = '';
   try {
     print(medicineId.toString());
     await firestore
         .collection(cartCollection)
+        .where('userId', isEqualTo: userIds)
         .where('medicineId', isEqualTo: medicineId)
         .get()
         .then((value) {
       if (value.docs.isNotEmpty) {
         Map<String, dynamic> documentData = value.docs.single.data();
         appGet.cartItemId = documentData['medicineId'].toString();
+      } else {}
+    }).catchError((e) => print("error fetching data: $e"));
+
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future checkCartItemPharmId() async {
+  appGet.cartItemId = '';
+  appGet.pharmId = '';
+  try {
+    await firestore
+        .collection(cartCollection)
+        .where('userId', isEqualTo: userIds)
+        .limit(1)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        Map<String, dynamic> documentData = value.docs.single.data();
+        print(documentData);
         appGet.pharmId = documentData['pharmaceyId'].toString();
+        print('aaa' + appGet.pharmId);
       } else {}
     }).catchError((e) => print("error fetching data: $e"));
 
@@ -906,25 +934,24 @@ Future<void> onUploadComplete() async {
 }
 
 Future<bool> savechatFirestore(
-  String mosName,
-  String usermostakbleid,
-  String detailes,
-  bool islocation,
-  double lat,
-  double lon,
-  String soundownload,
-  bool issound,
-  bool isimage,
-  String imgurl,
-  String userimgurl,
-) async {
+    String mosName,
+    String usermostakbleid,
+    String detailes,
+    bool islocation,
+    double lat,
+    double lon,
+    String soundownload,
+    bool issound,
+    bool isimage,
+    String imgurl,
+    String pharmimgurl) async {
   String chatrt;
   print('ussend' + userIds.toString());
   print('usermostakble' + usermostakbleid.toString());
 
   chatrt = getChatRoomId(userIds, usermostakbleid);
 
-  List<String> users = [usermostakbleid, userIds];
+  List<String> users = [userIds, usermostakbleid];
   Map<String, dynamic> chatRoom = {
     "users": users,
     "chatRoomId": chatrt,
@@ -942,7 +969,84 @@ Future<bool> savechatFirestore(
     'imageurl': imgurl,
     "mostakblename": mosName,
     "morslname": appGet.userMap['userName'],
-    "userimage": userimgurl
+    "pharmimage": pharmimgurl,
+    "userImage": appGet.userMap['imageUrl'],
+  };
+
+  addChatRoom(chatRoom, chatrt);
+
+  try {
+    FirebaseFirestore.instance
+        .collection(chatCollectionName)
+        .doc(chatrt)
+        .collection("chats")
+        .add({
+      'detailes': detailes,
+      'sendby': userIds,
+      "mostakblename": mosName,
+      "morslname": appGet.userMap['userName'],
+      'time': DateTime.now().millisecondsSinceEpoch,
+      'state': '1',
+      'delete': 0,
+      "islocation": islocation,
+      "lat": lat,
+      "lon": lon,
+      "soundownload": soundownload,
+      "issound": issound,
+      'isimage': isimage,
+      'imageurl': imgurl
+    });
+    FirebaseFirestore.instance
+        .collection(chatCollectionName)
+        .doc(chatrt)
+        .update({
+      'state': '1',
+      'detailes': detailes,
+    });
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future<bool> savechatFirestorePharm(
+    String mosName,
+    String usermostakbleid,
+    String detailes,
+    bool islocation,
+    double lat,
+    double lon,
+    String soundownload,
+    bool issound,
+    bool isimage,
+    String imgurl,
+    String userimgurl) async {
+  String chatrt;
+  print('ussend' + userIds.toString());
+  print('usermostakble' + usermostakbleid.toString());
+
+  chatrt = getChatRoomId(userIds, usermostakbleid);
+
+  List<String> users = [userIds, usermostakbleid];
+  Map<String, dynamic> chatRoom = {
+    "users": users,
+    "chatRoomId": chatrt,
+    "creatdate": DateTime.now().millisecondsSinceEpoch,
+    "useridrecive": usermostakbleid,
+    "usersend": userIds,
+    "detailes": detailes,
+    "state": '1',
+    "islocation": islocation,
+    "lat": lat,
+    "lon": lon,
+    "soundownload": soundownload,
+    "issound": issound,
+    'isimage': isimage,
+    'imageurl': imgurl,
+    "mostakblename": mosName,
+    "morslname": appGet.userMap['userName'],
+    "pharmimage": appGet.pharmacyMap['imageUrl'],
+    "userImage": userimgurl,
   };
 
   addChatRoom(chatRoom, chatrt);
@@ -1047,7 +1151,7 @@ Future addOrder(
       'pharmaceyId': appGet.cartList[ii]['pharmaceyId'],
       'quntity': appGet.cartList[ii]['quntity'],
       'totalPrice': appGet.cartList[ii]['totalPrice'],
-      'userId': appGet.cartList[ii]['userId'],
+      'userId': appGet.cartList[ii]['userId']
     });
   }
   print(lolo);
@@ -1066,7 +1170,9 @@ Future addOrder(
       // ignore: invalid_use_of_protected_member
       'items': lolo,
       'createdDate': DateTime.now().millisecondsSinceEpoch,
-      'deliveryDate': DateTime.now().millisecondsSinceEpoch
+      'deliveryDate': DateTime.now().millisecondsSinceEpoch,
+      'userFcm': appGet.fcmToken,
+      'status': "",
     });
     appGet.orderId = code.toString();
     return true;
@@ -1096,7 +1202,8 @@ Future getUserOrder(String orderID) async {
   }
 }
 
-Future updateOrderStatus(int status, String ordernumber) async {
+Future updateOrderStatus(
+    int status, String ordernumber, String statusString) async {
   try {
     firestore
         .collection(ordersCollection)
@@ -1106,6 +1213,7 @@ Future updateOrderStatus(int status, String ordernumber) async {
               doc.reference.update({
                 'orderStatus': status,
                 'deliveryDate': DateTime.now().millisecondsSinceEpoch,
+                'status': statusString
               });
             }));
     return true;
@@ -1248,5 +1356,110 @@ Stream<QuerySnapshot>? getNotificationsStream() {
     return stream;
   } on Exception catch (e) {
     return null;
+  }
+}
+
+Stream<QuerySnapshot>? getAllorders(String pharmId) {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(ordersCollection)
+        .where('pharmId', isEqualTo: appGet.tokenuser)
+        .where('orderStatus', isEqualTo: int.parse('1'))
+        .snapshots();
+
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Stream<QuerySnapshot>? pastOrders(String idd) {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(ordersCollection)
+        .where('pharmId', isEqualTo: idd)
+        .where('orderStatus', isEqualTo: int.parse('4'))
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Future updatePharmData(String name) async {
+  try {
+    FirebaseFirestore.instance
+        .collection(pharmaciesCollectionName)
+        .doc(userIds)
+        .update({
+      "pharmName": name,
+    });
+
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Stream<QuerySnapshot>? getPharmAllCategoriesMedications(
+    String categoryId, String pharmId) {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(pharmaciesProductsCollectionName)
+        .where('categoryId', isEqualTo: categoryId)
+        .where('pharmaceyId', isEqualTo: pharmId)
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Stream<QuerySnapshot>? getAllProducts(String pharmId) {
+  try {
+    Stream<QuerySnapshot> stream = firestore
+        .collection(pharmaciesProductsCollectionName)
+        .where('pharmaceyId', isEqualTo: pharmId)
+        .snapshots();
+    return stream;
+  } on Exception catch (e) {
+    return null;
+  }
+}
+
+Future updateProductAvailability(String status, String medId) async {
+  try {
+    firestore
+        .collection(pharmaciesProductsCollectionName)
+        .where('medicineId', isEqualTo: medId)
+        .get()
+        .then((value) => value.docs.forEach((doc) {
+              doc.reference.update({
+                'medicineAvailability': status,
+              });
+            }));
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
+Future deleteProduct(String medicineId) async {
+  try {
+    final firstore = FirebaseFirestore.instance;
+    firstore
+        .collection(pharmaciesProductsCollectionName)
+        .where('medicineId', isEqualTo: medicineId)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+        print(ds.reference);
+      }
+    });
+
+    return true;
+  } on Exception catch (e) {
+    return false;
   }
 }

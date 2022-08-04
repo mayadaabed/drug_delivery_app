@@ -78,6 +78,7 @@ class _CartState extends State<Cart> {
           () => Stack(
             children: [
               ListView(
+                padding: EdgeInsets.only(bottom: 70.h),
                 children: [
                   Container(
                       height: 50.h,
@@ -141,6 +142,8 @@ class _CartState extends State<Cart> {
                               appGet.cartList.clear();
                               Future.delayed(const Duration(seconds: 5), () {
                                 getUserCart();
+                                appGet.cartItemId = '';
+                                appGet.totatlPrice.value = 0;
                               });
                             });
                           },

@@ -1,5 +1,5 @@
 const Map<String, String> arUAE = {
-  'drugdelivery': 'توصيل الادوية',
+  'drugdelivery': 'صيدلية اونلاين',
   'skip': 'تخطي',
   'nolong': 'لا توجد التزامات طويلة الأجل',
   'explore': 'استكشاف في كثير من الأحيان',

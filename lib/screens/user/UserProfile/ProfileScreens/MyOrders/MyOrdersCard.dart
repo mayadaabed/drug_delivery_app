@@ -178,7 +178,7 @@ class _MyOrdersCardState extends State<MyOrdersCard> {
             GestureDetector(
               onTap: () {
                 print(widget.orderNum);
-                updateOrderStatus(1, widget.orderNum).then((value) {
+                updateOrderStatus(1, widget.orderNum, '').then((value) {
                   successSanck(
                       'success'.tr, 'orderplaced'.tr, SnackPosition.BOTTOM);
                   getUserOrders();

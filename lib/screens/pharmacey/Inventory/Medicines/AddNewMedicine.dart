@@ -31,6 +31,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
 
   XFile? pickedImages;
   String? base64Image;
+  String catNAme = '';
 
   final ImagePicker picker = ImagePicker();
   Future getimagdata(BuildContext context) async {
@@ -212,7 +213,11 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                                 : null,
                             onChanged: (newValue) {
                               setState(() {
-                                categoryId = newValue!;
+                                print(newValue);
+                                print(appGet.catNames[int.parse(newValue!)]);
+                                catNAme = appGet.catNames[int.parse(newValue)];
+                                print(catNAme);
+                                categoryId = newValue;
                               });
                             },
                           ),
@@ -260,7 +265,7 @@ class _AddNewMedicineState extends State<AddNewMedicine> {
                                   desccontroller.text.toString(),
                                   howToUseccontroller.text.toString(),
                                   categoryId,
-                                  _category,
+                                  catNAme,
                                   appGet.pharmacyMap['pharmName'].toString())
                               .then((value) {
                             if (value) {

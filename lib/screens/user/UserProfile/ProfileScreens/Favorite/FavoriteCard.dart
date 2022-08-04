@@ -100,13 +100,13 @@ class _FavoriteCardState extends State<FavoriteCard> {
                       ),
                     ),
                     SizedBox(height: 10.h),
-                    Text(
-                      widget.description,
-                      style: TextStyle(
-                          color: HexColor('#B2B2B2'),
-                          fontSize: 10.sp,
-                          fontFamily: montserratBold),
-                    ),
+                    // Text(
+                    //   widget.description,
+                    //   style: TextStyle(
+                    //       color: HexColor('#B2B2B2'),
+                    //       fontSize: 10.sp,
+                    //       fontFamily: montserratBold),
+                    // ),
                     SizedBox(height: 33.h),
                     SizedBox(
                       width: 220.w,

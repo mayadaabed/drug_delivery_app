@@ -5,31 +5,32 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../../helpers/theme.dart';
 import '../../../../helpers/utile.dart';
 
-class MedicationsCard extends StatefulWidget {
+class PharmMedicationsCard extends StatefulWidget {
   final String id;
   final String name;
   final String image;
   final String price;
   final String description;
   final String categoryId;
+  final String categoryName;
   final String avalibilty;
   final String howToUse;
   final String pharmId;
 
-  MedicationsCard(this.id, this.name, this.image, this.price, this.description,
-      this.categoryId, this.avalibilty, this.howToUse, this.pharmId,
+  PharmMedicationsCard(this.id, this.name, this.image, this.price, this.description, 
+      this.categoryId,this.categoryName, this.avalibilty, this.howToUse, this.pharmId,
       {Key? key})
       : super(key: key);
 
   @override
-  State<MedicationsCard> createState() => _MedicationsCardState();
+  State<PharmMedicationsCard> createState() => _PharmMedicationsCardState();
 }
 
-class _MedicationsCardState extends State<MedicationsCard> {
+class _PharmMedicationsCardState extends State<PharmMedicationsCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 190.h,
+      height: 140.h,
       width: 141.w,
       margin: EdgeInsets.only(left: 10.w, right: 10.w),
       decoration: BoxDecoration(
@@ -38,8 +39,8 @@ class _MedicationsCardState extends State<MedicationsCard> {
             BoxShadow(
               color: Colors.black.withOpacity(0.15),
               spreadRadius: 0,
-              blurRadius: 20,
-              offset: Offset(3, 25),
+              blurRadius: 10,
+              offset: Offset(3, 2),
             ),
           ],
           color: HexColor('#FAFBFB')),
@@ -49,7 +50,7 @@ class _MedicationsCardState extends State<MedicationsCard> {
             borderRadius: BorderRadius.circular(5),
             child: WidgetRelease.getInstance().cashed(
               widget.image,
-              120,
+              102,
               141,
             ),
           ),
@@ -69,7 +70,9 @@ class _MedicationsCardState extends State<MedicationsCard> {
                 fontSize: 11.sp,
                 fontWeight: FontWeight.bold,
                 fontFamily: montserratBold),
+                
           ),
+          // SizedBox(height: 10.h),
         ],
       ),
     );

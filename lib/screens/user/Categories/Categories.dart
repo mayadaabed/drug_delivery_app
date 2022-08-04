@@ -48,18 +48,18 @@ class _CategoriesState extends State<Categories> {
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        childAspectRatio: 1.1,
+                                        childAspectRatio: 1,
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 50),
                                 itemCount: snapshot.data!.size,
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                       onTap: () {
-                                        Get.to(() => Medications(snapshot
-                                            .data!.docs[index]['catId']
-                                            .toString(),
-                                            false,'' 
-                                            ));
+                                        Get.to(() => Medications(
+                                            snapshot.data!.docs[index]['catId']
+                                                .toString(),
+                                            false,
+                                            ''));
                                       },
                                       child: CategoriesCard(
                                         snapshot.data!.docs[index]['catId']

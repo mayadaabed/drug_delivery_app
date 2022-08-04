@@ -248,7 +248,7 @@ class _MyAppState extends State<MyApp> {
       builder: (context, child) => OverlaySupport.global(
         child: GetMaterialApp(
           builder: EasyLoading.init(),
-          title: 'Drug Delivery',
+          title: 'Pharmacy online',
           theme: ThemeData(
               fontFamily: 'Montserrat',
               primaryColor: const Color.fromARGB(255, 105, 160, 58)),

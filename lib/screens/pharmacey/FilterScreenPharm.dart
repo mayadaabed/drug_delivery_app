@@ -1,4 +1,8 @@
+import 'package:drug_delivery_application/screens/pharmacey/Inventory/Category/MedicationsCard.dart';
+import 'package:drug_delivery_application/screens/pharmacey/Inventory/Category/pharmcategoriesCard.dart';
+import 'package:drug_delivery_application/screens/pharmacey/Inventory/Medicines/PharmMedicineDetails.dart';
 import 'package:drug_delivery_application/screens/user/FilterScreen/FilterCard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,18 +10,17 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../../../backend/firebase.dart';
 import '../../../helpers/theme.dart';
-import '../Medications/Card/MedicationsCard.dart';
-import '../Medications/MedicationsDetails/MedicationsDetails.dart';
-import 'CategoriesCard.dart';
 
-class FilterScreen extends StatefulWidget {
-  const FilterScreen({Key? key}) : super(key: key);
+class PharmFilterScreen extends StatefulWidget {
+  const PharmFilterScreen({Key? key}) : super(key: key);
 
   @override
-  State<FilterScreen> createState() => _FilterScreenState();
+  State<PharmFilterScreen> createState() => _PharmFilterScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _PharmFilterScreenState extends State<PharmFilterScreen> {
+  User? pharmId = FirebaseAuth.instance.currentUser;
+
   TextEditingController _searchController = TextEditingController();
   late Future resultsLoaded;
 
@@ -45,8 +48,10 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   getbyName() async {
-    var data =
-        await firestore.collection(pharmaciesProductsCollectionName).get();
+    var data = await firestore
+        .collection(pharmaciesProductsCollectionName)
+        .where('pharmaceyId', isEqualTo: pharmId!.uid)
+        .get();
     setState(() {
       appGet.allResults.value = data.docs;
     });
@@ -167,35 +172,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         onTap: () {
                           showFilter();
                         },
-                        child: Wrap(children: [
-                          Container(
-                            height: 36.h,
-                            width: 110.w,
-                            margin: EdgeInsets.only(right: 10.w),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: HexColor('#CECECE').withOpacity(.5),
-                            ),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.add,
-                                      color: HexColor('#666769'), size: 12),
-                                  SizedBox(
-                                    width: 2.w,
-                                  ),
-                                  Text(
-                                    'filter'.tr,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: montserratBold,
-                                        color: HexColor('#666769')),
-                                  ),
-                                ]),
-                          ),
-                        ]),
+                        child: Wrap(children: []),
                       ),
                       Expanded(
                         child: ListView.builder(
@@ -262,14 +239,14 @@ class _FilterScreenState extends State<FilterScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 1,
+                    childAspectRatio: 1.1,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 22),
                 itemCount: appGet.resultsList.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                       onTap: () {
-                        Get.to(() => MedicationsDetails(
+                        Get.to(() => PharmMedicationsDetails(
                               appGet.resultsList[index]['medicineId']
                                   .toString(),
                               appGet.resultsList[index]['medicineName']
@@ -288,12 +265,9 @@ class _FilterScreenState extends State<FilterScreen> {
                                   .toString(),
                               appGet.resultsList[index]['pharmaceyId']
                                   .toString(),
-                              appGet.resultsList[index]['categoryName']
-                                  .toString(),
-                              appGet.resultsList[index]['pharmName'].toString(),
                             ));
                       },
-                      child: MedicationsCard(
+                      child: PharmMedicationsCard(
                         appGet.resultsList[index]['medicineId'].toString(),
                         appGet.resultsList[index]['medicineName'].toString(),
                         appGet.resultsList[index]['medicineImage'].toString(),
@@ -301,6 +275,7 @@ class _FilterScreenState extends State<FilterScreen> {
                         appGet.resultsList[index]['medicineDescription']
                             .toString(),
                         appGet.resultsList[index]['categoryId'].toString(),
+                        appGet.resultsList[index]['categoryName'].toString(),
                         appGet.resultsList[index]['medicineAvailability']
                             .toString(),
                         appGet.resultsList[index]['medicineHowToUse']
@@ -347,66 +322,6 @@ class _FilterScreenState extends State<FilterScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(height: 36.h),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: Align(
-                          alignment: appGet.lanid == 'English'
-                              ? Alignment.topLeft
-                              : Alignment.topRight,
-                          child: Text(
-                            'pharmacies'.tr,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: montserratBold,
-                                color: mainGreen),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 30.h),
-                      SizedBox(
-                          height: 60.h,
-                          child: StreamBuilder(
-                              stream: getAllPharmacies(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                return snapshot.hasData
-                                    ? ListView.builder(
-                                        padding: EdgeInsets.only(
-                                            right: 10.w, left: 10.w),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: snapshot.data!.size,
-                                        itemBuilder: (context, index) {
-                                          return FilterCard(
-                                            snapshot
-                                                .data!.docs[index]['pharmName']
-                                                .toString(),
-                                            snapshot.data!.docs[index]['userId']
-                                                .toString(),
-                                          );
-                                        },
-                                      )
-                                    : Text('');
-                              })),
-                      SizedBox(height: 45.h),
-                      Padding(
-                        padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                        child: Align(
-                          alignment: appGet.lanid == 'English'
-                              ? Alignment.topLeft
-                              : Alignment.topRight,
-                          child: Text(
-                            'categories'.tr,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: montserratBold,
-                                color: mainGreen),
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 30.h),
                       SizedBox(
                           height: 60.h,
@@ -421,11 +336,14 @@ class _FilterScreenState extends State<FilterScreen> {
                                         scrollDirection: Axis.horizontal,
                                         itemCount: snapshot.data!.size,
                                         itemBuilder: (context, index) {
-                                          return CategoriesCard(
+                                          return PharmCategoriesCard(
+                                            snapshot.data!.docs[index]['catId']
+                                                .toString(),
                                             snapshot
                                                 .data!.docs[index]['catName']
                                                 .toString(),
-                                            snapshot.data!.docs[index]['catId']
+                                            snapshot
+                                                .data!.docs[index]['catImage']
                                                 .toString(),
                                           );
                                         },

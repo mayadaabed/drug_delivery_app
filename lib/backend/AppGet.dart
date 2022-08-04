@@ -22,6 +22,10 @@ class AppGet extends GetxController {
   var totatlPrice = 0.0.obs;
   var price = 0.0.obs;
 
+  
+  var orderTotalPrice = 0.0.obs;
+  var priceOrder = 0.0.obs;
+
   var tokenuser = '';
   var pass = '';
   var email = '';

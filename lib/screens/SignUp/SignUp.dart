@@ -325,7 +325,7 @@ class _SignUpState extends State<SignUp> {
                       .then((value) {
                     uploadIdentityImage(File(pickedImages!.path), userIds)
                         .then((value) {
-                      EasyLoading.dismiss();
+                     
                     });
                   });
                 }

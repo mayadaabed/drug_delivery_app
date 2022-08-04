@@ -1,10 +1,26 @@
+import 'dart:core';
 import 'package:drug_delivery_application/helpers/theme.dart';
+import 'package:drug_delivery_application/helpers/utile.dart';
+import 'package:drug_delivery_application/screens/user/Medications/Medications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class AllOederCard extends StatefulWidget {
-  AllOederCard({Key? key}) : super(key: key);
+  final String orderNumber;
+  final String address;
+  final String deliveryDate;
+  final String pharmId;
+  final  List items ;
+  final String orderStatus;
+  final String note;
+  
+
+  const AllOederCard( this.orderNumber,  this.address,  this.deliveryDate,  this.pharmId,    this.items,   this.orderStatus,  this.note,  {Key? key}) : super(key: key);
+  
+  
+  
 
   @override
   _AllOederCardState createState() => _AllOederCardState();
@@ -16,14 +32,14 @@ class _AllOederCardState extends State<AllOederCard> {
     return Padding(
       padding: EdgeInsets.only(top: 20.h),
       child: Center(
-        child: Container(
-          padding: EdgeInsets.only(
-            right: 22.w,
-            left: 28.w,
-          ),
-          width: 359.w,
-          height: 202.h,
-          decoration: BoxDecoration(
+          child: Container(
+            padding: EdgeInsets.only(
+              right:5.w,
+              left: 15.w,
+            ),
+            width: 380.w,
+            height: 200.h,
+            decoration: BoxDecoration(
             color: white,
             borderRadius: BorderRadius.circular(13.r),
             border: Border.all(
@@ -40,7 +56,7 @@ class _AllOederCardState extends State<AllOederCard> {
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,7 +71,7 @@ class _AllOederCardState extends State<AllOederCard> {
                     ),
                     child: Center(
                       child: Text(
-                        'neworderrequest'.tr,
+                       'neworderrequest'.tr,
                         style: TextStyle(
                           fontSize: 13.sp,
                           fontFamily: montserratBold,
@@ -66,7 +82,7 @@ class _AllOederCardState extends State<AllOederCard> {
                     ),
                   ),
                   Text(
-                    '2m ago',
+                    widget.deliveryDate,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontFamily: montserratBold,
@@ -76,14 +92,14 @@ class _AllOederCardState extends State<AllOederCard> {
                 ],
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${'order'.tr} #3455',
+                        '${'order'.tr} ${widget.orderNumber}',
                         style: TextStyle(
                             fontSize: 14.sp,
                             fontFamily: montserratBold,
@@ -94,75 +110,15 @@ class _AllOederCardState extends State<AllOederCard> {
                         width: 170.w,
                         height: 35.h,
                         child: Text(
-                          '3 ${'items'.tr}: Fructis,strespils and Garnier cream',
+                          '${widget.items.length} ${'items'.tr}',
                           style: TextStyle(
                             fontSize: 12.sp,
                             fontFamily: poppins,
                             color: lightgrey1,
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'details'.tr,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontFamily: poppins,
-                          color: blue,
-                          fontWeight: FontWeight.w600,
-                        ),
                       ),
-                      Container(
-                        width: 83.w,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 39.w,
-                              height: 39.h,
-                              decoration: BoxDecoration(
-                                  color: white,
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  border: Border.all(
-                                    color: bordergrey,
-                                  )),
-                              child: Image.asset(
-                                'assets/images/Image 29.png',
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Container(
-                                width: 39.w,
-                                height: 39.h,
-                                decoration: BoxDecoration(
-                                    color: white,
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    border: Border.all(
-                                      color: bordergrey,
-                                    )),
-                                child: Center(
-                                  child: Text(
-                                    '+2',
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontFamily: poppins,
-                                      color: darkblue,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              Text(
+                              Text(
                 'address'.tr,
                 style: TextStyle(
                   fontSize: 14.sp,
@@ -173,18 +129,78 @@ class _AllOederCardState extends State<AllOederCard> {
               SizedBox(
                 width: 219.w,
                 child: Text(
-                  'Gaza, Al Remal -Ahmed Abd El Azeez Street next to AlKenz Mosque',
+                  '${widget.address}',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontFamily: poppins,
                     color: lightgrey1,
                   ),
                 ),
-              )
+              ),
+                    ],
+                  ),
+            
+       
+                Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'details'.tr,
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          fontFamily: poppins,
+                          color: HexColor('#64AEDE'),
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 39.h,
+                          width: 39.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: HexColor('#D1D1D1')),
+                              color: white),
+                          child: Center(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: WidgetRelease.getInstance().cashed(
+                                widget.items[0]['medicineImage'],
+                                50,
+                                50,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 5.w),
+                        Container(
+                          height: 39.h,
+                          width: 39.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: HexColor('#D1D1D1')),
+                              color: white),
+                          child: Center(
+                            child: Text(
+                              '+${widget.items.length - 1}',
+                              style: TextStyle(
+                                  fontSize: 16.sp,
+                                  fontFamily: poppins,
+                                  fontWeight: FontWeight.w600,
+                                  color: HexColor('#063E6E')),
+                            ),
+                          ),
+                        ),
+                          SizedBox(width: 10.w),
+                         ],
+                  ),
             ],
           ),
-        ),
-      ),
-    );
+       
+      ])
+    
+     ])) ));
+    
   }
 }

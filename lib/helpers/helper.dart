@@ -1,6 +1,7 @@
 import 'package:drug_delivery_application/backend/firebase.dart';
 import 'package:drug_delivery_application/helpers/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -147,7 +148,77 @@ Future<void> samePharm(
               color: red,
               textColor: white,
               child: Text('ok'.tr),
-              onPressed: () {},
+              onPressed: () {
+                EasyLoading.show(status: 'loading'.tr);
+                deleteCart().then((value) {
+                  appGet.cartList.clear();
+                  Future.delayed(const Duration(seconds: 5), () {
+                    getUserCart();
+                    appGet.cartItemId = '';
+                    appGet.totatlPrice.value = 0;
+                    EasyLoading.dismiss();
+                    Get.back();
+                  });
+                });
+              },
+            ),
+          ],
+        );
+      });
+}
+
+Future<void> displayPharmTextInputDialog(
+  BuildContext context,
+) async {
+  TextEditingController name = TextEditingController();
+  return showDialog(
+      context: context,
+      builder: (context) {
+        name.text = appGet.pharmacyMap['pharmName'];
+        return AlertDialog(
+          title: Text(
+            'updateyourdata'.tr,
+            style: TextStyle(fontSize: 15.sp, color: black),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: name,
+                decoration: InputDecoration(
+                  hintText: "name".tr,
+                  hintStyle: TextStyle(fontSize: 13.sp),
+                ),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            // ignore: deprecated_member_use
+            TextButton(
+              //  textColor: black,
+              child: Text('cancel'.tr),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+            // ignore: deprecated_member_use
+            TextButton(
+              // minWidth: 20.w,
+              // color: mainColor,
+              // textColor: white,
+              child: Text('ok'.tr),
+              onPressed: () {
+                updatePharmData(name.text).then((value) {
+                  getPharmFromFirestore(
+                      userId: appGet.tokenuser, pass: appGet.pass);
+                  print(value);
+                  if (value == true) {
+                    successSanck("success".tr, "updatedsuccess".tr,
+                        SnackPosition.BOTTOM);
+                    Navigator.pop(context);
+                  }
+                });
+              },
             ),
           ],
         );

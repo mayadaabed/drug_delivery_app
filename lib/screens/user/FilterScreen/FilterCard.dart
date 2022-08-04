@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-
 class FilterCard extends StatefulWidget {
   final String name;
   final String id;
@@ -27,12 +26,12 @@ class _FilterCardState extends State<FilterCard> {
           if (isthere.isEmpty) {
             appGet.addCategory(widget.name);
             appGet.searchPhrmId = widget.id;
-           appGet.all();
+            appGet.all();
           } else {}
         });
       },
       child: Container(
-        height: 49.h,
+        height: 80.h,
         width: 124.w,
         margin: EdgeInsets.only(left: 15.w),
         decoration: BoxDecoration(

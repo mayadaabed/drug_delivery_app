@@ -1,5 +1,5 @@
 const Map<String, String> enUSA = {
-  'drugdelivery': 'Drug Delivery',
+  'drugdelivery': 'Pharmacy online',
   'skip': 'Skip',
   'nolong': 'No long term commitments',
   'explore': 'Explore frequently ordes',
@@ -163,7 +163,8 @@ For more details track order''',
   'addedsucce': 'Added successfully',
   'pleaserate': 'Please enter rate',
   'please': 'Please write your review',
-  'samepharm': 'You\'re ordering from different pharmacy are you want to delete cart',
-  'orderplaced':'Your order was placed',
-  'favempty':'Your Favourites List is Empty',
+  'samepharm':
+      'You\'re ordering from different pharmacy are you want to delete cart',
+  'orderplaced': 'Your order was placed',
+  'favempty': 'Your Favourites List is Empty',
 };

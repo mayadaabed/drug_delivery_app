@@ -386,7 +386,7 @@ class _TrackOrderState extends State<TrackOrder> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            updateOrderStatus(4, appGet.orderId).then((value) {
+                            updateOrderStatus(4, appGet.orderId, 'Deleivered').then((value) {
                               getUserOrder(appGet.orderId);
                               successSanck('', 'your order is completed',
                                   SnackPosition.BOTTOM);

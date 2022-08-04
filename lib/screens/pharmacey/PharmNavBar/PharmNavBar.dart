@@ -1,5 +1,4 @@
 import 'package:drug_delivery_application/helpers/theme.dart';
-import 'package:drug_delivery_application/screens/Chat/CahtList.dart';
 import 'package:drug_delivery_application/screens/pharmacey/Inventory/TabBarPharm/InventoryPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import '../AllOrder/AllOrders.dart';
+import '../ChatPharm/CahtList.dart';
 import '../PharmProfile copy/PharmProfile.dart';
 
 class PharmNavBar extends StatefulWidget {

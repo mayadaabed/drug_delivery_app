@@ -4,7 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class PastOrderscard extends StatefulWidget {
-  PastOrderscard({Key? key}) : super(key: key);
+  final String orderStatus;
+  final List items;
+  final String orderNum;
+  final String date;
+  final String stringStatus;
+
+  PastOrderscard(
+      this.orderStatus, this.items, this.orderNum, this.date, this.stringStatus,
+      {Key? key})
+      : super(key: key);
 
   @override
   _PastOrderscardState createState() => _PastOrderscardState();
@@ -12,6 +21,7 @@ class PastOrderscard extends StatefulWidget {
 
 class _PastOrderscardState extends State<PastOrderscard> {
   bool clor = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,7 +60,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
                         clor != clor;
                       });
                     },
-                    child: clor == false
+                    child: widget.stringStatus == 'Deleivered'
                         ? Container(
                             width: 84.w,
                             height: 26.h,
@@ -90,7 +100,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
                           ),
                   ),
                   Text(
-                    '6-3-2022',
+                    widget.date,
                     style: TextStyle(
                       fontSize: 12.sp,
                       fontFamily: montserratBold,
@@ -100,7 +110,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
                 ],
               ),
               Text(
-                '${'order'.tr} #3455',
+                '${'order'.tr} ${widget.orderNum}',
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontFamily: montserratBold,
@@ -111,7 +121,7 @@ class _PastOrderscardState extends State<PastOrderscard> {
               SizedBox(
                 width: 167.w,
                 child: Text(
-                  '3 ${'items'.tr}: Fructis,strespils and Garnier cream',
+                  '${widget.items.length} ${'items'.tr}',
                   style: TextStyle(
                     fontSize: 12.sp,
                     fontFamily: poppins,

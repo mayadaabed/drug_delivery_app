@@ -48,6 +48,7 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
   void initState() {
     super.initState();
     checkCartItem(widget.id);
+    checkCartItemPharmId();
   }
 
   @override
@@ -189,175 +190,98 @@ class _MedicationsDetailsState extends State<MedicationsDetails> {
                       fontFamily: montserratBold),
                 ),
                 Counter(),
-                // Row(
-                //   children: [
-                //     Container(
-                //       width: 32.w,
-                //       height: 32.h,
-                //       decoration: BoxDecoration(
-                //         shape: BoxShape.rectangle,
-                //         color: white,
-                //         borderRadius: BorderRadius.circular(5),
-                //         border: Border.all(
-                //           color: HexColor('#393939'),
-                //           width: 1,
-                //         ),
-                //       ),
-                //       child: Center(
-                //         child: Icon(Icons.remove,
-                //             size: 15, color: HexColor('#393939')),
-                //       ),
-                //     ),
-                //     SizedBox(width: 10.w),
-                //     Text(
-                //       '1',
-                //       style: TextStyle(
-                //           color: HexColor('#393939'),
-                //           fontSize: 17.sp,
-                //           fontWeight: FontWeight.w600,
-                //           fontFamily: montserratBold),
-                //     ),
-                //     SizedBox(width: 10.w),
-                //     Container(
-                //       width: 32.w,
-                //       height: 32.h,
-                //       decoration: BoxDecoration(
-                //         shape: BoxShape.rectangle,
-                //         color: white,
-                //         borderRadius: BorderRadius.circular(5),
-                //         border: Border.all(
-                //           color: HexColor('#393939'),
-                //           width: 1,
-                //         ),
-                //       ),
-                //       child: Center(
-                //         child: Icon(Icons.add,
-                //             size: 15, color: HexColor('#393939')),
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 15.h, left: 8.w, right: 8.w),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    // if (appGet.pharmId == widget.pharmId) {
-
-                    if (appGet.pharmId == '' ||
-                        appGet.pharmId == widget.pharmId) {
-                      //fiil
-                      if (appGet.cartList.isEmpty) {
-                        if (appGet.qty == 0) {
-                          errorSanck(
-                              widget.name, "addqty".tr, SnackPosition.TOP);
-                        } else {
-                          addToCart(
-                            widget.image.toString(),
-                            widget.name.toString(),
-                            widget.price.toString(),
-                            widget.avalibilty.toString(),
-                            widget.description.toString(),
-                            widget.howToUse.toString(),
-                            widget.categoryId.toString(),
-                            widget.categoryName.toString(),
-                            appGet.qty.toString(),
-                            widget.price.toString(),
-                            widget.id.toString(),
-                            widget.pharmId.toString(),
-                            widget.pharmName.toString(),
-                          ).then((value) {
-                            if (value == true) {
-                              successSanck(widget.name, "addedtocart".tr,
-                                  SnackPosition.TOP);
-                              getUserCart();
-                            }
-                          });
-                        }
-                      } else if (appGet.cartItemId == widget.id) {
-                        print('kd');
-                        errorSanck(
-                            widget.name, "itemincart".tr, SnackPosition.TOP);
+            child: GestureDetector(
+              onTap: () {
+                getUserCart();
+                print(appGet.pharmId);
+                print(widget.pharmId);
+                print(appGet.cartItemId);
+                print(widget.id);
+                if (appGet.pharmId == '') {
+                  if (appGet.cartItemId == widget.id) {
+                    errorSanck(widget.name, "itemincart".tr, SnackPosition.TOP);
+                  } else if (appGet.qty == 0) {
+                    errorSanck(widget.name, "addqty".tr, SnackPosition.TOP);
+                  } else {
+                    addToCart(
+                      widget.image.toString(),
+                      widget.name.toString(),
+                      widget.price.toString(),
+                      widget.avalibilty.toString(),
+                      widget.description.toString(),
+                      widget.howToUse.toString(),
+                      widget.categoryId.toString(),
+                      widget.categoryName.toString(),
+                      appGet.qty.toString(),
+                      widget.price.toString(),
+                      widget.id.toString(),
+                      widget.pharmId.toString(),
+                      widget.pharmName.toString(),
+                    ).then((value) {
+                      if (value == true) {
+                        successSanck(
+                            widget.name, "addedtocart".tr, SnackPosition.TOP);
+                        getUserCart();
+                        checkCartItem(widget.id);
                       }
-                    } else if (appGet.pharmId != widget.pharmId) {
-                      //empty
-                      samePharm(context);
-                    }
-                    // } else if (appGet.pharmId.value != widget.pharmId
-                    //     appGet.pharmId.value != '') {
-                    //   samePharm(context);
-                    // }
-                  },
-                  child: Container(
-                    height: 48.h,
-                    width: 165.w,
-                    decoration: BoxDecoration(
-                      color: mainColor,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'addtocart'.tr,
-                        style: TextStyle(
-                            color: white,
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: montserratBold),
-                      ),
-                    ),
+                    });
+                  }
+                } else if (appGet.pharmId == widget.pharmId) {
+                  if (appGet.cartItemId == widget.id) {
+                    errorSanck(widget.name, "itemincart".tr, SnackPosition.TOP);
+                  } else if (appGet.qty == 0) {
+                    errorSanck(widget.name, "addqty".tr, SnackPosition.TOP);
+                  } else {
+                    addToCart(
+                      widget.image.toString(),
+                      widget.name.toString(),
+                      widget.price.toString(),
+                      widget.avalibilty.toString(),
+                      widget.description.toString(),
+                      widget.howToUse.toString(),
+                      widget.categoryId.toString(),
+                      widget.categoryName.toString(),
+                      appGet.qty.toString(),
+                      widget.price.toString(),
+                      widget.id.toString(),
+                      widget.pharmId.toString(),
+                      widget.pharmName.toString(),
+                    ).then((value) {
+                      if (value == true) {
+                        successSanck(
+                            widget.name, "addedtocart".tr, SnackPosition.TOP);
+                        getUserCart();
+                        checkCartItem(widget.id);
+                      }
+                    });
+                  }
+                } else if (appGet.pharmId != widget.pharmId) {
+                  samePharm(context);
+                }
+              },
+              child: Container(
+                height: 48.h,
+                width: 360.w,
+                decoration: BoxDecoration(
+                  color: mainColor,
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Center(
+                  child: Text(
+                    'addtocart'.tr,
+                    style: TextStyle(
+                        color: white,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: montserratBold),
                   ),
                 ),
-                SizedBox(width: 7.w),
-                GestureDetector(
-                  onTap: () {
-                    if (appGet.cartItemId == widget.id) {
-                      errorSanck(
-                          widget.name, "itemincart".tr, SnackPosition.TOP);
-                    } else if (appGet.qty == 0) {
-                      errorSanck(widget.name, "addqty".tr, SnackPosition.TOP);
-                    } else {
-                      addToCart(
-                        widget.image.toString(),
-                        widget.name.toString(),
-                        widget.price.toString(),
-                        widget.avalibilty.toString(),
-                        widget.description.toString(),
-                        widget.howToUse.toString(),
-                        widget.categoryId.toString(),
-                        widget.categoryName.toString(),
-                        appGet.qty.toString(),
-                        widget.price.toString(),
-                        widget.id.toString(),
-                        widget.pharmId.toString(),
-                        widget.pharmName.toString(),
-                      );
-                      Get.to(() => CheckOut());
-                    }
-                  },
-                  child: Container(
-                    height: 48.h,
-                    width: 165.w,
-                    decoration: BoxDecoration(
-                      color: HexColor('#F2F2F2'),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'buynow'.tr,
-                        style: TextStyle(
-                            color: HexColor('#196737'),
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: montserratBold),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
           ),
           Padding(

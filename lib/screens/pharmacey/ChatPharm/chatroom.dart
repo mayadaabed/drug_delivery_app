@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, avoid_print, prefer_const_literals_to_create_immutables
 
 import 'package:drug_delivery_application/helpers/theme.dart';
-import 'package:drug_delivery_application/screens/Chat/recordvoice.dart';
 import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
@@ -17,10 +16,11 @@ import 'package:file/local.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-import '../../backend/firebase.dart';
-import '../../helpers/utile.dart';
-import '../user/Medications/appBar/AppBars.dart';
+import '../../../backend/firebase.dart';
+import '../../../helpers/utile.dart';
+import '../../user/Medications/appBar/AppBars.dart';
 import 'palyaudio.dart';
+import 'recordvoice.dart';
 import 'showimage.dart';
 
 class ChatRoom extends StatefulWidget {
@@ -230,7 +230,7 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                                                   right: 15),
                                               child: Text(
                                                 snapshot.data!
-                                                    .docs[index]['mostakblename']
+                                                    .docs[index]['morslname']
                                                     .toString(),
                                                 style: const TextStyle(
                                                     color: Colors.black),
@@ -394,7 +394,7 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                                                 width: 50,
                                                 child: Text(
                                                   snapshot.data!
-                                                      .docs[index]['morslname']
+                                                      .docs[index]['mostakblename']
                                                       .toString(),
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -470,7 +470,7 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                               child: IconButton(
                                   icon: Icon(Icons.send, color: mainColor),
                                   onPressed: () {
-                                    savechatFirestore(
+                                    savechatFirestorePharm(
                                         widget.mosName,
                                         widget.usrreciverid,
                                         groupNameController.text,
@@ -542,7 +542,7 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                             appGet.getImages(ImageSource.camera).then((value) {
                               uploadchatImage(appGet.selectedImagePath.value)
                                   .then((value) {
-                                savechatFirestore(
+                                savechatFirestorePharm(
                                         widget.mosName,
                                         widget.usrreciverid,
                                         groupNameController.text,
@@ -572,7 +572,7 @@ class _ChatRoomState extends State<ChatRoom> with TickerProviderStateMixin {
                             appGet.getImages(ImageSource.gallery).then((value) {
                               uploadchatImage(appGet.selectedImagePath.value)
                                   .then((value) {
-                                savechatFirestore(
+                                savechatFirestorePharm(
                                         widget.mosName,
                                         widget.usrreciverid,
                                         groupNameController.text,

@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="Manifest.permission.CAPTURE_AUDIO_OUTPUT" />
    <application
-        android:label="Drug Delivery"
+        android:label="Pharmacy online"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

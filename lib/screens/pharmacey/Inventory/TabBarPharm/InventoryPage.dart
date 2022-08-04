@@ -1,13 +1,17 @@
 import 'package:drug_delivery_application/helpers/theme.dart';
+import 'package:drug_delivery_application/screens/pharmacey/FilterScreenPharm.dart';
 import 'package:drug_delivery_application/screens/pharmacey/Inventory/Category/Categories.dart';
 import 'package:drug_delivery_application/screens/pharmacey/Inventory/Medicines/PharmMedicines.dart';
+import 'package:drug_delivery_application/screens/user/FilterScreen/FilterScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Inventory extends StatefulWidget {
-  Inventory({Key? key}) : super(key: key);
+  Inventory({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Inventory> createState() => _InventoryState();
@@ -27,48 +31,54 @@ class _InventoryState extends State<Inventory> {
                 children: [
                   Text(
                     "inventory".tr,
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.white,
                         fontFamily: "Montserrat",
-                        fontSize: 20.sp,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(left: 15.w, right: 15.w, top: 20.h),
-                    child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Material(
-                          borderRadius: BorderRadius.circular(10),
-                          elevation: 3.0,
-                          shadowColor: black,
-                          child: TextField(
-                            cursorColor: mainColor,
-                            decoration: InputDecoration(
-                              hintText: 'searchmedicine'.tr,
-                              isDense: true,
-                              filled: true,
-                              fillColor: white,
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: grey2),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              suffixIcon: Icon(
-                                Icons.tune_rounded,
-                                color: HexColor('#196737'),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.transparent),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              hintStyle: TextStyle(
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => PharmFilterScreen());
+                    },
+                    child: Padding(
+                      padding:
+                          EdgeInsets.only(left: 30.w, right: 30.w, top: 20.h),
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Material(
+                            borderRadius: BorderRadius.circular(10),
+                            elevation: 3.0,
+                            shadowColor: black,
+                            child: TextField(
+                              enabled: false,
+                              cursorColor: mainColor,
+                              decoration: InputDecoration(
+                                hintText: 'searchmedicine'.tr,
+                                filled: true,
+                                fillColor: white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                suffixIcon: Icon(
+                                  Icons.tune_rounded,
                                   color: HexColor('#196737'),
-                                  fontSize: 14.sp,
-                                  fontFamily: montserratBold),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                hintStyle: TextStyle(
+                                    color: HexColor('#196737'),
+                                    fontSize: 14.sp,
+                                    fontFamily: montserratBold),
+                              ),
                             ),
-                          ),
-                        )),
+                          )),
+                    ),
                   ),
                 ],
               ),

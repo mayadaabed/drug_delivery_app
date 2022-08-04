@@ -146,16 +146,16 @@ class _CartCardState extends State<CartCard> {
                 ),
               ],
             ),
-            SizedBox(
-              width: 50.w,
-              child: Text(
-                widget.description,
-                style: TextStyle(
-                    fontSize: 12.sp,
-                    fontFamily: poppins,
-                    color: HexColor('#626262')),
-              ),
-            ),
+            // SizedBox(
+            //   width: 50.w,
+            //   child: Text(
+            //     widget.description,
+            //     style: TextStyle(
+            //         fontSize: 12.sp,
+            //         fontFamily: poppins,
+            //         color: HexColor('#626262')),
+            //   ),
+            // ),
             Row(
               children: [
                 Text(

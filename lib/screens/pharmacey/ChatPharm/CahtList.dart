@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drug_delivery_application/screens/Chat/ChatCard/ChatCard.dart';
+import 'package:drug_delivery_application/screens/pharmacey/ChatPharm/chatroom.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../backend/firebase.dart';
-import '../../helpers/theme.dart';
-import 'chatroom.dart';
+import '../../../backend/firebase.dart';
+import '../../../helpers/theme.dart';
+import 'ChatCard/ChatCard.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatList extends StatefulWidget {
@@ -67,7 +67,7 @@ class _ChatListState extends State<ChatList> {
                             Get.to(() => ChatRoom(
                                   snapshot.data!.docs[index]['useridrecive'],
                                   snapshot.data!.docs[index]['mostakblename'],
-                                  snapshot.data!.docs[index]['pharmimage'],
+                                  snapshot.data!.docs[index]['userImage'],
                                 ));
                           },
                           child: ChatCard(
@@ -75,9 +75,9 @@ class _ChatListState extends State<ChatList> {
                             snapshot.data!.docs[index]['detailes'],
                             snapshot.data!.docs[index]['morslname'],
                             snapshot.data!.docs[index]['mostakblename'],
-                            snapshot.data!.docs[index]['useridrecive'],
+                            snapshot.data!.docs[index]['usersend'],
                             snapshot.data!.docs[index]['state'],
-                            snapshot.data!.docs[index]['pharmimage'],
+                            snapshot.data!.docs[index]['userImage'],
                           ),
                         );
                       },

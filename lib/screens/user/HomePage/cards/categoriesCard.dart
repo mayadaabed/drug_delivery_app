@@ -18,7 +18,7 @@ class _CategoriesCardState extends State<CategoriesCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150.h,
+      height: 180.h,
       width: 150.w,
       margin: EdgeInsets.only(left: 10.w, right: 10.w),
       decoration:
